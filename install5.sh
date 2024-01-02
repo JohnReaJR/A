@@ -33,7 +33,7 @@ done
 clear
 case $selected_option in
     1)
-        echo "Installing UDP Hysteria V1.3.5 ..."
+        echo "Installing UDP Hysteria ..."
         apt-get update && apt-get upgrade
         apt install wget -y
         apt install nano -y
@@ -60,7 +60,7 @@ case $selected_option in
             fi
         done
         file_path="/root/hy/config.json"
-        json_content='{"listen":":36712","protocol":"udp","cert":"/root/hy/ca.crt","key":"/root/hy/ca.key","up":"100 Mbps","up_mbps":100,"down":"100 Mbps","down_mbps":100,"disable_udp":false,"obfs":"'"$obfs"'","auth_str":"'"$auth_str"'"}'
+        json_content='{"listen":":10000","protocol":"udp","cert":"/root/hy/ca.crt","key":"/root/hy/ca.key","up":"100 Mbps","up_mbps":100,"down":"100 Mbps","down_mbps":100,"disable_udp":false,"obfs":"'"$obfs"'","auth_str":"'"$auth_str"'"}'
         echo "$json_content" > "$file_path"
         if [ ! -e "$file_path" ]; then
             echo "Error: Unable to save the config.json file"
@@ -97,11 +97,9 @@ case $selected_option in
         sudo ip6tables-save > /etc/iptables/rules.v6
         nohup ./hysteria-linux-amd64 server>hysteria.log 2>&1 &
         cat hysteria.log
-        echo "UDP Hysteria V1.3.5 installed successfully, please check the logs above"
+        echo "UDP Hysteria installed successfully, please check the logs above"
         echo "IP Address :"
         curl icanhazip.com
-        echo "Obfs : Resleeved"
-        echo "auth str : Resleeved"
         exit 1
         ;;
     2)
