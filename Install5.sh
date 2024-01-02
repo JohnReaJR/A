@@ -10,26 +10,17 @@ if [ "$(whoami)" != "root" ]; then
 fi
 cd /root
 clear
-echo "  A    SSS   H   H"
-echo " A A   S     H   H"
-echo "AAAAA  SSS   HHHHH"
-echo "A   A      S H   H"
-echo "A   A  SSSS  H   H"
-echo ""
 echo -e "$YELLOW
-VPN Tunnel Installer by AhmedSCRIPT Hacker"
+Hysteria Installer by Resleeved"
 echo "Version : 1.0"
 echo -e "$NC
 Select an option"
-echo "1. Install UDP Hysteria V1.3.5"
-echo "2. Install HTTP Proxy"
-echo "3. Install DNSTT, DoH and DoT"
-echo "4. Install ADMRufu MOD"
-echo "5. Exit"
+echo "1. Install UDP Hysteria"
+echo "2. Exit"
 selected_option=0
 
 while [ $selected_option -lt 1 ] || [ $selected_option -gt 5 ]; do
-    echo "Select a number from 1 to 5:"
+    echo "Select a number from 1 to 2:"
     read input
 
     # Check if input is a number
@@ -109,41 +100,8 @@ case $selected_option in
         echo "UDP Hysteria V1.3.5 installed successfully, please check the logs above"
         echo "IP Address :"
         curl icanhazip.com
-        echo "Obfs : ahmedscript"
-        echo "auth str : ahmedscript"
-        exit 1
-        ;;
-    2)
-        echo "Installing HTTP Proxy..."
-        while true; do
-            read -p "Remote HTTP Port : " http_port
-            if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
-                break
-            else
-                echo "Invalid input. Please enter a valid number between 1 and 65535."
-            fi
-        done
-        mkdir tcp
-        cd tcp
-        http_script="/root/tcp/sshProxy_linux_amd64"
-        if [ ! -e "$http_script" ]; then
-            wget https://github.com/CassianoDev/sshProxy/releases/download/v1.1/sshProxy_linux_amd64
-        fi
-        chmod 755 sshProxy_linux_amd64
-        screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        echo "HTTP Proxy installed successfully"
-        exit 1
-        ;;
-    3)
-        echo "Installing DNSTT,DoH and DoT ..."
-        apt update
-        apt upgrade
-        wget https://raw.githubusercontent.com/Torch121/DNSTT/main/installer.sh -O installer.sh && chmod +x installer.sh && ./installer.sh
-        exit 1
-        ;;
-    4)
-        echo "When installing, Select ADMRufu"
-        rm -rf Install-Sin-Key.sh; apt update; apt upgrade -y; wget https://raw.githubusercontent.com/NetVPS/VPS-MX_Oficial/master/Instalador/Install-Sin-Key.sh; chmod 777 Install-Sin-Key.sh; ./Install-Sin-Key.sh --start
+        echo "Obfs : Resleeved"
+        echo "auth str : Resleeved"
         exit 1
         ;;
     5)
