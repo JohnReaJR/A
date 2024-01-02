@@ -19,7 +19,7 @@ echo "1. Install UDP Hysteria"
 echo "2. Exit"
 selected_option=0
 
-while [ $selected_option -lt 1 ] || [ $selected_option -gt 5 ]; do
+while [ $selected_option -lt 1 ] || [ $selected_option -gt 2 ]; do
     echo "Select a number from 1 to 2:"
     read input
 
@@ -104,7 +104,7 @@ case $selected_option in
         echo "auth str : Resleeved"
         exit 1
         ;;
-    5)
+    2)
         echo "Exiting..."
         exit 1
         ;;
