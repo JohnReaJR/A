@@ -84,7 +84,7 @@ EOF
         apt install net-tools
         systemctl enable custom-server.service
         systemctl start custom-server.service
-        echo "UDP HTTPCUSTOM installed successfully"
+        echo "UDP HTTP CUSTOM installed successfully"
         exit 1
         ;;
     2)
