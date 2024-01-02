@@ -15,7 +15,7 @@ Hysteria Installer by Resleeved"
 echo "Version : 1"
 echo -e "$NC
 Select an option"
-echo "1. Install UDP Hysteria"
+echo "1. Install UDP HTTP CUSTOM"
 echo "2. Exit"
 selected_option=0
 
@@ -38,136 +38,53 @@ clear
 case $selected_option in
     1)
         echo -e "$YELLOW"
-        echo "Installing UDP Hysteria ..."
+        echo "Installing UDP HTTP CUSTOM ..."
         echo -e "$NC"
         apt-get update && apt-get upgrade
         apt install wget -y
         apt install nano -y
         apt install net-tools
-        mkdir hy
-        cd hy
-        udp_script="/root/hy/hysteria-linux-amd64"
-        if [ ! -e "$udp_script" ]; then
-            wget github.com/apernet/hysteria/releases/download/v1.3.5/hysteria-linux-amd64
-        fi
-        chmod 755 hysteria-linux-amd64
-        openssl ecparam -genkey -name prime256v1 -out ca.key
-        openssl req -new -x509 -days 36500 -key ca.key -out ca.crt -subj "/CN=bing.com"
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Obfs : " obfs
-            echo -e "$NC"
-            if [ ! -z "$obfs" ]; then
-            break
-            fi
-        done
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Auth Str : " auth_str
-            echo -e "$NC"
-            if [ ! -z "$auth_str" ]; then
-            break
-            fi
-        done
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Remote UDP Port : " remote_udp_port
-            echo -e "$NC"
-            if is_number "$remote_udp_port" && [ "$remote_udp_port" -ge 1 ] && [ "$remote_udp_port" -le 65534 ]; then
-                if netstat -tulnp | grep -q "::$remote_udp_port"; then
-                    echo -e "$YELLOW"
-                    echo "Error : the selected port has already been used"
-                    echo -e "$NC"
-                else
-                    break
-                fi
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number between 1 and 65534."
-                echo -e "$NC"
-            fi
-        done
-        file_path="/root/hy/config.json"
-        json_content='{"listen":":'"$remote_udp_port"'","protocol":"udp","cert":"/root/hy/ca.crt","key":"/root/hy/ca.key","up":"100 Mbps","up_mbps":100,"down":"100 Mbps","down_mbps":100,"disable_udp":false,"obfs":"'"$obfs"'","auth_str":"'"$auth_str"'"}'
-        echo "$json_content" > "$file_path"
-        if [ ! -e "$file_path" ]; then
-            echo -e "$YELLOW"
-            echo "Error: Unable to save the config.json file"
-            echo -e "$NC"
-            exit 1
-        fi
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v4 boolean true"
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v6 boolean true"
-        apt -y install iptables-persistent
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Binding UDP Ports : from port : " first_number
-            echo -e "$NC"
-            if is_number "$first_number" && [ "$first_number" -ge 1 ] && [ "$first_number" -le 65534 ]; then
-                break
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number between 1 and 65534."
-                echo -e "$NC"
-            fi
-        done
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Binding UDP Ports : from port : $first_number to port : " second_number
-            echo -e "$NC"
-            if is_number "$second_number" && [ "$second_number" -gt "$first_number" ] && [ "$second_number" -lt 65536 ]; then
-                break
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number greater than $first_number and less than 65536."
-                echo -e "$NC"
-            fi
-        done
-        # [+config+]
-        chmod +x /root/hy/config.json
+        mkdir udp
+        cd udp
+        wget github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
+        chmod 755 custom-linux-amd64
 
-        cat <<EOF >/etc/systemd/system/hysteria-server.service
+
+        rm -f /root/udp/config.json
+        cat <<EOF >/root/udp/config.json
+        {
+  "listen": ":444",
+  "stream_buffer": 16777216,
+  "receive_buffer": 33554432,
+  "auth": {
+    "mode": "passwords"
+  }
+}
+EOF
+        # [+config+]
+        chmod +x /root/udp/config.json
+
+        cat <<EOF >/etc/systemd/system/custom-server.service
 [Unit]
-After=network.target nss-lookup.target
+Description=UDP Custom by InFiNitY
 
 [Service]
 User=root
-WorkingDirectory=/root
-CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/root/hy/hysteria-linux-amd64 server -c /root/hy/config.json
-ExecReload=/bin/kill -HUP $MAINPID
+Type=simple
+ExecStart=/root/udp/custom-linux-amd64 server
+WorkingDirectory=/root/udp/
 Restart=always
-RestartSec=2
-LimitNOFILE=infinity
+RestartSec=2s
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
 EOF
         #Start Services
         apt-get update && apt-get upgrade
         apt install net-tools
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v4 boolean true"
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v6 boolean true"
-        apt -y install iptables-persistent
-        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport "$first_number":"$second_number" -j DNAT --to-destination :$remote_udp_port
-        ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport "$first_number":"$second_number" -j DNAT --to-destination :$remote_udp_port
-        netfilter-persistent save
-        sysctl net.ipv4.conf.all.rp_filter=0
-        sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
-        echo "net.ipv4.ip_forward = 1
-        net.ipv4.conf.all.rp_filter=0
-        net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0" > /etc/sysctl.conf
-        sysctl -p
-        sudo iptables-save > /etc/iptables/rules.v4
-        sudo ip6tables-save > /etc/iptables/rules.v6
-        systemctl enable hysteria-server.service
-        systemctl start hysteria-server.service
-        lsof -i :"$remote_udp_port"
-        echo "UDP Hysteria installed successfully, please check the logs above"
-        echo "IP Address :"
-        echo "Obfs : '"$obfs"'"
-        echo "auth str : '"$auth_str"'"
+        systemctl enable custom-server.service
+        systemctl start custom-server.service
+        echo "UDP HTTPCUSTOM installed successfully"
         exit 1
         ;;
     2)
