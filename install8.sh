@@ -11,7 +11,7 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-Hysteria Installer by Resleeved"
+UDP HTTP CUSTOM INSTALLER by Resleeved"
 echo "Version : 1"
 echo -e "$NC
 Select an option"
@@ -53,7 +53,7 @@ case $selected_option in
         rm -f /root/udp/config.json
         cat <<EOF >/root/udp/config.json
         {
-  "listen": ":444",
+  "listen": ":8444",
   "stream_buffer": 16777216,
   "receive_buffer": 33554432,
   "auth": {
@@ -74,7 +74,7 @@ Type=simple
 ExecStart=/root/udp/custom-linux-amd64 server
 WorkingDirectory=/root/udp/
 Restart=always
-RestartSec=2s
+RestartSec=2
 
 [Install]
 WantedBy=default.target
