@@ -58,10 +58,13 @@ success() {
 info() {
     echo "${T_YELLOW}Info: $1${T_RESET}"
 }
-
-# verification function
-clear
-
+    clear
+    echo ""
+    figlet -k Resleeved | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1' && figlet -k Net | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1'
+    echo "──────────────────────────────────────────────────────────•"
+    echo ""
+    echo "──────────────────────────────────────────────────────────•"
+    
         # Create the /etc/sleeve directory if it doesn't exist
         mkdir -p /etc/sleeve
 
@@ -203,17 +206,6 @@ EOF
     echo "──────────────────────────────────────────────────────────•"
         echo ""
         echo "${T_GREEN}RESLEEVED NET HYSTERIA SERVER Installation completed!${T_RESET}"
-        echo ""
-
-    else
-        clear
-        figlet -k Resleeved | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1' && figlet -k Net | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1'
-        echo "──────────────────────────────────────────────────────────•"
-        echo "${T_RED} ⇢ Verification failed. Aborting installation.${T_RESET}"
         exit 1
-    fi
-}
-
-##--Installation--##
-check_dependencies
-hy_install
+        ;;
+esac
