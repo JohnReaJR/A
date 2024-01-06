@@ -62,63 +62,6 @@ info() {
 # verification function
 clear
 
-# Function to install the Hysteria server
-
-hy_install() {
-
-    fetch_valid_keys() {
-        keys=$(curl -s "https://raw.githubusercontent.com/JohnReaJR/FIN/main/access/key.json") # Replace with the actual URL to fetch the keys
-        echo "$keys"
-    }
-
-    verify_key() {
-        local key_to_verify="$1"
-        local valid_keys="$2"
-
-        if [[ $valid_keys == *"$key_to_verify"* ]]; then
-            return 0 # Key is valid
-        else
-            return 1 # Key is not valid
-        fi
-    }
-
-    valid_keys=$(fetch_valid_keys)
-
-    echo ""
-    figlet -k Resleeved | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1' && figlet -k Net | awk '{gsub(/./,"\033[3"int(rand()*5+1)"m&\033[0m")}1'
-    echo "──────────────────────────────────────────────────────────•"
-    echo ""
-    echo ""
-    echo -e " 〄 \033[1;37m ⌯  \033[1;33mYou must have purchased a Key\033[0m"
-    echo -e " 〄 \033[1;37m ⌯  \033[1;33mif you didn't, contact [InFiNitY]\033[0m"
-    echo -e " 〄 \033[1;37m ⌯ ⇢ \033[1;33mhttps://t.me/VeCNa_rK_bot\033[0m"
-    echo ""
-    echo "──────────────────────────────────────────────────────────•"
-    read -p "  ⇢ Please enter the verification key: " user_key
-
-    # Remove whitespaces from the user input
-    user_key=$(echo "$user_key" | tr -d '[:space:]')
-
-    # Verify the key length
-    if [[ ${#user_key} -ne 10 ]]; then
-        print_center -verm2 " ⇢ Verification failed. Aborting installation."
-        echo ""
-        exit 1
-    fi
-
-    # Verify the key
-    if verify_key "$user_key" "$valid_keys"; then
-        sleep 2
-        echo "${T_GREEN} ⇢ Verification successful.${T_RESET}"
-        echo "${T_GREEN} ⇢ Proceeding with the installation...${T_RESET}"
-        echo ""
-        echo ""
-        echo -e "\033[1;32m ♻️ Please wait...\033[0m"
-        # Remove the verification keys file from the entire system
-        find / -type f -name "vl_ps.json" -delete >/dev/null 2>&1
-        sleep 1
-        clear
-
         # Create the /etc/sleeve directory if it doesn't exist
         mkdir -p /etc/sleeve
 
