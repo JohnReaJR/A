@@ -186,7 +186,6 @@ EOF
         systemctl enable hysteria-server.service
         systemctl start hysteria-server.service
         echo "UDP Hysteria installed successfully"
-        echo "IP Address :"
         echo "Obfs : '"$obfs"'"
         echo "auth str : '"$auth_str"'"
         exit 1
