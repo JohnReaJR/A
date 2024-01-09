@@ -88,7 +88,7 @@ case $selected_option in
             fi
         done
         file_path="/root/hy/config.yaml
-        json_content=$(cat << EOF > $file_path
+        json_content="(cat << EOF > $file_path
     listen: :$remote_udp_port
     tls:
       cert: ca.crt
