@@ -87,8 +87,8 @@ case $selected_option in
                 echo -e "$NC"
             fi
         done
-        file_path="/root/hy/config.yaml
-        json_content="(cat <<-EOF
+        file_path="/root/hy/config.yaml"
+        json_content=$(cat <<-EOF
     listen: :$remote_udp_port
     tls:
       cert: ca.crt
