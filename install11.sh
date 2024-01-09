@@ -48,7 +48,7 @@ case $selected_option in
         cd hy
         udp_script="/root/hy/hysteria-linux-amd64"
         if [ ! -e "$udp_script" ]; then
-            wget github.com/apernet/hysteria/releases/download/v1.3.5/hysteria-linux-amd64
+            wget github.com/apernet/hysteria/releases/download/app/v2.0.0/hysteria-linux-amd64
         fi
         chmod 755 hysteria-linux-amd64
         openssl ecparam -genkey -name prime256v1 -out ca.key
@@ -115,7 +115,7 @@ EOF
         echo "$json_content" > "$file_path"
         if [ ! -e "$file_path" ]; then
             echo -e "$YELLOW"
-            echo "Error: Unable to save the config.json file"
+            echo "Error: Unable to save the config.yaml file"
             echo -e "$NC"
             exit 1
         fi
