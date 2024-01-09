@@ -88,7 +88,7 @@ case $selected_option in
             fi
         done
         file_path="/root/hy/config.yaml
-        json_content="(cat << EOF > $file_path
+        json_content="cat << EOF
     listen: :$remote_udp_port
     tls:
       cert: ca.crt
@@ -110,7 +110,8 @@ case $selected_option in
       proxy:
         url: https://223.5.5.5/dns-query
         rewriteHost: true
-EOF)
+EOF
+
         echo "$json_content" > "$file_path"
         if [ ! -e "$file_path" ]; then
             echo -e "$YELLOW"
