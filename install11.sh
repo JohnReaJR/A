@@ -110,8 +110,8 @@ case $selected_option in
       proxy:
         url: https://223.5.5.5/dns-query
         rewriteHost: true
-EOF)
-
+EOF
+)
         echo "$json_content" > "$file_path"
         if [ ! -e "$file_path" ]; then
             echo -e "$YELLOW"
