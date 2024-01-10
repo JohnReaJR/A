@@ -185,11 +185,7 @@ EOF
         sudo ip6tables-save > /etc/iptables/rules.v6
         systemctl enable hysteria-server.service
         systemctl start hysteria-server.service
-        lsof -i :"$remote_udp_port"
-        echo "UDP Hysteria installed successfully, please check the logs above"
-        echo "IP Address :"
-        echo "Obfs : '"$obfs"'"
-        echo "auth str : '"$auth_str"'"
+        echo "UDP Hysteria V2 installed"
         exit 1
         ;;
     2)
