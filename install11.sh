@@ -87,7 +87,7 @@ case $selected_option in
                 echo -e "$NC"
             fi
         done
-        file_path="/root/hy/config.yaml"
+        file_path="/root/hy/config.json"
         json_content=$(cat <<-EOF
 {
   "listen": :"$remote_udp_port",
@@ -117,7 +117,7 @@ EOF
         echo "$json_content" > "$file_path"
         if [ ! -e "$file_path" ]; then
             echo -e "$YELLOW"
-            echo "Error: Unable to save the config.yaml file"
+            echo "Error: Unable to save the config.json file"
             echo -e "$NC"
             exit 1
         fi
@@ -149,7 +149,7 @@ EOF
             fi
         done
         # [+config+]
-        chmod +x /root/hy/config.yaml
+        chmod +x /root/hy/config.json
 
         cat <<EOF >/etc/systemd/system/hysteria-server.service
 [Unit]
@@ -160,7 +160,7 @@ User=root
 WorkingDirectory=/root
 CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
 AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
-ExecStart=/root/hy/hysteria-linux-amd64 server -c /root/hy/config.yaml
+ExecStart=/root/hy/hysteria-linux-amd64 server -c /root/hy/config.json
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=always
 RestartSec=2
