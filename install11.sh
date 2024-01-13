@@ -155,7 +155,7 @@ After=network.target nss-lookup.target
 
 [Service]
 User=root
-WorkingDirectory=/root
+WorkingDirectory=/root/hy
 CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
 AmbientCapabilities=CAP_NET_ADMIN CAP_NET_BIND_SERVICE CAP_NET_RAW
 ExecStart=/root/hy/hysteria-linux-amd64 server -c /root/hy/config.yaml
