@@ -89,27 +89,27 @@ case $selected_option in
         done
         file_path="/root/hy/config.yaml"
         json_content=$(cat <<-EOF
-    listen: :$remote_udp_port
-    tls:
-      cert: /root/hy/ca.crt
-      key: /root/hy/ca.key
-    obfs:
-      type: salamander
-      salamander:
-        password: $obfs
-    quic:
-      initStreamReceiveWindow: 8388608 
-      maxStreamReceiveWindow: 8388608 
-      initConnReceiveWindow: 20971520
-      maxConnReceiveWindow: 20971520
-    auth:
-      type: password
-      password: $auth_str
-    masquerade:
-      type: proxy
-      proxy:
-        url: https://223.5.5.5/dns-query
-        rewriteHost: true
+    listen: :$remote_udp_port                                                            
+tls:                                                                      
+  cert: ca.crt                                                            
+  key: ca.key                                                             
+obfs:                                                                     
+  type: salamander                                                        
+  salamander:                                                             
+    password: $obfs                                                        
+quic:                                                                     
+  initStreamReceiveWindow: 16777216                                       
+  maxStreamReceiveWindow: 16777216                                        
+  initConnReceiveWindow: 33554432                                         
+  maxConnReceiveWindow: 33554432                                          
+auth:                                                                     
+  type: password                                                          
+  password: $auth_str                                                          
+masquerade:                                                               
+  type: proxy                                                             
+  proxy:                                                                  
+    url: https://223.5.5.5/dns-query                                      
+    rewriteHost: true
 EOF
 )
         echo "$json_content" > "$file_path"
