@@ -85,6 +85,7 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
+}
         #Start Services
         apt-get update && apt-get upgrade
         apt install net-tools
