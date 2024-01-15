@@ -66,18 +66,19 @@ EOF
 
         cat <<EOF >/etc/systemd/system/request-server.service
 [Unit]
-Description=UDP REQUEST SOCKSIP by InFiNitY
+Description=UDP REQUEST SOCKSIP
+After=network.target
 
 [Service]
-User=root
 Type=simple
-ExecStart=/root/udp/request-linux-amd64 server
-WorkingDirectory=/root/udp/
+User=root
+WorkingDirectory=/root
+ExecStart=/root/udp/request-linux-amd64 -ip=$public_ip -net=$interface -mode=system
 Restart=always
 RestartSec=2
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target
 EOF
         #Start Services
         apt-get update && apt-get upgrade
