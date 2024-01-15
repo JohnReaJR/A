@@ -54,6 +54,9 @@ make_service() {
   interface=$(ip -4 addr | grep inet | grep -vE '127(\.[0-9]{1,3}){3}' | grep "$ip_nat" | awk {'print $NF'})
   public_ip=$(grep -m 1 -oE '^[0-9]{1,3}(\.[0-9]{1,3}){3}$' <<<"$(wget -T 10 -t 1 -4qO- "http://ip1.dynupdate.no-ip.com/" || curl -m 10 -4Ls "http://ip1.dynupdate.no-ip.com/")")
 
+  }
+
+
         cat <<EOF >/etc/systemd/system/request-server.service
 [Unit]
 Description=UDP Request Service
@@ -70,14 +73,11 @@ RestartSec=2
 [Install]
 WantedBy=multi-user.target
 EOF
-
-        systemctl daemon-reload
-        systemctl enable request-server.service
-        systemctl start request-server.service
-}
         #Start Services
         apt-get update && apt-get upgrade
         apt install net-tools
+        systemctl enable request-server.service
+        systemctl start request-server.service
         echo "UDP REQUEST SOCKSIP UP AND RUNNING"
         exit 1
         ;;
