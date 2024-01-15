@@ -11,11 +11,11 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-UDP HTTP CUSTOM INSTALLER by Resleeved"
+UDP REQUEST SOCKSIP INSTALLER by Resleeved"
 echo "Version : 1"
 echo -e "$NC
 Select an option"
-echo "1. Install UDP HTTP CUSTOM"
+echo "1. Install UDP REQUEST SOCKSIP"
 echo "2. Exit"
 selected_option=0
 
@@ -38,7 +38,7 @@ clear
 case $selected_option in
     1)
         echo -e "$YELLOW"
-        echo "Installing UDP HTTP CUSTOM ..."
+        echo "Installing UDP REQUEST SOCKSIP..."
         echo -e "$NC"
         apt-get update && apt-get upgrade
         apt install wget -y
@@ -46,8 +46,8 @@ case $selected_option in
         apt install net-tools
         mkdir udp
         cd udp
-        wget github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
-        chmod 755 custom-linux-amd64
+        wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
+        chmod 755 request-linux-amd64
 
 
         rm -f /root/udp/config.json
@@ -64,14 +64,14 @@ EOF
         # [+config+]
         chmod +x /root/udp/config.json
 
-        cat <<EOF >/etc/systemd/system/custom-server.service
+        cat <<EOF >/etc/systemd/system/request-server.service
 [Unit]
-Description=UDP Custom by InFiNitY
+Description=UDP REQUEST SOCKSIP by InFiNitY
 
 [Service]
 User=root
 Type=simple
-ExecStart=/root/udp/custom-linux-amd64 server
+ExecStart=/root/udp/request-linux-amd64 server
 WorkingDirectory=/root/udp/
 Restart=always
 RestartSec=2
@@ -82,9 +82,9 @@ EOF
         #Start Services
         apt-get update && apt-get upgrade
         apt install net-tools
-        systemctl enable custom-server.service
-        systemctl start custom-server.service
-        echo "UDP HTTP CUSTOM installed successfully"
+        systemctl enable request-server.service
+        systemctl start request-server.service
+        echo "UDP REQUEST SOCKSIP UP AND RUNNING"
         exit 1
         ;;
     2)
