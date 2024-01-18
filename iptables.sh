@@ -10,6 +10,18 @@ clear
 echo -e "$YELLOW"
 echo "🧡 IPTABLES......🧡 SETTING UP YOUR FIREWALL....🧡"
 echo -e "$NC"
+
+time_reboot(){
+  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
+  REBOOT_TIMEOUT="$1"
+  
+  while [ $REBOOT_TIMEOUT -gt 0 ]; do
+     print_center -ne "-$REBOOT_TIMEOUT-\r"
+     sleep 1
+     : $((REBOOT_TIMEOUT--))
+  done
+  reboot
+}
 apt-get update && apt-get upgrade
 apt update && apt upgrade
 apt install wget -y
@@ -33,4 +45,4 @@ echo -e "$YELLOW"
 echo "🧡 FIREWALL CONFIGURED.....🧡"
 echo "💚 REBOOTING........💚"
 echo -e "$NC"
-reboot
+time_reboot 10
