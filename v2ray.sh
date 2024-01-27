@@ -115,7 +115,7 @@ cd x-ui
 chmod +x x-ui bin/xray-linux-${arch}
 cp -f x-ui.service /etc/systemd/system/
 wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/v2//x-uix-ui.sh
+chmod +x /root/v2/x-ui/x-uix-ui.sh
 chmod +x /usr/bin/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
@@ -126,8 +126,8 @@ Wants=network.target
 [Service]
 Environment="XRAY_VMESS_AEAD_FORCED=false"
 Type=simple
-WorkingDirectory=/root/x-ui/
-ExecStart=/root/x-ui/x-ui
+WorkingDirectory=/root/v2/
+ExecStart=/root/v2/x-ui
 
 [Install]
 WantedBy=multi-user.target
@@ -145,9 +145,9 @@ config_after_install() {
         read -p "please set up the panel port:" config_port
         echo -e "${yellow}your panel port is:${config_port}${plain}"
         echo -e "${yellow}initializing,wait some time here...${plain}"
-        /root/x-ui/x-ui setting -username ${config_account} -password ${config_password}
+        /root/v2/x-ui setting -username ${config_account} -password ${config_password}
         echo -e "${yellow}account name and password set down!${plain}"
-        /root/x-ui/x-ui setting -port ${config_port}
+        /root/v2/x-ui setting -port ${config_port}
         echo -e "${yellow}panel port set down!${plain}"
     else
         echo -e "${red}Canceled, all setting items are default settings${plain}"
