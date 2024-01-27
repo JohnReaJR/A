@@ -81,16 +81,18 @@ install_base() {
     fi
 }
 #Install X-Ui
-mkdir v2
-cd v2
-if [ $# == 0 ]; then
+install_x-ui() {
+    systemctl stop x-ui
+    cd /usr/local/
+
+    if [ $# == 0 ]; then
         last_version=$(curl -Ls "https://api.github.com/repos/hossinasaadi/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
             echo -e "${red}refresh x-ui version failed,it may due to Github API restriction,please try it later${plain}"
             exit 1
         fi
         echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
-        wget -N --no-check-certificate -O /root/v2/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+        wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
             exit 1
@@ -99,60 +101,25 @@ if [ $# == 0 ]; then
         last_version=$1
         url="https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
         echo -e "begin to install x-ui v$1"
-        wget -N --no-check-certificate -O /root/v2/x-ui-linux-${arch}.tar.gz ${url}
+        wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui v$1 failed,please check the verison exists${plain}"
             exit 1
         fi
     fi
 
-    if [[ -e /root/v2/ ]]; then
-        rm /root/v2/ -rf
+    if [[ -e /usr/local/x-ui/ ]]; then
+        rm /usr/local/x-ui/ -rf
     fi
-tar zxvf x-ui-linux-${arch}.tar.gz
-rm x-ui-linux-${arch}.tar.gz -f
-cd x-ui
-chmod +x x-ui bin/xray-linux-${arch}
-cp -f x-ui.service /etc/systemd/system/
-wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/v2/x-ui/x-ui.sh
-chmod +x /usr/bin/x-ui
-cat <<EOF >/etc/systemd/system/x-ui.service
-[Unit]
-Description=x-ui Service
-After=network.target
-Wants=network.target
 
-[Service]
-Environment="XRAY_VMESS_AEAD_FORCED=false"
-Type=simple
-WorkingDirectory=/root/v2/
-ExecStart=/root/v2/x-ui
-
-[Install]
-WantedBy=multi-user.target
-EOF
-
-#This function will be called when user installed x-ui out of sercurity
-config_after_install() {
-    echo -e "${yellow} Install/update finished need to modify panel settings out of security ${plain}"
-    read -p "are you continue,if you type n will skip this at this time[y/n]": config_confirm
-    if [[ x"${config_confirm}" == x"y" || x"${config_confirm}" == x"Y" ]]; then
-        read -p "please set up your username:" config_account
-        echo -e "${yellow}your username will be:${config_account}${plain}"
-        read -p "please set up your password:" config_password
-        echo -e "${yellow}your password will be:${config_password}${plain}"
-        read -p "please set up the panel port:" config_port
-        echo -e "${yellow}your panel port is:${config_port}${plain}"
-        echo -e "${yellow}initializing,wait some time here...${plain}"
-        /root/v2/x-ui setting -username ${config_account} -password ${config_password}
-        echo -e "${yellow}account name and password set down!${plain}"
-        /root/v2/x-ui setting -port ${config_port}
-        echo -e "${yellow}panel port set down!${plain}"
-    else
-        echo -e "${red}Canceled, all setting items are default settings${plain}"
-    fi
-}
+    tar zxvf x-ui-linux-${arch}.tar.gz
+    rm x-ui-linux-${arch}.tar.gz -f
+    cd x-ui
+    chmod +x x-ui bin/xray-linux-${arch}
+    cp -f x-ui.service /etc/systemd/system/
+    wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/hossinasaadi/x-ui/main/x-ui.sh
+    chmod +x /usr/local/x-ui/x-ui.sh
+    chmod +x /usr/bin/x-ui
     config_after_install
     #echo -e "如果是全新安装，默认网页端口为 ${green}54321${plain}，用户名和密码默认都是 ${green}admin${plain}"
     #echo -e "请自行确保此端口没有被其他程序占用，${yellow}并且确保 54321 端口已放行${plain}"
