@@ -94,7 +94,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/JohnReaJR/A/main/v2ray.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/hossinasaadi/x-ui/main/install.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -113,7 +113,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/JohnReaJR/A/main/v2ray.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/hossinasaadi/x-ui/main/install.sh)
     if [[ $? == 0 ]]; then
         LOGI "Update is complete, Panel has automatically restarted "
         exit 0
@@ -134,7 +134,7 @@ uninstall() {
     systemctl daemon-reload
     systemctl reset-failed
     rm /etc/x-ui/ -rf
-    rm /root/v2/ -rf
+    rm /usr/local/x-ui/ -rf
 
     echo ""
     echo -e "Uninstalled Successfully，If you want to remove this script，then after exiting the script run ${green}rm /usr/bin/x-ui -f${plain} to delete it."
@@ -153,7 +153,7 @@ reset_user() {
         fi
         return 0
     fi
-    /root/v2/x-ui setting -username admin -password admin
+    /usr/local/x-ui/x-ui setting -username admin -password admin
     echo -e "Username and password have been reset to ${green}admin${plain}，Please restart the panel now."
     confirm_restart
 }
@@ -166,13 +166,13 @@ reset_config() {
         fi
         return 0
     fi
-    /root/v2/x-ui setting -reset
+    /usr/local/x-ui/x-ui setting -reset
     echo -e "All panel settings have been reset to default，Please restart the panel now，and use the default ${green}54321${plain} Port to Access the web Panel"
     confirm_restart
 }
 
 check_config() {
-    info=$(/root/v2/x-ui setting -show true)
+    info=$(/usr/local/x-ui/x-ui setting -show true)
     if [[ $? != 0 ]]; then
         LOGE "get current settings error,please check logs"
         show_menu
@@ -186,7 +186,7 @@ set_port() {
         LOGD "Cancelled"
         before_show_menu
     else
-        /root/v2/x-ui setting -port ${port}
+        /usr/local/x-ui/x-ui setting -port ${port}
         echo -e "The port is set，Please restart the panel now，and use the new port ${green}${port}${plain} to access web panel"
         confirm_restart
     fi
@@ -289,7 +289,7 @@ show_log() {
 }
 
 migrate_v2_ui() {
-    /root/v2/x-ui v2-ui
+    /usr/local/x-ui/x-ui v2-ui
 
     before_show_menu
 }
@@ -302,13 +302,13 @@ install_bbr() {
 }
 
 update_shell() {
-    wget -O /root/v2 -N --no-check-certificate https://github.com/JohnReaJR/A/raw/main/x-ui.sh
+    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/hossinasaadi/x-ui/raw/main/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "Failed to download script，Please check whether the machine can connect Github"
         before_show_menu
     else
-        chmod +x /root/v2
+        chmod +x /usr/bin/x-ui
         LOGI "Upgrade script succeeded，Please rerun the script" && exit 0
     fi
 }
