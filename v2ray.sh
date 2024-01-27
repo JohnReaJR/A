@@ -129,7 +129,7 @@ ExecStart=/root/x-ui/x-ui
 WantedBy=multi-user.target
 EOF
 wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/x-ui/x-ui.sh
+chmod +x x-ui.sh
 
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
