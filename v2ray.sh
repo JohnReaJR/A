@@ -104,7 +104,8 @@ config_after_install() {
 
 install_x-ui() {
     systemctl stop x-ui
-    cd /root/
+    mkdir x-ui
+    cd /root/x-ui
 
     if [ $# == 0 ]; then
         last_version=$(curl -Ls "https://api.github.com/repos/hossinasaadi/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -135,7 +136,6 @@ install_x-ui() {
 
     tar zxvf x-ui-linux-${arch}.tar.gz
     rm x-ui-linux-${arch}.tar.gz -f
-    cd /root/x-ui
     chmod +x x-ui /root/x-ui/xray-linux-${arch}
     cp -f x-ui.service /etc/systemd/system/
     wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
