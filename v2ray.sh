@@ -83,11 +83,36 @@ install_base() {
 #Install X-Ui
 mkdir x-ui
 cd x-ui
-wget -N --no-check-certificate -O https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+if [ $# == 0 ]; then
+        last_version=$(curl -Ls "https://api.github.com/repos/hossinasaadi/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+        if [[ ! -n "$last_version" ]]; then
+            echo -e "${red}refresh x-ui version failed,it may due to Github API restriction,please try it later${plain}"
+            exit 1
+        fi
+        echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
+        wget -N --no-check-certificate -O /root/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+        if [[ $? -ne 0 ]]; then
+            echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
+            exit 1
+        fi
+    else
+        last_version=$1
+        url="https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
+        echo -e "begin to install x-ui v$1"
+        wget -N --no-check-certificate -O /root/x-ui-linux-${arch}.tar.gz ${url}
+        if [[ $? -ne 0 ]]; then
+            echo -e "${red}dowanload x-ui v$1 failed,please check the verison exists${plain}"
+            exit 1
+        fi
+    fi
+
+    if [[ -e /root/x-ui/ ]]; then
+        rm /root/x-ui/ -rf
+    fi
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
 chmod +x x-ui xray-linux-${arch}
-chmod +x x-ui
+chmod +x /root/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
 Description=x-ui Service
@@ -104,8 +129,7 @@ ExecStart=/root/x-ui/x-ui
 WantedBy=multi-user.target
 EOF
 wget --no-check-certificate -O https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x x-ui.sh
-
+chmod +x /root/x-ui.sh
 
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
