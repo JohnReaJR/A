@@ -81,8 +81,8 @@ install_base() {
     fi
 }
 #Install X-Ui
-mkdir x-ui
-cd x-ui
+mkdir v2
+cd v2
 if [ $# == 0 ]; then
         last_version=$(curl -Ls "https://api.github.com/repos/hossinasaadi/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
         if [[ ! -n "$last_version" ]]; then
@@ -90,7 +90,7 @@ if [ $# == 0 ]; then
             exit 1
         fi
         echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
-        wget -N --no-check-certificate -O /root/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+        wget -N --no-check-certificate -O /root/v2/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
             exit 1
@@ -106,17 +106,17 @@ if [ $# == 0 ]; then
         fi
     fi
 
-    if [[ -e /root/x-ui/ ]]; then
-        rm /root/x-ui/ -rf
+    if [[ -e /root/v2/ ]]; then
+        rm /root/v2/ -rf
     fi
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
 cd x-ui
 chmod +x x-ui bin/xray-linux-${arch}
 cp -f x-ui.service /etc/systemd/system/
-wget --no-check-certificate -O /root/x-ui/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/x-ui/x-ui.sh
-chmod +x /root/x-ui/x-ui
+wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
+chmod +x /root/v2//x-uix-ui.sh
+chmod +x /usr/bin/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
 Description=x-ui Service
