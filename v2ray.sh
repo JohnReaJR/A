@@ -104,6 +104,11 @@ config_after_install() {
 
 install_x-ui() {
     systemctl stop x-ui
+    systemctl stop x-ui.service
+    rm -rf /etc/systemd/system/x-ui.service
+    rm -rf /usr/local/x-ui
+    rm -rf /usr/bin/x-ui
+    rm -rf /etc/x-ui
     cd /usr/local/
 
     if [ $# == 0 ]; then
