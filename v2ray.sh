@@ -87,6 +87,7 @@ wget -N --no-check-certificate -O https://github.com/hossinasaadi/x-ui/releases/
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
 chmod +x x-ui xray-linux-${arch}
+chmod +x x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
 Description=UDPGW Gateway Service by InFiNitY 
@@ -124,60 +125,6 @@ config_after_install() {
         echo -e "${red}Canceled, all setting items are default settings${plain}"
     fi
 }
-
-install_x-ui() {
-    systemctl stop x-ui
-    cd /root
-    mkdir x-ui
-    cd /root/x-ui
-
-    if [ $# == 0 ]; then
-        last_version=$(curl -Ls "https://api.github.com/repos/hossinasaadi/x-ui/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-        if [[ ! -n "$last_version" ]]; then
-            echo -e "${red}refresh x-ui version failed,it may due to Github API restriction,please try it later${plain}"
-            exit 1
-        fi
-        echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
-        wget -N --no-check-certificate -O /root/x-ui/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
-        if [[ $? -ne 0 ]]; then
-            echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
-            exit 1
-        fi
-    else
-        last_version=$1
-        url="https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
-        echo -e "begin to install x-ui v$1"
-        wget -N --no-check-certificate -O /root/x-ui/x-ui-linux-${arch}.tar.gz ${url}
-        if [[ $? -ne 0 ]]; then
-            echo -e "${red}dowanload x-ui v$1 failed,please check the verison exists${plain}"
-            exit 1
-        fi
-    fi
-
-    if [[ -e /root/x-ui/ ]]; then
-        rm /root/x-ui/ -rf
-    fi
-
-    tar zxvf x-ui-linux-${arch}.tar.gz
-    rm x-ui-linux-${arch}.tar.gz -f
-    chmod +x x-ui /root/x-ui/xray-linux-${arch}
-    cat <<EOF >/etc/systemd/system/udpgw.service
-[Unit]
-Description=UDPGW Gateway Service by InFiNitY 
-After=network.target
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
-Restart=always
-User=root
-
-[Install]
-WantedBy=multi-user.target
-EOF
-    wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-    chmod +x /root/x-ui/x-ui.sh
-    chmod +x /root/x-ui/x-ui
     config_after_install
     #echo -e "如果是全新安装，默认网页端口为 ${green}54321${plain}，用户名和密码默认都是 ${green}admin${plain}"
     #echo -e "请自行确保此端口没有被其他程序占用，${yellow}并且确保 54321 端口已放行${plain}"
