@@ -87,10 +87,23 @@ wget -N --no-check-certificate -O https://github.com/hossinasaadi/x-ui/releases/
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
 chmod +x x-ui xray-linux-${arch}
-cp -f x-ui.service /etc/systemd/system/
+cat <<EOF >/etc/systemd/system/x-ui.service
+[Unit]
+Description=UDPGW Gateway Service by InFiNitY 
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
 wget --no-check-certificate -O https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
 chmod +x x-ui.sh
-chmod +x /root/x-ui/x-ui
+chmod +x x-ui
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
     echo -e "${yellow} Install/update finished need to modify panel settings out of security ${plain}"
@@ -148,7 +161,20 @@ install_x-ui() {
     tar zxvf x-ui-linux-${arch}.tar.gz
     rm x-ui-linux-${arch}.tar.gz -f
     chmod +x x-ui /root/x-ui/xray-linux-${arch}
-    cp -f x-ui.service /etc/systemd/system/
+    cat <<EOF >/etc/systemd/system/udpgw.service
+[Unit]
+Description=UDPGW Gateway Service by InFiNitY 
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
     wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
     chmod +x /root/x-ui/x-ui.sh
     chmod +x /root/x-ui/x-ui
