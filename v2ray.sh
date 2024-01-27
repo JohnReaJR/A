@@ -112,7 +112,7 @@ if [ $# == 0 ]; then
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
 chmod +x x-ui xray-linux-${arch}
-chmod +x /root/x-ui
+chmod +x /root/x-ui/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
 Description=x-ui Service
@@ -129,7 +129,7 @@ ExecStart=/root/x-ui/x-ui
 WantedBy=multi-user.target
 EOF
 wget --no-check-certificate -O https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/x-ui.sh
+chmod +x /root/x-ui/x-ui.sh
 
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
