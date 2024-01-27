@@ -20,65 +20,6 @@ function LOGI() {
 # check root
 [[ $EUID -ne 0 ]] && LOGE "ERROR: You must be root to run this script! \n" && exit 1
 
-# check os
-if [[ -f /etc/redhat-release ]]; then
-    release="centos"
-elif cat /etc/issue | grep -Eqi "debian"; then
-    release="debian"
-elif cat /etc/issue | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /etc/issue | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-elif cat /proc/version | grep -Eqi "debian"; then
-    release="debian"
-elif cat /proc/version | grep -Eqi "ubuntu"; then
-    release="ubuntu"
-elif cat /proc/version | grep -Eqi "centos|red hat|redhat"; then
-    release="centos"
-else
-    LOGE "check system OS failed,please contact with author! \n" && exit 1
-fi
-
-os_version=""
-
-# os version
-if [[ -f /etc/os-release ]]; then
-    os_version=$(awk -F'[= ."]' '/VERSION_ID/{print $3}' /etc/os-release)
-fi
-if [[ -z "$os_version" && -f /etc/lsb-release ]]; then
-    os_version=$(awk -F'[= ."]+' '/DISTRIB_RELEASE/{print $2}' /etc/lsb-release)
-fi
-
-if [[ x"${release}" == x"centos" ]]; then
-    if [[ ${os_version} -le 6 ]]; then
-        LOGE "please use CentOS 7 or higher version! \n" && exit 1
-    fi
-elif [[ x"${release}" == x"ubuntu" ]]; then
-    if [[ ${os_version} -lt 16 ]]; then
-        LOGE "please use Ubuntu 16 or higher version！\n" && exit 1
-    fi
-elif [[ x"${release}" == x"debian" ]]; then
-    if [[ ${os_version} -lt 8 ]]; then
-        LOGE "please use Debian 8 or higher version！\n" && exit 1
-    fi
-fi
-
-confirm() {
-    if [[ $# > 1 ]]; then
-        echo && read -p "$1 [Default$2]: " temp
-        if [[ x"${temp}" == x"" ]]; then
-            temp=$2
-        fi
-    else
-        read -p "$1 [y/n]: " temp
-    fi
-    if [[ x"${temp}" == x"y" || x"${temp}" == x"Y" ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 confirm_restart() {
     confirm "Restart the panel, Attention: Restarting the panel will also restart xray" "y"
     if [[ $? == 0 ]]; then
@@ -94,7 +35,7 @@ before_show_menu() {
 }
 
 install() {
-    bash <(curl -Ls https://raw.githubusercontent.com/hossinasaadi/x-ui/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/JohnReaJR/A/main/v2ray.sh)
     if [[ $? == 0 ]]; then
         if [[ $# == 0 ]]; then
             start
@@ -113,7 +54,7 @@ update() {
         fi
         return 0
     fi
-    bash <(curl -Ls https://raw.githubusercontent.com/hossinasaadi/x-ui/main/install.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/JohnReaJR/A/main/v2ray.sh)
     if [[ $? == 0 ]]; then
         LOGI "Update is complete, Panel has automatically restarted "
         exit 0
@@ -134,7 +75,7 @@ uninstall() {
     systemctl daemon-reload
     systemctl reset-failed
     rm /etc/x-ui/ -rf
-    rm /usr/local/x-ui/ -rf
+    rm /root/x-ui/ -rf
 
     echo ""
     echo -e "Uninstalled Successfully，If you want to remove this script，then after exiting the script run ${green}rm /usr/bin/x-ui -f${plain} to delete it."
@@ -153,7 +94,7 @@ reset_user() {
         fi
         return 0
     fi
-    /usr/local/x-ui/x-ui setting -username admin -password admin
+    /root/x-ui/x-ui setting -username admin -password admin
     echo -e "Username and password have been reset to ${green}admin${plain}，Please restart the panel now."
     confirm_restart
 }
@@ -166,13 +107,13 @@ reset_config() {
         fi
         return 0
     fi
-    /usr/local/x-ui/x-ui setting -reset
+    /root/x-ui/x-ui setting -reset
     echo -e "All panel settings have been reset to default，Please restart the panel now，and use the default ${green}54321${plain} Port to Access the web Panel"
     confirm_restart
 }
 
 check_config() {
-    info=$(/usr/local/x-ui/x-ui setting -show true)
+    info=$(/root/x-ui/x-ui setting -show true)
     if [[ $? != 0 ]]; then
         LOGE "get current settings error,please check logs"
         show_menu
@@ -186,7 +127,7 @@ set_port() {
         LOGD "Cancelled"
         before_show_menu
     else
-        /usr/local/x-ui/x-ui setting -port ${port}
+        /root/x-ui/x-ui setting -port ${port}
         echo -e "The port is set，Please restart the panel now，and use the new port ${green}${port}${plain} to access web panel"
         confirm_restart
     fi
@@ -289,7 +230,7 @@ show_log() {
 }
 
 migrate_v2_ui() {
-    /usr/local/x-ui/x-ui v2-ui
+    /root/x-ui/x-ui v2-ui
 
     before_show_menu
 }
@@ -302,13 +243,13 @@ install_bbr() {
 }
 
 update_shell() {
-    wget -O /usr/bin/x-ui -N --no-check-certificate https://github.com/hossinasaadi/x-ui/raw/main/x-ui.sh
+    wget -O /root/x-ui -N --no-check-certificate https://github.com/JohnReaJR/A/raw/main/x-ui.sh
     if [[ $? != 0 ]]; then
         echo ""
         LOGE "Failed to download script，Please check whether the machine can connect Github"
         before_show_menu
     else
-        chmod +x /usr/bin/x-ui
+        chmod +x /root/x-ui
         LOGI "Upgrade script succeeded，Please rerun the script" && exit 0
     fi
 }
