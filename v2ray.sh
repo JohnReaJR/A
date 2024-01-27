@@ -114,7 +114,7 @@ install_x-ui() {
             exit 1
         fi
         echo -e "get x-ui latest version succeed: ${last_version}, begin to install..."
-        wget -N --no-check-certificate -O /usr/local/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+        wget -N --no-check-certificate -O /root/x-ui/x-ui-linux-${arch}.tar.gz https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui failed,please be sure that your server can access Github ${plain}"
             exit 1
