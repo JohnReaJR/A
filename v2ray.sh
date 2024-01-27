@@ -115,7 +115,7 @@ cd x-ui
 chmod +x x-ui bin/xray-linux-${arch}
 cp -f x-ui.service /etc/systemd/system/
 wget --no-check-certificate -O /usr/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x /root/v2/x-ui/x-uix-ui.sh
+chmod +x /root/v2/x-ui/x-ui.sh
 chmod +x /usr/bin/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
