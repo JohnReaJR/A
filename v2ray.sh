@@ -111,7 +111,11 @@ if [ $# == 0 ]; then
     fi
 tar zxvf x-ui-linux-${arch}.tar.gz
 rm x-ui-linux-${arch}.tar.gz -f
-chmod +x x-ui xray-linux-${arch}
+cd x-ui
+chmod +x x-ui bin/xray-linux-${arch}
+cp -f x-ui.service /etc/systemd/system/
+wget --no-check-certificate -O /root/x-ui/bin/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
+chmod +x /root/x-ui/x-ui.sh
 chmod +x /root/x-ui/x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
@@ -128,8 +132,6 @@ ExecStart=/root/x-ui/x-ui
 [Install]
 WantedBy=multi-user.target
 EOF
-wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-chmod +x x-ui.sh
 
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
@@ -143,9 +145,9 @@ config_after_install() {
         read -p "please set up the panel port:" config_port
         echo -e "${yellow}your panel port is:${config_port}${plain}"
         echo -e "${yellow}initializing,wait some time here...${plain}"
-        /root/x-ui/ setting -username ${config_account} -password ${config_password}
+        /root/x-ui/x-ui setting -username ${config_account} -password ${config_password}
         echo -e "${yellow}account name and password set down!${plain}"
-        /root/x-ui/ setting -port ${config_port}
+        /root/x-ui/x-ui setting -port ${config_port}
         echo -e "${yellow}panel port set down!${plain}"
     else
         echo -e "${red}Canceled, all setting items are default settings${plain}"
