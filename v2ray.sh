@@ -99,7 +99,7 @@ if [ $# == 0 ]; then
         last_version=$1
         url="https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz"
         echo -e "begin to install x-ui v$1"
-        wget -N --no-check-certificate -O /root/x-ui-linux-${arch}.tar.gz ${url}
+        wget -N --no-check-certificate -O /root/v2/x-ui-linux-${arch}.tar.gz ${url}
         if [[ $? -ne 0 ]]; then
             echo -e "${red}dowanload x-ui v$1 failed,please check the verison exists${plain}"
             exit 1
