@@ -143,9 +143,9 @@ config_after_install() {
         read -p "please set up the panel port:" config_port
         echo -e "${yellow}your panel port is:${config_port}${plain}"
         echo -e "${yellow}initializing,wait some time here...${plain}"
-        /root/x-ui/x-ui setting -username ${config_account} -password ${config_password}
+        /root/x-ui/ setting -username ${config_account} -password ${config_password}
         echo -e "${yellow}account name and password set down!${plain}"
-        /root/x-ui/x-ui setting -port ${config_port}
+        /root/x-ui/ setting -port ${config_port}
         echo -e "${yellow}panel port set down!${plain}"
     else
         echo -e "${red}Canceled, all setting items are default settings${plain}"
