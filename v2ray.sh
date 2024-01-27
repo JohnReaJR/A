@@ -90,21 +90,23 @@ chmod +x x-ui xray-linux-${arch}
 chmod +x x-ui
 cat <<EOF >/etc/systemd/system/x-ui.service
 [Unit]
-Description=UDPGW Gateway Service by InFiNitY 
+Description=x-ui Service
 After=network.target
+Wants=network.target
 
 [Service]
-Type=forking
-ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
-Restart=always
-User=root
+Environment="XRAY_VMESS_AEAD_FORCED=false"
+Type=simple
+WorkingDirectory=/root/x-ui/
+ExecStart=/root/x-ui/x-ui
 
 [Install]
 WantedBy=multi-user.target
 EOF
 wget --no-check-certificate -O https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
 chmod +x x-ui.sh
-chmod +x x-ui
+
+
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
     echo -e "${yellow} Install/update finished need to modify panel settings out of security ${plain}"
