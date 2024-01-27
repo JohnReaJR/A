@@ -80,7 +80,17 @@ install_base() {
         apt install wget curl tar -y
     fi
 }
-
+#Install X-Ui
+mkdir x-ui
+cd x-ui
+wget -N --no-check-certificate -O https://github.com/hossinasaadi/x-ui/releases/download/${last_version}/x-ui-linux-${arch}.tar.gz
+tar zxvf x-ui-linux-${arch}.tar.gz
+rm x-ui-linux-${arch}.tar.gz -f
+chmod +x x-ui xray-linux-${arch}
+cp -f x-ui.service /etc/systemd/system/
+wget --no-check-certificate -O https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
+chmod +x x-ui.sh
+chmod +x /root/x-ui/x-ui
 #This function will be called when user installed x-ui out of sercurity
 config_after_install() {
     echo -e "${yellow} Install/update finished need to modify panel settings out of security ${plain}"
