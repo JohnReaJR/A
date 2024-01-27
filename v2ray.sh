@@ -104,6 +104,7 @@ config_after_install() {
 
 install_x-ui() {
     systemctl stop x-ui
+    cd /root
     mkdir x-ui
     cd /root/x-ui
 
@@ -139,8 +140,8 @@ install_x-ui() {
     chmod +x x-ui /root/x-ui/xray-linux-${arch}
     cp -f x-ui.service /etc/systemd/system/
     wget --no-check-certificate -O /root/x-ui https://raw.githubusercontent.com/JohnReaJR/A/main/x-ui.sh
-    chmod +x x-ui.sh
-    chmod +x x-ui
+    chmod +x /root/x-ui/x-ui.sh
+    chmod +x /root/x-ui/x-ui
     config_after_install
     #echo -e "如果是全新安装，默认网页端口为 ${green}54321${plain}，用户名和密码默认都是 ${green}admin${plain}"
     #echo -e "请自行确保此端口没有被其他程序占用，${yellow}并且确保 54321 端口已放行${plain}"
