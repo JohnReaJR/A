@@ -40,7 +40,6 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "   💚 Installing UDP REQUEST SOCKSIP 💚"
         echo -e "$NC"
-        apt-get update && apt-get upgrade
         mkdir ud
         cd ud
         wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
