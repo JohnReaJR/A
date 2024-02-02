@@ -51,7 +51,45 @@ ip6tables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5300
 netfilter-persistent save
 netfilter-persistent reload
 netfilter-persistent start
-rm -rf /root/dnstt
+systemctl stop custom-server.service
+rm -f /etc/systemd/system/custom-server.service
+rm -rf /root/udp
+mkdir udp
+cd udp
+wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
+chmod 755 custom-linux-amd64
+
+
+rm -f /root/udp/config.json
+cat <<EOF >/root/udp/config.json
+{
+  "listen": ":443",
+  "stream_buffer": 16777216,
+  "receive_buffer": 33554432,
+  "auth": {
+    "mode": "passwords"
+  }
+}
+EOF
+# [+config+]
+chmod 755 /root/udp/config.json
+
+cat <<EOF >/etc/systemd/system/custom-server.service
+[Unit]
+Description=UDP Custom by InFiNitY
+
+[Service]
+User=root
+Type=simple
+ExecStart=/root/udp/custom-linux-amd64 server
+WorkingDirectory=/root/udp/
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=default.target
+EOF
+rm -rf /root/udp
 apt install -y git golang-go
 git clone https://www.bamsoftware.com/git/dnstt.git
 cd /root/dnstt/dnstt-server
