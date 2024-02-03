@@ -13,19 +13,19 @@ echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
 echo -e "$NC"
 apt-get update && apt-get upgrade
 apt update && apt upgrade
-echo -e "$YELLOW"
-echo "Installing HTTP Proxy..."
-echo -e "$NC"
-while true; do
-echo -e "$YELLOW"
-read -p "Remote HTTP Port : " http_port
-echo -e "$NC"
-if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
-    break
-else
-    echo -e "$YELLOW"
-    echo "Invalid input. Please enter a valid number between 1 and 65535."
-    echo -e "$NC"
+        echo -e "$YELLOW"
+        echo "Installing HTTP Proxy..."
+        echo -e "$NC"
+        while true; do
+            echo -e "$YELLOW"
+            read -p "Remote HTTP Port : " http_port
+            echo -e "$NC"
+            if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
+                break
+            else
+                echo -e "$YELLOW"
+                echo "Invalid input. Please enter a valid number between 1 and 65535."
+                echo -e "$NC"
             fi
         done
         while true; do
@@ -67,4 +67,4 @@ else
         echo -e "$NC"
         exit 1
         ;;
- esac       
+esac
