@@ -8,13 +8,13 @@
         cd /root
         clear
         echo -e "$YELLOW"
-        echo "          💚 DNSTT INSTALLATION SCRIPT 💚    "
+        echo "          💚 TCP INSTALLATION SCRIPT 💚    "
         echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
         echo -e "$NC"
         apt-get update && apt-get upgrade
         apt update && apt upgrade
         echo -e "$YELLOW"
-        echo "Installing HTTP Proxy..."
+        echo "TCP..."
         echo -e "$NC"
         while true; do
             echo -e "$YELLOW"
@@ -63,7 +63,7 @@
         iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
         lsof -i :"$http_port"
         echo -e "$YELLOW"
-        echo "HTTP Proxy installed successfully"
+        echo "TCP SUCCESSFULLY INSTALLED"
         echo -e "$NC"
         exit 1
         ;;
