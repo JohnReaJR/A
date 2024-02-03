@@ -1,18 +1,18 @@
-#!/bin/bash
-YELLOW='\033[1;33m'
-NC='\033[0m'
-if [ "$(whoami)" != "root" ]; then
-    echo "Error: This script must be run as root."
-    exit 1
-fi
-cd /root
-clear
-echo -e "$YELLOW"
-echo "          💚 DNSTT INSTALLATION SCRIPT 💚    "
-echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
-echo -e "$NC"
-apt-get update && apt-get upgrade
-apt update && apt upgrade
+        #!/bin/bash
+        YELLOW='\033[1;33m'
+        NC='\033[0m'
+        if [ "$(whoami)" != "root" ]; then
+            echo "Error: This script must be run as root."
+            exit 1
+        fi
+        cd /root
+        clear
+        echo -e "$YELLOW"
+        echo "          💚 DNSTT INSTALLATION SCRIPT 💚    "
+        echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
+        echo -e "$NC"
+        apt-get update && apt-get upgrade
+        apt update && apt upgrade
         echo -e "$YELLOW"
         echo "Installing HTTP Proxy..."
         echo -e "$NC"
