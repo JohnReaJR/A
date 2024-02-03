@@ -13,96 +13,58 @@ echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
 echo -e "$NC"
 apt-get update && apt-get upgrade
 apt update && apt upgrade
-ufw disable
-apt-get remove --auto-remove ufw
-apt-get purge ufw
-apt-get purge --auto-remove ufw
-apt-get remove ufw
-iptables -P INPUT ACCEPT
-iptables -P FORWARD ACCEPT
-iptables -P OUTPUT ACCEPT
-iptables -F
-iptables -X 
-iptables -Z
-iptables -t nat -F
-iptables -t nat -X
-iptables -t mangle -F
-iptables -t mangle -X
-iptables -t raw -F
-iptables -t raw -X
-apt-get install iptables
-apt-get install iptables-persistent
-ip6tables -P INPUT ACCEPT
-ip6tables -P FORWARD ACCEPT
-ip6tables -P OUTPUT ACCEPT
-ip6tables -F
-ip6tables -X 
-ip6tables -Z
-ip6tables -t nat -F
-ip6tables -t nat -X
-ip6tables -t mangle -F
-ip6tables -t mangle -X
-ip6tables -t raw -F
-ip6tables -t raw -X
-iptables -A INPUT -p udp --dport 53 -j ACCEPT
-iptables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5300
-ip6tables -A INPUT -p udp --dport 53 -j ACCEPT
-ip6tables -t nat -I PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 5300
-netfilter-persistent save
-netfilter-persistent reload
-netfilter-persistent start
-systemctl stop custom-server.service
-rm -f /etc/systemd/system/custom-server.service
-rm -rf /root/udp
-mkdir udp
-cd udp
-wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
-chmod 755 custom-linux-amd64
-
-
-rm -f /root/udp/config.json
-cat <<EOF >/root/udp/config.json
-{
-  "listen": ":443",
-  "stream_buffer": 16777216,
-  "receive_buffer": 33554432,
-  "auth": {
-    "mode": "passwords"
-  }
-}
-EOF
-# [+config+]
-chmod 755 /root/udp/config.json
-
-cat <<EOF >/etc/systemd/system/custom-server.service
-[Unit]
-Description=UDP Custom by InFiNitY
-
-[Service]
-User=root
-Type=simple
-ExecStart=/root/udp/custom-linux-amd64 server
-WorkingDirectory=/root/udp/
-Restart=always
-RestartSec=2
-
-[Install]
-WantedBy=default.target
-EOF
-rm -rf /root/udp
-apt install -y git golang-go
-git clone https://www.bamsoftware.com/git/dnstt.git
-cd /root/dnstt/dnstt-server
-go build
-./dnstt-server -gen-key -privkey-file server.key -pubkey-file server.pub
 echo -e "$YELLOW"
-cat server.pub
-read -p "Copy the pubkey above and press Enter when done"
-read -p "Enter your Nameserver : " ns
-screen -dmS slowdns ./dnstt-server -udp :5300 -privkey-file server.key $ns 127.0.0.1:22
+echo "Installing HTTP Proxy..."
 echo -e "$NC"
+while true; do
 echo -e "$YELLOW"
-echo "           💚 DNSTT INSTALLED 💚      "
-echo "           ╰┈➤💚 Active 💚             "
+read -p "Remote HTTP Port : " http_port
 echo -e "$NC"
-exit 1
+if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
+    break
+else
+    echo -e "$YELLOW"
+    echo "Invalid input. Please enter a valid number between 1 and 65535."
+    echo -e "$NC"
+            fi
+        done
+        while true; do
+            echo -e "$YELLOW"
+            read -p "Binding TCP Ports : from port : " first_number
+            echo -e "$NC"
+            if is_number "$first_number" && [ "$first_number" -ge 1 ] && [ "$first_number" -le 65534 ]; then
+                break
+            else
+                echo -e "$YELLOW"
+                echo "Invalid input. Please enter a valid number between 1 and 65534."
+                echo -e "$NC"
+            fi
+        done
+        while true; do
+            echo -e "$YELLOW"
+            read -p "Binding TCP Ports : from port : $first_number to port : " second_number
+            echo -e "$NC"
+            if is_number "$second_number" && [ "$second_number" -gt "$first_number" ] && [ "$second_number" -lt 65536 ]; then
+                break
+            else
+                echo -e "$YELLOW"
+                echo "Invalid input. Please enter a valid number greater than $first_number and less than 65536."
+                echo -e "$NC"
+            fi
+        done
+        mkdir tcp
+        cd tcp
+        http_script="/root/tcp/sshProxy_linux_amd64"
+        if [ ! -e "$http_script" ]; then
+            wget https://github.com/CassianoDev/sshProxy/releases/download/v1.1/sshProxy_linux_amd64
+        fi
+        chmod 755 sshProxy_linux_amd64
+        screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
+        lsof -i :"$http_port"
+        echo -e "$YELLOW"
+        echo "HTTP Proxy installed successfully"
+        echo -e "$NC"
+        exit 1
+        ;;
+ esac       
