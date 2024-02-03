@@ -1,4 +1,7 @@
         #!/bin/bash
+        is_number() {
+           [[ $1 =~ ^[0-9]+$ ]]
+        }
         YELLOW='\033[1;33m'
         NC='\033[0m'
         if [ "$(whoami)" != "root" ]; then
