@@ -60,6 +60,7 @@ systemctl stop hysteria-server.service
 rm -f /etc/systemd/system/hysteria-server.service
 rm -rf /root/hy
 rm -rf /root/dnstt
+rm -rf /root/iodine-0.7.0
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
