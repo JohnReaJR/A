@@ -59,6 +59,7 @@ rm -f /usr/bin/udpgw
 systemctl stop hysteria-server.service
 rm -f /etc/systemd/system/hysteria-server.service
 rm -rf /root/hy
+rm -rf /root/dnstt
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
