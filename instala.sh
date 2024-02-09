@@ -70,6 +70,12 @@ time_reboot() {
         cd udp
         wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
         chmod 755 custom-linux-amd64
+        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module' &>/dev/null
+        chmod 755 /root/udp/module
+        wget -O /etc/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/limiter.sh'
+  cp /etc/limiter.sh /etc/UDPCustom
+  chmod +x /etc/limiter.sh
+  chmod +x /etc/UDPCustom
 
 
         rm -f /root/udp/config.json
