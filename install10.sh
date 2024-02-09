@@ -74,7 +74,7 @@ time_reboot() {
         chmod 755 /root/udp/module
         wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
         chmod 755 /root/udp/limiter.sh
-        rm -rf /root/usr/bin/udp
+        rm -rf /usr/bin/udp
         wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
         chmod 755 /usr/bin/udp
 
