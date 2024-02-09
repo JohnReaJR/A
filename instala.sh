@@ -40,6 +40,12 @@ case $selected_option in
         echo "     💚 UDP HTTP CUSTOM AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
+        apt update -y
+        apt upgrade -y
+        apt install -y wget
+        apt install -y curl
+        apt install -y dos2unix
+        apt install -y neofetch
         apt install wget -y
         apt install nano -y
         apt install net-tools
