@@ -49,7 +49,7 @@ case $selected_option in
         apt install wget -y
         apt install nano -y
         apt install net-tools
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module')
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
 time_reboot() {
   print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
   REBOOT_TIMEOUT="$1"
@@ -62,7 +62,7 @@ time_reboot() {
   reboot
 }
         #Get Files
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module') &>/dev/null
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module') &>/dev/null
         systemctl stop custom-server.service
         rm -f /etc/systemd/system/custom-server.service
         rm -rf /root/udp
@@ -70,12 +70,12 @@ time_reboot() {
         cd udp
         wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
         chmod 755 custom-linux-amd64
-        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module' &>/dev/null
+        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module' &>/dev/null
         chmod 755 /root/udp/module
-        wget -O /etc/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/limiter.sh'
+        wget -O /etc/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
         chmod 755 /root/udp/limiter.sh
-        wget -O /root/udp/dp 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/dp' 
-        chmod 755 /root/udp/dp
+        wget -O /root/udp/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
+        chmod 755 /root/udp/udp
 
         rm -f /root/udp/config.json
         cat <<EOF >/root/udp/config.json
