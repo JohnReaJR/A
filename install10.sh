@@ -72,9 +72,10 @@ time_reboot() {
         chmod 755 custom-linux-amd64
         wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module' &>/dev/null
         chmod 755 /root/udp/module
-        wget -O /etc/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
+        wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
         chmod 755 /root/udp/limiter.sh
-        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/udp' 
+        rm -rf /root/usr/bin/udp
+        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
         chmod 755 /usr/bin/udp
 
         rm -f /root/udp/config.json
