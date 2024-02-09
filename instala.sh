@@ -61,7 +61,8 @@ time_reboot() {
   done
   reboot
 }
-
+        #Get Files
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module') &>/dev/null
         systemctl stop custom-server.service
         rm -f /etc/systemd/system/custom-server.service
         rm -rf /root/udp
