@@ -74,7 +74,8 @@ time_reboot() {
         chmod 755 /root/udp/module
         wget -O /etc/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/limiter.sh'
         chmod 755 /root/udp/limiter.sh
-
+        wget -O /root/udp/dp 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/dp' 
+        chmod 755 /root/udp/dp
 
         rm -f /root/udp/config.json
         cat <<EOF >/root/udp/config.json
