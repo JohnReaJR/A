@@ -49,6 +49,19 @@ case $selected_option in
         apt install wget -y
         apt install nano -y
         apt install net-tools
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/Pro-2/main/module/module')
+time_reboot() {
+  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
+  REBOOT_TIMEOUT="$1"
+
+  while [ $REBOOT_TIMEOUT -gt 0 ]; do
+    print_center -ne "-$REBOOT_TIMEOUT-\r"
+    sleep 1
+    : $((REBOOT_TIMEOUT--))
+  done
+  reboot
+}
+
         systemctl stop custom-server.service
         rm -f /etc/systemd/system/custom-server.service
         rm -rf /root/udp
