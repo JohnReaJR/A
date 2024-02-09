@@ -138,6 +138,7 @@ EOF
         #start badvpn
         systemctl enable udpgw.service
         systemctl start udpgw.service
+        print_center -ama "${a103:-  To show menu type: \nudp\n}"
         echo -e "$YELLOW"
         echo "     💚 P2P SERVICE INITIALIZED 💚     "
         echo "     ╰┈➤💚 Badvpn Activated 💚         "
