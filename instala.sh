@@ -43,26 +43,23 @@ clear
 case $selected_option in
     1)
         echo -e "$YELLOW"
-        echo "Installing UDP Hysteria V1.3.5 ..."
+        echo "Installing UDP HYSTERIA"
         echo -e "$NC"
-        apt-get update && apt-get upgrade
-        apt install wget -y
-        
+        rm -f install8.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/MurRtriX/riX/main/install8.sh" -O install8.sh >/dev/null 2>&1; chmod 755 install8.sh;./install8.sh; rm -f install8.sh
         exit 1
         ;;
     2)
         echo -e "$YELLOW"
-        echo "Installing UDP Hysteria V2.2.2 ..."
+        echo "Installing HTTP CUSTOM UDP"
         echo -e "$NC"
-        apt-get update && apt-get upgrade
-        
+        rm -f install10.sh; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/install10.sh" -O install10.sh && chmod 755 install10.sh && ./install10.sh 22,53,68,444,7300,20000-50000; rm -f install10.sh
         exit 1
         ;;
     3)
         echo -e "$YELLOW"
-        echo "Installing HTTP Proxy..."
+        echo "SOCKSIP UDP REQUEST"
         echo -e "$NC"
-        
+        rm -f install10.sh; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/install10.sh" -O install10.sh && chmod 755 install10.sh && ./install10.sh 22,53,68,444,7300,20000-50000; rm -f install10.sh
         exit 1
         ;;
     4)
