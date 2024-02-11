@@ -11,7 +11,7 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-RESLEEVED AUTO SCRIPT INSTALLER"
+Resleeved Net Auto Script Installer"
 echo "Version : 5"
 echo -e "$NC
 Select an option"
@@ -59,30 +59,29 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "SOCKSIP UDP REQUEST"
         echo -e "$NC"
-        rm -f install10.sh; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/install10.sh" -O install10.sh && chmod 755 install10.sh && ./install10.sh 22,53,68,444,7300,20000-50000; rm -f install10.sh
+        rm -f install6.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/install6.sh" -O install6.sh >/dev/null 2>&1; chmod 755 install6.sh;./install6.sh; rm -f install6.sh
         exit 1
         ;;
     4)
         echo -e "$YELLOW"
-        echo "Installing DNSTT,DoH and DoT ..."
+        echo "Installing DNSTT TUNNEL"
         echo -e "$NC"
-        
+        rm -f install3.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/MurRtriX/riX/main/install3.sh" -O install3.sh >/dev/null 2>&1; chmod 755 install3.sh;./install3.sh; rm -f install3.sh
         exit 1
         ;;
     5)
         echo -e "$YELLOW"
-        echo "While installing, Select ADMRufu"
+        echo "Installing IODINE TUNNEL"
         echo -e "$NC"
-        rm -rf Install-Sin-Key.sh; apt update; apt upgrade -y; wget https://raw.githubusercontent.com/NetVPS/VPS-MX_Oficial/master/Instalador/Install-Sin-Key.sh; chmod 777 Install-Sin-Key.sh; ./Install-Sin-Key.sh --start
+        rm -f install4.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/MurRtriX/riX/main/install4.sh" -O install4.sh >/dev/null 2>&1; chmod 755 install4.sh;./install4.sh; rm -f install4.sh
         exit 1
         ;;
     6)
         echo -e "$YELLOW"
-        
+        echo "Installing RESLEEVED NET FIREWALL"
         echo -e "$NC"
-        
-        echo -e "$YELLOW"
-        
+        rm -f iptables.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/MurRtriX/riX/main/iptables.sh" -O iptables.sh >/dev/null 2>&1; chmod 755 iptables.sh;./iptables.sh; rm -f iptables.sh
+        exit 1
         ;;
     7)
         echo -e "$YELLOW"
