@@ -53,6 +53,7 @@ netfilter-persistent start
 systemctl stop custom-server.service
 rm -f /etc/systemd/system/custom-server.service
 rm -rf /root/udp
+rm -rf /usr/bin/udp
 systemctl stop udpgw.service
 rm -f /etc/systemd/system/udpgw.service
 rm -f /usr/bin/udpgw
