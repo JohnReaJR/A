@@ -67,12 +67,10 @@ sysctl -w net.core.netdev_max_backlog=65536
 sysctl -w net.core.somaxconn=65535
 sysctl -w net.netfilter.nf_conntrack_max=16777216
 sysctl -w net.ipv4.tcp_max_syn_backlog=4096
-/////////
 sysctl -w kernel.msgmnb=65536
 sysctl -w net.core.netdev_budget=500
 sysctl -w net.ipv4.tcp_adv_win_scale=3
 sysctl -w net.ipv4.tcp_rfc1337=1
-////////
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.default_qdisc=fq
@@ -87,10 +85,8 @@ echo "fs.file-max=9223372036854775807" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=60" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=20" >> /etc/sysctl.conf
-////
 echo "kernel.msgmnb=65536" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
-/////
 echo "vm.dirty_background_ratio=10" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
