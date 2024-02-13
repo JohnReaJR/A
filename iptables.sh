@@ -70,14 +70,7 @@ sysctl -w net.netfilter.nf_conntrack_max=1048576
 sysctl -w net.ipv4.tcp_max_syn_backlog=4096
 /////////
 
-sysctl -w kernel.sched_min_granularity_ns=10000000
-sysctl -w kernel.sched_wakeup_granularity_ns=15000000
-sysctl -w kernel.msgmax=8192
-sysctl -w kernel.sem=250 256000 32 1024
 sysctl -w kernel.msgmnb=65536
-sysctl -w kernel.threads-max=131072
-sysctl -w kernel.max_thread_proc=2048
-sysctl -w kernel.sched_migration_cost_ns=5000000
 sysctl -w net.ipv4.tcp_synack_retries=2
 
 
