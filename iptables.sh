@@ -59,9 +59,9 @@ net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).r
 sysctl -p
 sysctl -w net.core.rmem_max=16777216
 sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-sysctl -w vm.dirty_background_ratio=2
+sysctl -w vm.swappiness=60
+sysctl -w vm.dirty_ratio=20
+sysctl -w vm.dirty_background_ratio=10
 sysctl -w fs.file-max=9223372036854775807
 sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
 sysctl -w net.core.netdev_max_backlog=65536
