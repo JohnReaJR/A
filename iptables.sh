@@ -88,6 +88,10 @@ echo "fs.file-max=9223372036854775807" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=60" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=20" >> /etc/sysctl.conf
+////
+echo "kernel.msgmnb=65536" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
+/////
 echo "vm.dirty_background_ratio=10" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
