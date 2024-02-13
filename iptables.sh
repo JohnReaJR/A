@@ -78,19 +78,16 @@ sysctl -w kernel.msgmnb=65536
 sysctl -w kernel.threads-max=131072
 sysctl -w kernel.max_thread_proc=2048
 sysctl -w kernel.sched_migration_cost_ns=5000000
-sysctl -w net.core.somaxconn=65535
+sysctl -w net.ipv4.tcp_synack_retries=2
 
 
 
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-sysctl -w vm.dirty_background_ratio=2
-sysctl -w fs.file-max=1000000
-sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
-sysctl -w net.core.netdev_max_backlog=65536
-sysctl -w net.core.somaxconn=65535
+sysctl -w net.ipv4.tcp_rfc1337=1
+sysctl -w net.ipv4.tcp_fin_timeout=15
+sysctl -w net.ipv4.tcp_keepalive_time=300
+sysctl -w net.ipv4.tcp_keepalive_probes=5
+sysctl -w net.ipv4.tcp_keepalive_intvl=15
+sysctl -w net.ipv4.route.flush=1
 
 
 
