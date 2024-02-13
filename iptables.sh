@@ -70,7 +70,6 @@ sysctl -w net.ipv4.tcp_max_syn_backlog=4096
 /////////
 
 sysctl -w kernel.msgmnb=65536
-sysctl -w net.ipv4.tcp_synack_retries=2
 
 
 
@@ -102,9 +101,9 @@ echo "net.ipv4.tcp_max_tw_buckets=1440000" >> /etc/sysctl.conf
 echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "fs.file-max=1000000" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
+echo "vm.swappiness=60" >> /etc/sysctl.conf
+echo "vm.dirty_ratio=20" >> /etc/sysctl.conf
+echo "vm.dirty_background_ratio=10" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
 echo -e "$YELLOW"
