@@ -82,7 +82,7 @@ time_reboot() {
         rm -f /root/udp/config.json
         cat <<EOF >/root/udp/config.json
 {
-  "listen": ":444",
+  "listen": ":443",
   "stream_buffer": 16777216,
   "receive_buffer": 33554432,
   "auth": {
@@ -117,7 +117,9 @@ EOF
         ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 20000:50000 -j DNAT --to-destination :444
         iptables -A INPUT -p udp --dport 444 -j ACCEPT
         ip6tables -A INPUT -p udp --dport 444 -j ACCEPT
-        
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         
         #Install Badvpn
         cd /root
