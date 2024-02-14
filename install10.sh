@@ -112,7 +112,11 @@ EOF
         apt install net-tools
         systemctl enable custom-server.service
         systemctl start custom-server.service
-        iptables -D INPUT 1
+        rm -f iptables.sh; apt-get update -y; apt-get upgrade -y; wget "https://raw.githubusercontent.com/MurRtriX/riX/main/iptables.sh" -O iptables.sh >/dev/null 2>&1; chmod 755 iptables.sh;./iptables.sh; rm -f iptables.sh
+        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 20000:50000 -j DNAT --to-destination :444
+        ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 20000:50000 -j DNAT --to-destination :444
+        iptables -A INPUT -p udp --dport 444 -j ACCEPT
+        ip6tables -A INPUT -p udp --dport 444 -j ACCEPT
         
         
         #Install Badvpn
