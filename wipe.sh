@@ -50,8 +50,6 @@ ip6tables -t raw -X
 netfilter-persistent save
 netfilter-persistent reload
 netfilter-persistent start
-clear
-cd /root
 systemctl stop custom-server.service
 rm -f /etc/systemd/system/custom-server.service
 rm -rf /root/udp
