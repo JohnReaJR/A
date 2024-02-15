@@ -62,6 +62,11 @@ rm -f /usr/bin/udpgw
 systemctl stop hysteria-server.service
 rm -f /etc/systemd/system/hysteria-server.service
 rm -rf /root/hy
+systemctl stop x-ui.service
+rm -rf /etc/systemd/system/x-ui.service
+rm -rf /usr/local/x-ui
+rm -rf /usr/bin/x-ui
+rm -rf /etc/x-ui
 rm -rf /root/dnstt
 rm -rf /root/iodine-0.7.0
 echo -e "$YELLOW"
