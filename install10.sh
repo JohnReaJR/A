@@ -41,15 +41,9 @@ case $selected_option in
         echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
-        apt update -y
-        apt upgrade -y
-        apt install -y wget
         apt install -y curl
         apt install -y dos2unix
         apt install -y neofetch
-        apt install wget -y
-        apt install nano -y
-        apt install net-tools
         source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
 time_reboot() {
   print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
