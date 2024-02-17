@@ -103,7 +103,6 @@ RestartSec=2
 WantedBy=default.target
 EOF
         #Start Services
-        apt install net-tools
         systemctl enable custom-server.service
         systemctl start custom-server.service
         
