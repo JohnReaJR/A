@@ -112,7 +112,7 @@ EOF
         rm -f /etc/systemd/system/udpgw.service
         rm -f /usr/bin/udpgw
         cd /usr/bin
-        wget https://github.com/JohnReaJR/A/releases/download/V1/udpgw
+        wget http://github.com/JohnReaJR/A/releases/download/V1/udpgw
         chmod 755 udpgw
         
         cat <<EOF >/etc/systemd/system/udpgw.service
