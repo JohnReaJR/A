@@ -40,10 +40,9 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "Installing UDP Hysteria ..."
         echo -e "$NC"
-        apt-get update && apt-get upgrade
-        apt install wget -y
-        apt install nano -y
-        apt install net-tools
+        systemctl stop hysteria-server.service
+        rm -f /etc/systemd/system/hysteria-server.service
+        rm -rf /root/hy
         mkdir hy
         cd hy
         udp_script="/root/hy/hysteria-linux-amd64"
@@ -108,7 +107,7 @@ auth:
 masquerade:
   type: proxy
   proxy:
-    url: https://223.5.5.5/dns-query
+    url: https://bing.com
     rewriteHost: true
 EOF
 )
@@ -121,7 +120,7 @@ EOF
         fi
         sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v4 boolean true"
         sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v6 boolean true"
-        apt -y install iptables-persistent
+
         while true; do
             echo -e "$YELLOW"
             read -p "Binding UDP Ports : from port : " first_number
@@ -168,21 +167,13 @@ LimitNOFILE=infinity
 WantedBy=multi-user.target
 EOF
         #Start Services
-        apt-get update && apt-get upgrade
-        apt install net-tools
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v4 boolean true"
-        sudo debconf-set-selections <<< "iptables-persistent iptables-persistent/autosave_v6 boolean true"
-        apt -y install iptables-persistent
         iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport "$first_number":"$second_number" -j DNAT --to-destination :$remote_udp_port
         ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport "$first_number":"$second_number" -j DNAT --to-destination :$remote_udp_port
-        sysctl net.ipv4.conf.all.rp_filter=0
-        sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
-        echo "net.ipv4.ip_forward = 1
-        net.ipv4.conf.all.rp_filter=0
-        net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0" > /etc/sysctl.conf
-        sysctl -p
-        sudo iptables-save > /etc/iptables/rules.v4
-        sudo ip6tables-save > /etc/iptables/rules.v6
+        iptables -A INPUT -p udp --dport $remote_udp_port -j ACCEPT
+        ip6tables -A INPUT -p udp --dport $remote_udp_port -j ACCEPT
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         systemctl enable hysteria-server.service
         systemctl start hysteria-server.service
         echo "UDP Hysteria V2 installed"
