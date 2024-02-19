@@ -176,7 +176,12 @@ EOF
         netfilter-persistent start
         systemctl enable hysteria-server.service
         systemctl start hysteria-server.service
-        echo "UDP Hysteria V2 installed"
+        cd /root
+        rm .bash_history && history -c && history -w
+        echo -e "$YELLOW"
+        echo "    💚 UDP HYSTERIA V2 INSTALLED SUCCESSFULLY 💚        "
+        echo "      ╰┈➤💚 Telegram >>> t.me/Am_The_Last_Envoy    "
+        echo -e "$NC"
         exit 1
         ;;
     2)
