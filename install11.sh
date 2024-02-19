@@ -11,11 +11,11 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-Hysteria V2 Installer by Resleeved"
-echo "Version : 1"
+      💚 RESLEEVED NET HYSTERIA V2 SCRIPT 💚      
+        ╰┈➤ 💚 Resleeved Net 💚             "
 echo -e "$NC
 Select an option"
-echo "1. Install UDP Hysteria V2"
+echo "1. INSTALL UDP HYSTERIA V2"
 echo "2. Exit"
 selected_option=0
 
@@ -38,7 +38,8 @@ clear
 case $selected_option in
     1)
         echo -e "$YELLOW"
-        echo "Installing UDP Hysteria ..."
+        echo "     💚 UDP HYSTERIA V2 AUTO INSTALLATION 💚      "
+        echo "       ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
         systemctl stop hysteria-server.service
         rm -f /etc/systemd/system/hysteria-server.service
