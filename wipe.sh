@@ -76,7 +76,7 @@ rm -rf /usr/bin/x-ui
 rm -rf /etc/x-ui
 rm -rf /root/dnstt
 rm -rf /root/iodine-0.7.0
-sudo sync && echo 1 > /proc/sys/vm/drop_caches
+sysctl -w vm.drop_caches=3
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
