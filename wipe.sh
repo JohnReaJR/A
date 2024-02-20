@@ -76,7 +76,6 @@ apt-get remove
 apt-get autoremove
 apt-get clean
 apt-get autoclean
-sysctl -w vm.drop_caches=3
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
