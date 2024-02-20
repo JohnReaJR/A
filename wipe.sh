@@ -18,6 +18,7 @@ apt-get remove ufw
 apt-get remove --auto-remove ufw
 apt-get purge ufw
 apt-get purge --auto-remove ufw
+apt-get remove -y
 apt-get autoremove -y
 apt-get clean -y
 apt-get autoclean -y
