@@ -53,16 +53,20 @@ netfilter-persistent start
 cd /root
 clear
 systemctl stop custom-server.service
-rm -f /etc/systemd/system/custom-server.service
+systemctl disable custom-server.service
+rm -rf /etc/systemd/system/custom-server.service
 rm -rf /root/udp
 rm -rf /usr/bin/udp
 systemctl stop udpgw.service
-rm -f /etc/systemd/system/udpgw.service
-rm -f /usr/bin/udpgw
+systemctl disable udpgw.service
+rm -rf /etc/systemd/system/udpgw.service
+rm -rf /usr/bin/udpgw
 systemctl stop hysteria-server.service
-rm -f /etc/systemd/system/hysteria-server.service
+systemctl disable hysteria-server.service
+rm -rf /etc/systemd/system/hysteria-server.service
 rm -rf /root/hy
 systemctl stop x-ui.service
+systemctl disable x-ui.service
 rm -rf /etc/systemd/system/x-ui.service
 rm -rf /usr/local/x-ui
 rm -rf /usr/bin/x-ui
