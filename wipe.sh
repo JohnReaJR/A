@@ -18,10 +18,6 @@ apt-get remove ufw
 apt-get remove --auto-remove ufw
 apt-get purge ufw
 apt-get purge --auto-remove ufw
-apt-get remove -y
-apt-get autoremove -y
-apt-get clean -y
-apt-get autoclean -y
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
 iptables -P OUTPUT ACCEPT
@@ -76,6 +72,10 @@ rm -rf /usr/bin/x-ui
 rm -rf /etc/x-ui
 rm -rf /root/dnstt
 rm -rf /root/iodine-0.7.0
+apt-get remove
+apt-get autoremove
+apt-get clean
+apt-get autoclean
 sysctl -w vm.drop_caches=3
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
