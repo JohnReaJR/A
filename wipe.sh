@@ -13,12 +13,11 @@ echo "            ╰┈➤💚 Resleeved Net Reset 💚          "
 echo -e "$NC"
 apt-get update && apt-get upgrade
 apt update && apt upgrade
-apt-get install tcpdump
 ufw disable
+apt-get remove ufw
 apt-get remove --auto-remove ufw
 apt-get purge ufw
 apt-get purge --auto-remove ufw
-apt-get remove ufw
 apt-get autoremove -y
 apt-get clean -y
 apt-get autoclean -y
