@@ -8,13 +8,11 @@ fi
 cd /root
 clear
 echo -e "$YELLOW"
-echo "          💚 WIPE....SETTING UP YOUR FIREWALL 💚    "
-echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
+echo "          💚 WIPE....RESETTING YOUR MACHINE 💚    "
+echo "            ╰┈➤💚 Resleeved Net Reset 💚          "
 echo -e "$NC"
 apt-get update && apt-get upgrade
 apt update && apt upgrade
-apt install wget -y
-apt install nano -y
 apt-get install tcpdump
 ufw disable
 apt-get remove --auto-remove ufw
