@@ -45,11 +45,9 @@ case $selected_option in
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
         sudo dpkg -i mita_1.14.0_amd64.deb
         sudo usermod -a -G mita root
-        sudo reboot
-        curl -LSO https://raw.githubusercontent.com/iSegaro/Mieru/main/Mita_Config_Server.json
         
-        rm -rf /root/config.json
-        cat <<EOF >/root/udp/config.json
+        rm -rf /root/Mita_Config_Server.json
+        cat <<EOF >/root/Mita_Config_Server.json
 {
     "portBindings": [
         {
@@ -72,55 +70,11 @@ case $selected_option in
 }
 EOF
         # [+config+]
-        chmod 755 /root/udp/config.json
-
-        cat <<EOF >/etc/systemd/system/custom-server.service
-[Unit]
-Description=UDP Custom by InFiNitY
-
-[Service]
-User=root
-Type=simple
-ExecStart=/root/udp/custom-linux-amd64 server
-WorkingDirectory=/root/udp/
-Restart=always
-RestartSec=2
-
-[Install]
-WantedBy=default.target
-EOF
+        chmod 755 /root/Mita_Config_Server.json
         #Start Services
         systemctl enable custom-server.service
         systemctl start custom-server.service
         
-        #Install Badvpn
-        cd /root
-        systemctl stop udpgw.service
-        systemctl disable udpgw.service
-        rm -rf /etc/systemd/system/udpgw.service
-        rm -rf /usr/bin/udpgw
-        cd /usr/bin
-        wget http://github.com/JohnReaJR/A/releases/download/V1/udpgw
-        chmod 755 udpgw
-        
-        cat <<EOF >/etc/systemd/system/udpgw.service
-[Unit]
-[Unit]
-Description=UDPGW Gateway Service by InFiNitY 
-After=network.target
-
-[Service]
-Type=forking
-ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
-Restart=always
-User=root
-
-[Install]
-WantedBy=multi-user.target
-EOF
-        #start badvpn
-        systemctl enable udpgw.service
-        systemctl start udpgw.service
         echo -e "$YELLOW"
         echo "     💚 P2P SERVICE INITIALIZED 💚     "
         echo "     ╰┈➤💚 Badvpn Activated 💚         "
