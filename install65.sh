@@ -43,16 +43,32 @@ case $selected_option in
         echo -e "$NC"
         cd /root
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
+        sudo dpkg -i mita_1.14.0_amd64.deb
+        sudo usermod -a -G mita root
+        sudo reboot
+        curl -LSO https://raw.githubusercontent.com/iSegaro/Mieru/main/Mita_Config_Server.json
         
         rm -rf /root/config.json
         cat <<EOF >/root/udp/config.json
 {
-  "listen": ":443",
-  "stream_buffer": 16777216,
-  "receive_buffer": 33554432,
-  "auth": {
-    "mode": "passwords"
-  }
+    "portBindings": [
+        {
+            "port": 2000,
+            "protocol": "TCP"
+        },
+        {
+            "port": 3000,
+            "protocol": "UDP"
+        }
+    ],
+    "users": [
+        {
+            "name": "iSegaro",
+            "password": "EtT7124&1F3R"
+        }
+    ],
+    "loggingLevel": "INFO",
+    "mtu": 1480
 }
 EOF
         # [+config+]
