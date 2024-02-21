@@ -42,11 +42,13 @@ case $selected_option in
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
         cd /root
+        mita stop
+        rm -rf /root/mita_1.14.0_amd64.deb
+        rm -rf /root/Mita_Config_Server.json
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
         sudo dpkg -i mita_1.14.0_amd64.deb
         sudo usermod -a -G mita root
         
-        rm -rf /root/Mita_Config_Server.json
         cat <<EOF >/root/Mita_Config_Server.json
 {
     "portBindings": [
@@ -55,7 +57,7 @@ case $selected_option in
             "protocol": "TCP"
         },
         {
-            "port": 3000,
+            "port": 10000,
             "protocol": "UDP"
         }
     ],
@@ -72,7 +74,7 @@ EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
-        mita enable
+        mita apply config Mita_Config_Server.json
         mita start
         echo -e "$YELLOW"
         echo " ╰┈➤ 💚 MIERU UDP SUCCESSFULLY INSTALLED 💚       "
