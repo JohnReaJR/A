@@ -11,11 +11,11 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-      💚 HTTP CUSTOM UDP INSTALLER 💚      
+      💚 MIERU UDP INSTALLER 💚      
        ╰┈➤ 💚 Resleeved Net 💚               "
 echo -e "$NC
 Select an option"
-echo "1. Install HTTP CUSTOM UDP"
+echo "1. Install MIERU UDP"
 echo "2. Exit"
 selected_option=0
 
@@ -38,7 +38,7 @@ clear
 case $selected_option in
     1)
         echo -e "$YELLOW"
-        echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
+        echo "     💚 MIERU UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
         cd /root
