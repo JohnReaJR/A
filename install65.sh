@@ -41,42 +41,10 @@ case $selected_option in
         echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
-        apt install -y curl
-        apt install -y dos2unix
-        apt install -y neofetch
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
-time_reboot() {
-  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
-  REBOOT_TIMEOUT="$1"
-
-  while [ $REBOOT_TIMEOUT -gt 0 ]; do
-    print_center -ne "-$REBOOT_TIMEOUT-\r"
-    sleep 1
-    : $((REBOOT_TIMEOUT--))
-  done
-  reboot
-}
-        #Get Files
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module') &>/dev/null
-        systemctl stop custom-server.service
-        systemctl disable custom-server.service
-        rm -rf /etc/systemd/system/custom-server.service
-        rm -rf /root/udp
-        mkdir udp
-        cd udp
-        wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
-        chmod 755 custom-linux-amd64
-        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module'
-        chmod 755 /root/udp/module
-        wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
-        chmod 755 /root/udp/limiter.sh
         cd /root
-        killall udp
-        rm -rf /usr/bin/udp
-        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
-        chmod 755 /usr/bin/udp
-
-        rm -rf /root/udp/config.json
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
+        
+        rm -rf /root/config.json
         cat <<EOF >/root/udp/config.json
 {
   "listen": ":443",
