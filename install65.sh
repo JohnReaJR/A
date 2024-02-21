@@ -55,7 +55,7 @@ case $selected_option in
             "protocol": "TCP"
         },
         {
-            "port": 10000,
+            "port": 3000,
             "protocol": "UDP"
         }
     ],
