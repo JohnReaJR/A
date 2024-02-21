@@ -43,6 +43,8 @@ case $selected_option in
         echo -e "$NC"
         cd /root
         mita stop
+        rm -rf /etc/mita
+        rm -rf /usr/bin/mita
         rm -rf /root/mita_1.14.0_amd64.deb
         rm -rf /root/Mita_Config_Server.json
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
