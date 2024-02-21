@@ -55,30 +55,27 @@ case $selected_option in
             "protocol": "TCP"
         },
         {
-            "port": 3000,
+            "port": 10000,
             "protocol": "UDP"
         }
     ],
     "users": [
         {
-            "name": "iSegaro",
-            "password": "EtT7124&1F3R"
+            "name": "Resleeved",
+            "password": "Resleeved"
         }
     ],
     "loggingLevel": "INFO",
-    "mtu": 1480
+    "mtu": 1500
 }
 EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
-        systemctl enable custom-server.service
-        systemctl start custom-server.service
-        
+        mita enable
+        mita start
         echo -e "$YELLOW"
-        echo "     💚 P2P SERVICE INITIALIZED 💚     "
-        echo "     ╰┈➤💚 Badvpn Activated 💚         "
-        echo " ╰┈➤ 💚 HTTP CUSTOM UDP SUCCESSFULLY INSTALLED 💚       "
+        echo " ╰┈➤ 💚 MIERU UDP SUCCESSFULLY INSTALLED 💚       "
         echo -e "$NC"
         exit 1
         ;;
