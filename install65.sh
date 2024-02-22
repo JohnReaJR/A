@@ -47,10 +47,10 @@ case $selected_option in
         systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
-        rm -rf /root/mita_2.4.0_amd64.deb
+        rm -rf /root/mita_1.14.0_amd64.deb
         rm -rf /root/Mita_Config_Server.json
-        curl -LSO https://github.com/enfein/mieru/releases/download/v2.4.0/mita_2.4.0_amd64.deb
-        sudo dpkg -i mita_2.4.0_amd64.deb
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.0/mita_1.14.0_amd64.deb
+        sudo dpkg -i mita_1.14.0_amd64.deb
         sudo usermod -a -G mita root
         
         cat <<EOF >/root/Mita_Config_Server.json
