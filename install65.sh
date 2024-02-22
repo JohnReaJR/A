@@ -58,8 +58,8 @@ EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
+        iptables -A INPUT -p udp --dport 444 -j ACCEPT
         iptables -t nat -A PREROUTING -p udp --dport 20000:50000 -j REDIRECT --to-port 444
-        iptables -t nat -A POSTROUTING -d 10.0.0.0/8 -s 10.0.0.0/8 -j SNAT --to-source 139.84.230.28
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
