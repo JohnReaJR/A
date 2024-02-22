@@ -83,21 +83,7 @@ EOF
         sudo dpkg -i mita_1.15.1_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-{
-    "portBindings": [
-        {
-            "port": 10000,
-            "protocol": "TCP"
-        }
-    ],
-    "users": [
-        {
-            "name": "Resleeved",
-            "password": "Resleeved"
-        }
-    ],
-    "loggingLevel": "INFO"
-}
+{ "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" }
 EOF
         #Start Services
         chmod 755 /root/Mita_Config_Server.json
