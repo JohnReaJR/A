@@ -48,13 +48,13 @@ case $selected_option in
         systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
-        rm -rf /root/mita_2.0.0_amd64.deb
+        rm -rf /root/mita_1.3.0_amd64.deb
         rm -rf /root/Mita_Config_Server.json
-        curl -LSO https://github.com/enfein/mieru/releases/download/v2.0.0/mita_2.0.0_amd64.deb
-        sudo dpkg -i mita_2.0.0_amd64.deb
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.3.0/mita_1.3.0_amd64.deb
+        sudo dpkg -i mita_1.3.0_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-{ "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
+{ "portBindings" : [ { "portRange" : "20000-50000", "protocol" : "TCP" }, { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
 EOF
         #Start Services
         mita apply config Mita_Config_Server.json
