@@ -48,24 +48,17 @@ case $selected_option in
         systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
-        rm -rf /root/mita_1.14.1_amd64.deb
+        rm -rf /root/mita_1.4.0_amd64.deb
         rm -rf /root/Mita_Config_Server.json
-        curl -LSO https://github.com/enfein/mieru/releases/download/v1.14.1/mita_1.14.1_amd64.deb
-        sudo dpkg -i mita_1.14.1_amd64.deb
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.4.0/mita_1.4.0_amd64.deb
+        sudo dpkg -i mita_1.4.0_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-{ "portBindings" : [ { "port" : 80 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
+{ "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
 EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
-        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport 80 -j DNAT --to-destination :80
-        ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport 80 -j DNAT --to-destination :80
-        iptables -A INPUT -p tcp --dport 80 -j ACCEPT
-        ip6tables -A INPUT -p tcp --dport 80 -j ACCEPT
-        netfilter-persistent save
-        netfilter-persistent reload
-        netfilter-persistent start
         mita apply config Mita_Config_Server.json
         mita start
         echo -e "$YELLOW"
