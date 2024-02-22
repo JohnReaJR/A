@@ -53,11 +53,16 @@ case $selected_option in
         sudo dpkg -i mita_1.14.1_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-{ "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
+{ "portBindings" : [ { "port" : 444 , "protocol" : "UDP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
 EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
+        iptables -t nat -A PREROUTING -p udp --dport 20000:50000 -j REDIRECT --to-port 444
+        iptables -t nat -A POSTROUTING -d 10.0.0.0/8 -s !10.0.0.0/8 -j SNAT --to-source 139.84.230.28
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         mita apply config Mita_Config_Server.json
         mita start
         echo -e "$YELLOW"
