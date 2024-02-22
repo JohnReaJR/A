@@ -59,6 +59,13 @@ EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
+        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport 80 -j DNAT --to-destination :80
+        ip6tables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport 80 -j DNAT --to-destination :80
+        iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+        ip6tables -A INPUT -p tcp --dport 80 -j ACCEPT
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         mita apply config Mita_Config_Server.json
         mita start
         echo -e "$YELLOW"
