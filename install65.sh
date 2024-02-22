@@ -59,7 +59,7 @@ EOF
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
         iptables -A INPUT -p udp --dport 444 -j ACCEPT
-        iptables -t nat -A PREROUTING -p udp --dport 20000:50000 -j REDIRECT --to-port 444
+        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 444 -j DNAT --to-destination :444
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
