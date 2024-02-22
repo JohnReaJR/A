@@ -86,6 +86,7 @@ EOF
 { "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
 EOF
         #Start Services
+        chmod 755 /root/Mita_Config_Server.json
         mita apply config Mita_Config_Server.json
         mita start
         echo -e "$YELLOW"
