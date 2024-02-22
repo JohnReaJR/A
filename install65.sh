@@ -53,8 +53,8 @@ case $selected_option in
         sudo dpkg -i mita_1.14.0_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-        { "portBindings" : [ { "portRange" : "20000-50000", "protocol" : "TCP" }, { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
-        EOF
+{ "portBindings" : [ { "portRange" : "20000-50000", "protocol" : "TCP" }, { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
+EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
         #Start Services
