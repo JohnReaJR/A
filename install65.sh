@@ -41,17 +41,46 @@ case $selected_option in
         echo "     💚 MIERU UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
+        #Install Badvpn
         cd /root
-        rm -f iptables.sh; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/iptables.sh" -O iptables.sh && chmod 755 iptables.sh && ./iptables.sh; rm -f iptables.sh
+        systemctl stop udpgw.service
+        systemctl disable udpgw.service
+        rm -rf /etc/systemd/system/udpgw.service
+        rm -rf /usr/bin/udpgw
+        cd /usr/bin
+        wget https://github.com/JohnReaJR/A/releases/download/V1/udpgw
+        chmod 755 udpgw
+        cat <<EOF >/etc/systemd/system/udpgw.service
+[Unit]
+Description=UDPGW Gateway Service by InFiNitY 
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        #start badvpn
+        systemctl enable udpgw.service
+        systemctl start udpgw.service
+        echo -e "$YELLOW"
+        echo "     💚 P2P SERVICE INITIALIZED 💚     "
+        echo "     ╰┈➤💚 Badvpn Activated 💚         "
+        echo -e "$NC"
+        cd /root
         mita stop
         systemctl stop mita
         systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
-        rm -rf /root/mita_1.10.0_amd64.deb
+        rm -rf /root/mita_1.15.1_amd64.deb
         rm -rf /root/Mita_Config_Server.json
-        curl -LSO https://github.com/enfein/mieru/releases/download/v1.10.0/mita_1.10.0_amd64.deb
-        sudo dpkg -i mita_1.10.0_amd64.deb
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.15.1/mita_1.15.1_amd64.deb
+        sudo dpkg -i mita_1.15.1_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
 { "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
