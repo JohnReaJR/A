@@ -65,19 +65,11 @@ sysctl -w net.core.rmem_max=16777216
 sysctl -w net.core.wmem_max=16777216
 sysctl -w net.ipv4.tcp_rmem=8192
 sysctl -w net.ipv4.tcp_wmem=8192
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-sysctl -w vm.dirty_background_ratio=2
 echo "net.core.rmem_default=83886080" >> /etc/sysctl.conf
 echo "net.core.wmem_default=83886080" >> /etc/sysctl.conf
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
-echo "net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
