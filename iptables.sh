@@ -45,8 +45,6 @@ ip6tables -t mangle -F
 ip6tables -t mangle -X
 ip6tables -t raw -F
 ip6tables -t raw -X
-iptables -t nat -A POSTROUTING -j MASQUERADE
-ip6tables -t nat -A POSTROUTING -j MASQUERADE
 netfilter-persistent save
 netfilter-persistent reload
 netfilter-persistent start
