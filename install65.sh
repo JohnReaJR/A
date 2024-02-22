@@ -43,6 +43,8 @@ case $selected_option in
         echo -e "$NC"
         cd /root
         mita stop
+        systemctl stop mita
+        systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
         rm -rf /root/mita_2.4.0_arm64.deb
