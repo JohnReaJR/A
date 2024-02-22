@@ -55,22 +55,26 @@ case $selected_option in
 {
     "portBindings": [
         {
-            "port": 2000,
+            "portRange": "20000-50000",
             "protocol": "TCP"
         },
         {
             "port": 10000,
-            "protocol": "UDP"
+            "protocol": "TCP"
         }
     ],
     "users": [
         {
             "name": "Resleeved",
             "password": "Resleeved"
+        },
+        {
+            "name": "Sleeved",
+            "password": "Sleeved"
         }
     ],
     "loggingLevel": "INFO",
-    "mtu": 1500
+    "mtu": 1400
 }
 EOF
         # [+config+]
