@@ -54,7 +54,7 @@ case $selected_option in
         sudo dpkg -i mita_1.14.1_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
-{ "portBindings" : [ { "port" : 10000 , "protocol" : "UDP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
+{ "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
 EOF
         # [+config+]
         chmod 755 /root/Mita_Config_Server.json
