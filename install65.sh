@@ -48,10 +48,10 @@ case $selected_option in
         systemctl disable mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
-        rm -rf /root/mita_1.0.0_amd64.deb
+        rm -rf /root/mita_1.15.1_amd64.deb
         rm -rf /root/Mita_Config_Server.json
-        curl -LSO https://github.com/enfein/mieru/releases/download/v1.0.0/mita_1.0.0_amd64.deb
-        sudo dpkg -i mita_1.0.0_amd64.deb
+        curl -LSO https://github.com/enfein/mieru/releases/download/v1.15.1/mita_1.15.1_amd64.deb
+        sudo dpkg -i mita_1.15.1_amd64.deb
         sudo usermod -a -G mita root
         cat <<EOF >/root/Mita_Config_Server.json
 { "portBindings" : [ { "port" : 10000 , "protocol" : "TCP" } ], "users" : [ { "name" : "Resleeved" , "password" : "Resleeved" } ], "loggingLevel" : "INFO" , "mtu" : 1400 }
