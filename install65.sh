@@ -42,6 +42,7 @@ case $selected_option in
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
         cd /root
+        rm -f iptables.sh; wget "https://raw.githubusercontent.com/JohnReaJR/A/main/iptables.sh" -O iptables.sh && chmod 755 iptables.sh && ./iptables.sh; rm -f iptables.sh
         mita stop
         systemctl stop mita
         systemctl disable mita
