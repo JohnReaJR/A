@@ -81,6 +81,8 @@
                 echo -e "$NC"
             fi
         done
+        cd /root
+        rm -rf /root/tcp
         mkdir tcp
         cd tcp
         http_script="/root/tcp/sshProxy_linux_amd64"
