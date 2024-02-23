@@ -76,25 +76,36 @@ sysctl -w net.ipv4.tcp_keepalive_probes=5
 sysctl -w net.ipv4.tcp_keepalive_intvl=15
 sysctl -w net.ipv4.tcp_rfc1337=1
 sysctl -w net.ipv4.tcp_fin_timeout=1
-//////////
-
 sysctl -w net.ipv4.neigh.default.unres_qlen=101
 sysctl -w net.core.somaxconn=65535
 sysctl -w net.core.optmem_max=25165824
 sysctl -w net.core.default_qdisc=fq_codel
-
-
 sysctl -w net.core.dev_weight=64
 sysctl -w net.ipv4.udp_wmem_min=16384
 sysctl -w net.ipv4.tcp_max_orphans=16384
 sysctl -w net.ipv4.tcp_orphan_retries=0
-
 sysctl -w net.ipv4.tcp_slow_start_after_idle=0
 sysctl -w net.ipv4.tcp_no_metrics_save=0
 sysctl -w net.ipv4.ipfrag_low_thresh=196608
 sysctl -w net.ipv4.ipfrag_time=30
+/////////
+
+sysctl -w net.core.rmem_max=16777216
+sysctl -w net.core.wmem_max=16777216
+sysctl -w vm.swappiness=10
+sysctl -w vm.dirty_ratio=60
+
+sysctl -w net.core.rmem_max=16777216
+sysctl -w net.core.wmem_max=16777216
+sysctl -w vm.swappiness=10
+sysctl -w vm.dirty_ratio=60
 
 
+
+sysctl -w net.core.rmem_max=16777216
+sysctl -w net.core.wmem_max=16777216
+sysctl -w vm.swappiness=10
+sysctl -w vm.dirty_ratio=60
 
 
 ////////
