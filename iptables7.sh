@@ -26,7 +26,6 @@ sysctl -w vm.dirty_ratio=60
 sysctl -w vm.dirty_background_ratio=2
 sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
 sysctl -w net.core.netdev_max_backlog=65536
-sysctl -w net.core.somaxconn=65535
 sysctl -w net.netfilter.nf_conntrack_max=1048576
 sysctl -w net.ipv4.tcp_max_syn_backlog=4096
 sysctl -w net.ipv4.tcp_synack_retries=2
