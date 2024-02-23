@@ -45,7 +45,7 @@ sysctl -w net.ipv4.tcp_fin_timeout=1
 sysctl -w net.core.somaxconn=65535
 sysctl -w net.ipv4.udp_rmem_min=4096
 sysctl -w net.ipv4.udp_wmem_min=4096
-sysctl -w net.core.optmem_max=25165824
+sysctl -w net.core.optmem_max=20480
 sysctl -w net.ipv4.tcp_slow_start_after_idle=0
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
@@ -72,7 +72,7 @@ echo "net.ipv4.tcp_keepalive_intvl=15" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_slow_start_after_idle=0" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_fin_timeout=1" >> /etc/sysctl.conf
-echo "net.core.optmem_max=25165824" >> /etc/sysctl.conf
+echo "net.core.optmem_max=20480" >> /etc/sysctl.conf
 echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
 echo -e "$YELLOW"
