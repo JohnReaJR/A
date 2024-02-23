@@ -88,27 +88,13 @@ sysctl -w net.ipv4.tcp_slow_start_after_idle=0
 sysctl -w net.ipv4.tcp_no_metrics_save=0
 sysctl -w net.ipv4.ipfrag_low_thresh=196608
 sysctl -w net.ipv4.ipfrag_time=30
-/////////
-
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-
-
-
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-
-
-////////
+sysctl -w net.ipv4.tcp_sack=1
+sysctl -w net.ipv4.inet_peer_maxttl=600
+sysctl -w net.ipv4.inet_peer_minttl=120
+sysctl -w net.ipv4.inet_peer_threshold=65664
+sysctl -w net.ipv4.conf.all.accept_source_route=0
+sysctl -w net.ipv4.tcp_congestion_control=htcp
+sysctl -w net.ipv4.neigh.default.proxy_qlen=64
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.default_qdisc=fq
