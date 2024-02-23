@@ -49,7 +49,6 @@ echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
 echo "net.netfilter.nf_conntrack_max=1048576" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_adv_win_scale=3" >> /etc/sysctl.conf
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_tw_buckets=1440000" >> /etc/sysctl.conf
 echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
