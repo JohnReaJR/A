@@ -53,6 +53,17 @@ echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=10" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=htcp" >> /etc/sysctl.conf
+echo "net.core.default_qdisc=fq_codel" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_synack_retries=2" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_syncookies=0" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_time=300" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_probes=5" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_intvl=15" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_slow_start_after_idle=0" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_fin_timeout=1" >> /etc/sysctl.conf
+echo "net.core.optmem_max=25165824" >> /etc/sysctl.conf
 echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
 echo -e "$YELLOW"
