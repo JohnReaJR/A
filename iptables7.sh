@@ -87,7 +87,7 @@ echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
 echo -e "$YELLOW"
-echo "           ðŸ’š FIREWALL CONFIGURED ðŸ’š      "
-echo "              â•°â”ˆâž¤ðŸ’š Active ðŸ’š             "
+echo "           💚 FIREWALL CONFIGURED 💚      "
+echo "              ╰┈➤💚 Active 💚             "
 echo -e "$NC"
 exit 1
