@@ -68,8 +68,21 @@ sysctl -w net.core.netdev_max_backlog=65536
 sysctl -w net.core.somaxconn=65535
 sysctl -w net.netfilter.nf_conntrack_max=1048576
 sysctl -w net.ipv4.tcp_max_syn_backlog=4096
+sysctl -w net.ipv4.tcp_synack_retries=2
+sysctl -w net.ipv4.tcp_syncookies=0
+sysctl -w net.ipv4.ip_local_port_range= 1024 65535
+sysctl -w net.ipv4.tcp_keepalive_time=300
+sysctl -w net.ipv4.tcp_keepalive_probes=5
+sysctl -w net.ipv4.tcp_keepalive_intvl=15
+sysctl -w net.ipv4.tcp_rfc1337=1
+sysctl -w net.ipv4.tcp_fin_timeout=1
+//////////
 
-//////
+sysctl -w net.core.rmem_max=16777216
+sysctl -w net.core.wmem_max=16777216
+sysctl -w vm.swappiness=10
+sysctl -w vm.dirty_ratio=60
+
 
 sysctl -w net.core.rmem_max=16777216
 sysctl -w net.core.wmem_max=16777216
@@ -80,7 +93,6 @@ sysctl -w net.core.rmem_max=16777216
 sysctl -w net.core.wmem_max=16777216
 sysctl -w vm.swappiness=10
 sysctl -w vm.dirty_ratio=60
-
 
 
 
