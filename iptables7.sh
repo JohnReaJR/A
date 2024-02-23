@@ -8,8 +8,8 @@ fi
 cd /root
 clear
 echo -e "$YELLOW"
-echo "          ðŸ’š IPTABLES....SETTING UP YOUR FIREWALL ðŸ’š    "
-echo "             â•°â”ˆâž¤ðŸ’š Resleeved Net Firewall ðŸ’š          "
+echo "          💚 IPTABLES....SETTING UP YOUR FIREWALL 💚    "
+echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 apt-get update && apt-get upgrade
 apt update && apt upgrade
