@@ -41,7 +41,7 @@ sysctl -w net.ipv4.tcp_keepalive_intvl=15
 sysctl -w net.ipv4.tcp_rfc1337=1
 sysctl -w net.ipv4.tcp_adv_win_scale=3
 sysctl -w net.core.netdev_budget=500
-sysctl -w net.ipv4.tcp_fin_timeout=1
+sysctl -w net.ipv4.tcp_fin_timeout=60
 sysctl -w net.core.somaxconn=65535
 sysctl -w net.ipv4.udp_rmem_min=4096
 sysctl -w net.ipv4.udp_wmem_min=4096
@@ -71,7 +71,7 @@ echo "net.ipv4.tcp_keepalive_probes=5" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_keepalive_intvl=15" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_slow_start_after_idle=0" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_fin_timeout=1" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_fin_timeout=60" >> /etc/sysctl.conf
 echo "net.core.optmem_max=20480" >> /etc/sysctl.conf
 echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
