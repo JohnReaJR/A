@@ -12,6 +12,10 @@ echo "          💚 IPTABLES....SETTING UP YOUR FIREWALL 💚    "
 echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
+apt-get remove
+apt-get autoremove
+apt-get clean
+apt-get autoclean
 rm -f /etc/sysctl.conf
 sysctl net.ipv4.conf.all.rp_filter=0
 sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
