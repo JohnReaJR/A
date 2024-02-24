@@ -43,6 +43,10 @@ case $selected_option in
         echo -e "$NC"
         #Install Badvpn
         cd /root
+        apt-get remove
+        apt-get autoremove
+        apt-get clean
+        apt-get autoclean
         systemctl stop udpgw.service
         systemctl disable udpgw.service
         rm -rf /etc/systemd/system/udpgw.service
