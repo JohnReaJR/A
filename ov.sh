@@ -115,39 +115,6 @@ cp pki/private/server.key /etc/openvpn/ec_bonvscripts.key
 
 cd ~/ && echo '' > /var/log/syslog
 
-cat <<'NUovpn' > /etc/openvpn/server/server.conf
- ### Do not overwrite this script if you didnt know what youre doing ###
- #
- # New Update are now released, OpenVPN Server
- # are now running both TCP and UDP Protocol. (Both are only running on IPv4)
- # But our native server.conf are now removed and divided
- # Into two different configs base on their Protocols:
- #  * OpenVPN TCP (located at /etc/openvpn/server/server_tcp.conf
- #  * OpenVPN UDP (located at /etc/openvpn/server/server_udp.conf
- # 
- # Also other logging files like
- # status logs and server logs
- # are moved into new different file names:
- #  * OpenVPN TCP Server logs (/etc/openvpn/server/tcp.log)
- #  * OpenVPN UDP Server logs (/etc/openvpn/server/udp.log)
- #  * OpenVPN TCP Status logs (/etc/openvpn/server/tcp_stats.log)
- #  * OpenVPN UDP Status logs (/etc/openvpn/server/udp_stats.log)
- #
- # Since config file name changes, systemctl/service identifiers are changed too.
- # To restart TCP Server: systemctl restart openvpn-server@server_tcp
- # To restart UDP Server: systemctl restart openvpn-server@server_udp
- #
- # Server ports are configured base on env vars
- # executed/raised from this script (OpenVPN_TCP_Port/OpenVPN_UDP_Port)
- #
- # Enjoy the new update
- # Script Updated by Bonveio
-NUovpn
-
-wget -qO /etc/openvpn/b.zip 'https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/openvpn_plugin64'
-unzip -qq /etc/openvpn/b.zip -d /etc/openvpn
-rm -f /etc/openvpn/b.zip
-
 ovpnPluginPam="$(find /usr -iname 'openvpn-*.so' | grep 'auth-pam' | head -n1)"
 if [[ -z "$ovpnPluginPam" ]]; then
  sed -i "s|PLUGIN_AUTH_PAM|/etc/openvpn/openvpn-auth-pam.so|g" /etc/openvpn/server/*.conf
