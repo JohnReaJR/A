@@ -11,11 +11,11 @@ fi
 cd /root
 clear
 echo -e "$YELLOW
-      💚 HTTP CUSTOM UDP INSTALLER 💚      
+      💚 OVPN UDP INSTALLER 💚      
        ╰┈➤ 💚 Resleeved Net 💚               "
 echo -e "$NC
 Select an option"
-echo "1. Install HTTP CUSTOM UDP"
+echo "1. Install OVPN UDP"
 echo "2. Exit"
 selected_option=0
 
@@ -41,8 +41,6 @@ case $selected_option in
         echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
-function ConfigOpenVPN(){
-echo -e "[\e[32mInfo\e[0m] Configuring OpenVPN server.."
 if [[ ! -e /root/openvpn ]]; then
  mkdir -p /root/openvpn
  else
