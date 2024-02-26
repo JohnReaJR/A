@@ -49,7 +49,7 @@ fi
 mkdir -p /etc/openvpn/server
 mkdir -p /etc/openvpn/client
 
-cat <<'EOFovpn1' > /etc/openvpn/server/server.conf
+cat <<'EOFovpn' > /etc/openvpn/server/server.conf
 port 110
 dev tun
 proto tcp
