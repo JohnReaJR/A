@@ -221,7 +221,7 @@ rm -f /etc/openvpn/easy-rsa-ec/rsa.zip
 cd /etc/openvpn/easy-rsa
 chmod +x easyrsa
 ./easyrsa build-server-full server nopass &> /dev/null
-cp pki/ca.crhttetc/openvpn/ca.crt
+cp pki/ca.crt /etc/openvpn/ca.crt
 cp pki/issued/server.crt /root/openvpn/bonvscripts.crt
 cp pki/private/server.key /root/openvpn/bonvscripts.key
 
