@@ -41,113 +41,227 @@ case $selected_option in
         echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
-        apt install -y curl
-        apt install -y dos2unix
-        apt install -y neofetch
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
-time_reboot() {
-  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
-  REBOOT_TIMEOUT="$1"
+function ConfigOpenVPN(){
+echo -e "[\e[32mInfo\e[0m] Configuring OpenVPN server.."
+if [[ ! -e /etc/openvpn ]]; then
+ mkdir -p /etc/openvpn
+ else
+ rm -rf /etc/openvpn/*
+fi
+mkdir -p /etc/openvpn/server
+mkdir -p /etc/openvpn/client
 
-  while [ $REBOOT_TIMEOUT -gt 0 ]; do
-    print_center -ne "-$REBOOT_TIMEOUT-\r"
-    sleep 1
-    : $((REBOOT_TIMEOUT--))
-  done
-  reboot
-}
-        #Get Files
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module') &>/dev/null
-        systemctl stop custom-server.service
-        systemctl disable custom-server.service
-        rm -rf /etc/systemd/system/custom-server.service
-        rm -rf /root/udp
-        mkdir udp
-        cd udp
-        wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
-        chmod 755 custom-linux-amd64
-        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module'
-        chmod 755 /root/udp/module
-        wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
-        chmod 755 /root/udp/limiter.sh
-        cd /root
-        killall udp
-        rm -rf /usr/bin/udp
-        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
-        chmod 755 /usr/bin/udp
+cat <<'EOFovpn1' > /etc/openvpn/server/server_tcp.conf
+port 110
+dev tun
+proto tcp
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/bonvscripts.crt
+key /etc/openvpn/bonvscripts.key
+dh none
+persist-tun
+persist-key
+persist-remote-ip
+duplicate-cn
+cipher none
+ncp-disable
+auth none
+comp-lzo
+tun-mtu 1500
+reneg-sec 0
+plugin PLUGIN_AUTH_PAM /etc/pam.d/login
+verify-client-cert none
+username-as-common-name
+max-clients 4080
+topology subnet
+server 172.29.0.0 255.255.240.0
+push "redirect-gateway def1"
+keepalive 5 30
+status /etc/openvpn/tcp_stats.log
+log /etc/openvpn/tcp.log
+verb 2
+script-security 2
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
+push "dhcp-option DNS 1.0.0.1"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 8.8.8.8"
+EOFovpn1
+cat <<'EOFovpn2' > /etc/openvpn/server/server_udp.conf
+port 25222
+dev tun
+proto udp
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/bonvscripts.crt
+key /etc/openvpn/bonvscripts.key
+dh none
+persist-tun
+persist-key
+persist-remote-ip
+duplicate-cn
+cipher none
+ncp-disable
+auth none
+comp-lzo
+tun-mtu 1500
+float
+fast-io
+reneg-sec 0
+plugin PLUGIN_AUTH_PAM /etc/pam.d/login
+verify-client-cert none
+username-as-common-name
+max-clients 4080
+topology subnet
+server 172.29.16.0 255.255.240.0
+push "redirect-gateway def1"
+keepalive 5 30
+status /etc/openvpn/udp_stats.log
+log /etc/openvpn/udp.log
+verb 2
+script-security 2
+push "dhcp-option DNS 1.0.0.1"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 8.8.8.8"
+EOFovpn2
+cat <<'EOFovpn3' > /etc/openvpn/server/ec_server_tcp.conf
+port 25980
+proto tcp
+dev tun
+ca /etc/openvpn/ec_ca.crt
+cert /etc/openvpn/ec_bonvscripts.crt
+key /etc/openvpn/ec_bonvscripts.key
+dh none
+persist-tun
+persist-key
+persist-remote-ip
+duplicate-cn
+cipher none
+ncp-disable
+auth none
+compress lz4
+push "compress lz4"
+tun-mtu 1500
+reneg-sec 0
+plugin PLUGIN_AUTH_PAM /etc/pam.d/login
+verify-client-cert none
+username-as-common-name
+max-clients 4080
+topology subnet
+server 172.29.32.0 255.255.240.0
+push "redirect-gateway def1"
+keepalive 5 30
+tls-server
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
+status /etc/openvpn/ec_tcp_stats.log
+log /etc/openvpn/ec_tcp.log
+verb 2
+script-security 2
+socket-flags TCP_NODELAY
+push "socket-flags TCP_NODELAY"
+push "dhcp-option DNS 1.0.0.1"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 8.8.8.8"
+EOFovpn3
+cat <<'EOFovpn4' > /etc/openvpn/server/ec_server_udp.conf
+port 25985
+proto udp
+dev tun
+ca /etc/openvpn/ec_ca.crt
+cert /etc/openvpn/ec_bonvscripts.crt
+key /etc/openvpn/ec_bonvscripts.key
+dh none
+persist-tun
+persist-key
+persist-remote-ip
+duplicate-cn
+cipher none
+ncp-disable
+auth none
+compress lz4
+push "compress lz4"
+tun-mtu 1500
+float
+fast-io
+reneg-sec 0
+plugin PLUGIN_AUTH_PAM /etc/pam.d/login
+verify-client-cert none
+username-as-common-name
+max-clients 4080
+topology subnet
+server 172.29.48.0 255.255.240.0
+push "redirect-gateway def1"
+keepalive 5 30
+tls-server
+tls-version-min 1.2
+tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
+status /etc/openvpn/ec_udp_stats.log
+log /etc/openvpn/ec_udp.log
+verb 2
+script-security 2
+push "dhcp-option DNS 1.0.0.1"
+push "dhcp-option DNS 1.1.1.1"
+push "dhcp-option DNS 8.8.4.4"
+push "dhcp-option DNS 8.8.8.8"
+EOFovpn4
 
-        rm -rf /root/udp/config.json
-        cat <<EOF >/root/udp/config.json
-{
-  "listen": ":443",
-  "stream_buffer": 16777216,
-  "receive_buffer": 33554432,
-  "auth": {
-    "mode": "passwords"
-  }
-}
-EOF
-        # [+config+]
-        chmod 755 /root/udp/config.json
+mkdir /etc/openvpn/easy-rsa
+mkdir /etc/openvpn/easy-rsa-ec
 
-        cat <<EOF >/etc/systemd/system/custom-server.service
-[Unit]
-Description=UDP Custom by InFiNitY
+curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa.zip" -o /etc/openvpn/easy-rsa/rsa.zip 2> /dev/null
+curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa-ec.zip" -o /etc/openvpn/easy-rsa-ec/rsa.zip 2> /dev/null
 
-[Service]
-User=root
-Type=simple
-ExecStart=/root/udp/custom-linux-amd64 server
-WorkingDirectory=/root/udp/
-Restart=always
-RestartSec=2
+unzip -qq /etc/openvpn/easy-rsa/rsa.zip -d /etc/openvpn/easy-rsa
+unzip -qq /etc/openvpn/easy-rsa-ec/rsa.zip -d /etc/openvpn/easy-rsa-ec
 
-[Install]
-WantedBy=default.target
-EOF
-        #Start Services
-        systemctl enable custom-server.service
-        systemctl start custom-server.service
-        
-        #Install Badvpn
-        cd /root
-        systemctl stop udpgw.service
-        systemctl disable udpgw.service
-        rm -rf /etc/systemd/system/udpgw.service
-        rm -rf /usr/bin/udpgw
-        cd /usr/bin
-        wget http://github.com/JohnReaJR/A/releases/download/V1/udpgw
-        chmod 755 udpgw
-        
-        cat <<EOF >/etc/systemd/system/udpgw.service
-[Unit]
-[Unit]
-Description=UDPGW Gateway Service by InFiNitY 
-After=network.target
+rm -f /etc/openvpn/easy-rsa/rsa.zip
+rm -f /etc/openvpn/easy-rsa-ec/rsa.zip
 
-[Service]
-Type=forking
-ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 100
-Restart=always
-User=root
+cd /etc/openvpn/easy-rsa
+chmod +x easyrsa
+./easyrsa build-server-full server nopass &> /dev/null
+cp pki/ca.crt /etc/openvpn/ca.crt
+cp pki/issued/server.crt /etc/openvpn/bonvscripts.crt
+cp pki/private/server.key /etc/openvpn/bonvscripts.key
 
-[Install]
-WantedBy=multi-user.target
-EOF
-        #start badvpn
-        systemctl enable udpgw.service
-        systemctl start udpgw.service
-        echo -e "$YELLOW"
-        echo "     💚 P2P SERVICE INITIALIZED 💚     "
-        echo "     ╰┈➤💚 Badvpn Activated 💚         "
-        echo " ╰┈➤ 💚 HTTP CUSTOM UDP SUCCESSFULLY INSTALLED 💚       "
-        echo -e "$NC"
-        exit 1
-        ;;
-    2)
-        echo -e "$YELLOW"
-        echo "Welcome To Resleeved Net"
-        echo -e "$NC"
-        exit 1
-        ;;
-esac
+cd /etc/openvpn/easy-rsa-ec
+chmod +x easyrsa
+./easyrsa build-server-full server nopass &> /dev/null
+cp pki/ca.crt /etc/openvpn/ec_ca.crt
+cp pki/issued/server.crt /etc/openvpn/ec_bonvscripts.crt
+cp pki/private/server.key /etc/openvpn/ec_bonvscripts.key
+
+cd ~/ && echo '' > /var/log/syslog
+
+cat <<'NUovpn' > /etc/openvpn/server/server.conf
+ ### Do not overwrite this script if you didnt know what youre doing ###
+ #
+ # New Update are now released, OpenVPN Server
+ # are now running both TCP and UDP Protocol. (Both are only running on IPv4)
+ # But our native server.conf are now removed and divided
+ # Into two different configs base on their Protocols:
+ #  * OpenVPN TCP (located at /etc/openvpn/server/server_tcp.conf
+ #  * OpenVPN UDP (located at /etc/openvpn/server/server_udp.conf
+ # 
+ # Also other logging files like
+ # status logs and server logs
+ # are moved into new different file names:
+ #  * OpenVPN TCP Server logs (/etc/openvpn/server/tcp.log)
+ #  * OpenVPN UDP Server logs (/etc/openvpn/server/udp.log)
+ #  * OpenVPN TCP Status logs (/etc/openvpn/server/tcp_stats.log)
+ #  * OpenVPN UDP Status logs (/etc/openvpn/server/udp_stats.log)
+ #
+ # Since config file name changes, systemctl/service identifiers are changed too.
+ # To restart TCP Server: systemctl restart openvpn-server@server_tcp
+ # To restart UDP Server: systemctl restart openvpn-server@server_udp
+ #
+ # Server ports are configured base on env vars
+ # executed/raised from this script (OpenVPN_TCP_Port/OpenVPN_UDP_Port)
+ #
+ # Enjoy the new update
+ # Script Updated by Bonveio
+NUovpn
+
