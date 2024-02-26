@@ -167,16 +167,8 @@ systemctl daemon-reload
 echo -e "$YELLOW"
 echo "  Restarting OpenVPN UDP  "
 echo -e "$NC"
-systemctl restart openvpn &> /dev/null
-systemctl start openvpn-server@server_tcp &>/dev/null
-systemctl start openvpn-server@server_udp &>/dev/null
-systemctl enable openvpn-server@server_tcp &> /dev/null
-systemctl enable openvpn-server@server_udp &> /dev/null
-
-systemctl start openvpn-server@ec_server_tcp &> /dev/null
-systemctl start openvpn-server@ec_server_udp &> /dev/null
-systemctl enable openvpn-server@ec_server_tcp &> /dev/null
-systemctl enable openvpn-server@ec_server_udp &> /dev/null
+systemctl enable openvpn &> /dev/null
+systemctl start &>/dev/null
 exit 1
 ;;
     2)
