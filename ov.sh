@@ -222,35 +222,35 @@ cd /etc/openvpn/easy-rsa
 chmod +x easyrsa
 ./easyrsa build-server-full server nopass &> /dev/null
 cp pki/ca.crt /etc/openvpn/ca.crt
-cp pki/issued/server.crt /root/openvpn/bonvscripts.crt
-cp pki/private/server.key /root/openvpn/bonvscripts.key
+cp pki/issued/server.crt /etc/openvpn/bonvscripts.crt
+cp pki/private/server.key /etc/openvpn/bonvscripts.key
 
-cd /root/openvpn/easy-rsa-ec
+cd /etc/openvpn/easy-rsa-ec
 chmod +x easyrsa
 ./easyrsa build-server-full server nopass &> /dev/null
-cp pki/ca.crt /root/openvpn/ec_ca.crt
-cp pki/issued/server.crt /root/openvpn/ec_bonvscripts.crt
-cp pki/private/server.key /root/openvpn/ec_bonvscripts.key
+cp pki/ca.crt /etc/openvpn/ec_ca.crt
+cp pki/issued/server.crt /etc/openvpn/ec_bonvscripts.crt
+cp pki/private/server.key /etc/openvpn/ec_bonvscripts.key
 
 cd ~/ && echo '' > /var/log/syslog
 
-cat <<'NUovpn' > /root/openvpn/server/server.conf
+cat <<'NUovpn' > /etc/openvpn/server/server.conf
  ### Do not overwrite this script if you didnt know what youre doing ###
  #
  # New Update are now released, OpenVPN Server
  # are now running both TCP and UDP Protocol. (Both are only running on IPv4)
  # But our native server.conf are now removed and divided
  # Into two different configs base on their Protocols:
- #  * OpenVPN TCP (located at /root/openvpn/server/server_tcp.conf
- #  * OpenVPN UDP (located at /root/openvpn/server/server_udp.conf
+ #  * OpenVPN TCP (located at /etc/openvpn/server/server_tcp.conf
+ #  * OpenVPN UDP (located at /etc/openvpn/server/server_udp.conf
  # 
  # Also other logging files like
  # status logs and server logs
  # are moved into new different file names:
- #  * OpenVPN TCP Server logs (/root/openvpn/server/tcp.log)
- #  * OpenVPN UDP Server logs (/root/openvpn/server/udp.log)
- #  * OpenVPN TCP Status logs (/root/openvpn/server/tcp_stats.log)
- #  * OpenVPN UDP Status logs (/root/openvpn/server/udp_stats.log)
+ #  * OpenVPN TCP Server logs (/etc/openvpn/server/tcp.log)
+ #  * OpenVPN UDP Server logs (/etc/openvpn/server/udp.log)
+ #  * OpenVPN TCP Status logs (/etc/openvpn/server/tcp_stats.log)
+ #  * OpenVPN UDP Status logs (/etc/openvpn/server/udp_stats.log)
  #
  # Since config file name changes, systemctl/service identifiers are changed too.
  # To restart TCP Server: systemctl restart openvpn-server@server_tcp
@@ -263,13 +263,13 @@ cat <<'NUovpn' > /root/openvpn/server/server.conf
  # Script Updated by Bonveio
 NUovpn
 
-wget -qO /root/openvpn/b.zip 'https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/openvpn_plugin64'
-unzip -qq /root/openvpn/b.zip -d /root/openvpn
-rm -f /root/openvpn/b.zip
+wget -qO /etc/openvpn/b.zip 'https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/openvpn_plugin64'
+unzip -qq /etc/openvpn/b.zip -d /etc/openvpn
+rm -f /etc/openvpn/b.zip
 
 ovpnPluginPam="$(find /usr -iname 'openvpn-*.so' | grep 'auth-pam' | head -n1)"
 if [[ -z "$ovpnPluginPam" ]]; then
- sed -i "s|PLUGIN_AUTH_PAM|/root/openvpn/openvpn-auth-pam.so|g" /root/openvpn/server/*.conf
+ sed -i "s|PLUGIN_AUTH_PAM|/etc/openvpn/openvpn-auth-pam.so|g" /etc/openvpn/server/*.conf
 else
  sed -i "s|PLUGIN_AUTH_PAM|$ovpnPluginPam|g" /root/openvpn/server/*.conf
 fi
@@ -286,7 +286,7 @@ systemctl daemon-reload
 echo -e "$YELLOW"
 echo "  Restarting OpenVPN UDP  "
 echo -e "$NC"
-systemctl restart openvpn-server &> /dev/null
+systemctl restart openvpn &> /dev/null
 systemctl start openvpn-server@server_tcp &>/dev/null
 systemctl start openvpn-server@server_udp &>/dev/null
 systemctl enable openvpn-server@server_tcp &> /dev/null
