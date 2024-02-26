@@ -283,8 +283,9 @@ sysctl --system &> /dev/null
 
 sed -i 's|ExecStart=.*|ExecStart=/usr/sbin/openvpn --status %t/openvpn-server/status-%i.log --status-version 2 --suppress-timestamps --config %i.conf|g' /lib/systemd/system/openvpn-server\@.service
 systemctl daemon-reload
-
-echo -e "[\e[33mNotice\e[0m] Restarting OpenVPN Service.."
+echo -e "$YELLOW"
+echo "  Restarting OpenVPN UDP  "
+echo -e "$NC"
 systemctl restart openvpn-server &> /dev/null
 systemctl start openvpn-server@server_tcp &>/dev/null
 systemctl start openvpn-server@server_udp &>/dev/null
@@ -295,5 +296,5 @@ systemctl start openvpn-server@ec_server_tcp &> /dev/null
 systemctl start openvpn-server@ec_server_udp &> /dev/null
 systemctl enable openvpn-server@ec_server_tcp &> /dev/null
 systemctl enable openvpn-server@ec_server_udp &> /dev/null
-}
+exit 1
 
