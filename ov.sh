@@ -214,8 +214,8 @@ mkdir /root/openvpn/easy-rsa-ec
 curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa.zip" -o /etc/openvpn/easy-rsa/rsa.zip 2> /dev/null
 curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa-ec.zip" -o /etc/openvpn/easy-rsa-ec/rsa.zip 2> /dev/null
 
-unzip -qq /root/openvpn/easy-rsa/rsa.zip -d /etc/openvpn/easy-rsa
-unzip -qq /root/openvpn/easy-rsa-ec/rsa.zip -d /etc/openvpn/easy-rsa-ec
+unzip -qq /root/openvpn/easy-rsa/rsa.zip -d /root/openvpn/easy-rsa
+unzip -qq /root/openvpn/easy-rsa-ec/rsa.zip -d /root/openvpn/easy-rsa-ec
 
 rm -f /root/openvpn/easy-rsa/rsa.zip
 rm -f /root/openvpn/easy-rsa-ec/rsa.zip
