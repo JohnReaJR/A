@@ -297,4 +297,11 @@ systemctl start openvpn-server@ec_server_udp &> /dev/null
 systemctl enable openvpn-server@ec_server_tcp &> /dev/null
 systemctl enable openvpn-server@ec_server_udp &> /dev/null
 exit 1
-
+;;
+    2)
+        echo -e "$YELLOW"
+        echo "Welcome To Resleeved Net"
+        echo -e "$NC"
+        exit 1
+        ;;
+esac
