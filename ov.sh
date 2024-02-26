@@ -117,9 +117,9 @@ cd ~/ && echo '' > /var/log/syslog
 
 ovpnPluginPam="$(find /usr -iname 'openvpn-*.so' | grep 'auth-pam' | head -n1)"
 if [[ -z "$ovpnPluginPam" ]]; then
- sed -i "s|PLUGIN_AUTH_PAM|/etc/openvpn/openvpn-auth-pam.so|g" /etc/openvpn/server/*.conf
+ sed -i "s|PLUGIN_AUTH_PAM|/etc/openvpn/openvpn-auth-pam.so|g" /etc/openvpn/server/server.conf
 else
- sed -i "s|PLUGIN_AUTH_PAM|$ovpnPluginPam|g" /etc/openvpn/server/*.conf
+ sed -i "s|PLUGIN_AUTH_PAM|$ovpnPluginPam|g" /etc/openvpn/server/server.conf
 fi
 
 sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.conf
