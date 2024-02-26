@@ -49,7 +49,7 @@ fi
 mkdir -p /etc/openvpn/server
 mkdir -p /etc/openvpn/client
 
-cat <<'EOFovpn1' > /etc/openvpn/server/server_tcp.conf
+cat <<'EOFovpn1' > /etc/openvpn/server/server.conf
 port 110
 dev tun
 proto tcp
@@ -85,126 +85,7 @@ push "dhcp-option DNS 1.0.0.1"
 push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
-EOFovpn1
-cat <<'EOFovpn2' > /etc/openvpn/server/server_udp.conf
-port 25222
-dev tun
-proto udp
-ca /etc/openvpn/ca.crt
-cert /etc/openvpn/bonvscripts.crt
-key /etc/openvpn/bonvscripts.key
-dh none
-persist-tun
-persist-key
-persist-remote-ip
-duplicate-cn
-cipher none
-ncp-disable
-auth none
-comp-lzo
-tun-mtu 1500
-float
-fast-io
-reneg-sec 0
-plugin PLUGIN_AUTH_PAM /etc/pam.d/login
-verify-client-cert none
-username-as-common-name
-max-clients 4080
-topology subnet
-server 172.29.16.0 255.255.240.0
-push "redirect-gateway def1"
-keepalive 5 30
-status /etc/openvpn/udp_stats.log
-log /etc/openvpn/udp.log
-verb 2
-script-security 2
-push "dhcp-option DNS 1.0.0.1"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 8.8.4.4"
-push "dhcp-option DNS 8.8.8.8"
-EOFovpn2
-cat <<'EOFovpn3' > /etc/openvpn/server/ec_server_tcp.conf
-port 25980
-proto tcp
-dev tun
-ca /etc/openvpn/ec_ca.crt
-cert /etc/openvpn/ec_bonvscripts.crt
-key /etc/openvpn/ec_bonvscripts.key
-dh none
-persist-tun
-persist-key
-persist-remote-ip
-duplicate-cn
-cipher none
-ncp-disable
-auth none
-compress lz4
-push "compress lz4"
-tun-mtu 1500
-reneg-sec 0
-plugin PLUGIN_AUTH_PAM /etc/pam.d/login
-verify-client-cert none
-username-as-common-name
-max-clients 4080
-topology subnet
-server 172.29.32.0 255.255.240.0
-push "redirect-gateway def1"
-keepalive 5 30
-tls-server
-tls-version-min 1.2
-tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
-status /etc/openvpn/ec_tcp_stats.log
-log /etc/openvpn/ec_tcp.log
-verb 2
-script-security 2
-socket-flags TCP_NODELAY
-push "socket-flags TCP_NODELAY"
-push "dhcp-option DNS 1.0.0.1"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 8.8.4.4"
-push "dhcp-option DNS 8.8.8.8"
-EOFovpn3
-cat <<'EOFovpn4' > /etc/openvpn/server/ec_server_udp.conf
-port 25985
-proto udp
-dev tun
-ca /etc/openvpn/ec_ca.crt
-cert /etc/openvpn/ec_bonvscripts.crt
-key /etc/openvpn/ec_bonvscripts.key
-dh none
-persist-tun
-persist-key
-persist-remote-ip
-duplicate-cn
-cipher none
-ncp-disable
-auth none
-compress lz4
-push "compress lz4"
-tun-mtu 1500
-float
-fast-io
-reneg-sec 0
-plugin PLUGIN_AUTH_PAM /etc/pam.d/login
-verify-client-cert none
-username-as-common-name
-max-clients 4080
-topology subnet
-server 172.29.48.0 255.255.240.0
-push "redirect-gateway def1"
-keepalive 5 30
-tls-server
-tls-version-min 1.2
-tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
-status /etc/openvpn/ec_udp_stats.log
-log /etc/openvpn/ec_udp.log
-verb 2
-script-security 2
-push "dhcp-option DNS 1.0.0.1"
-push "dhcp-option DNS 1.1.1.1"
-push "dhcp-option DNS 8.8.4.4"
-push "dhcp-option DNS 8.8.8.8"
-EOFovpn4
+EOFovpn
 
 mkdir /etc/openvpn/easy-rsa
 mkdir /etc/openvpn/easy-rsa-ec
