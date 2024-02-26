@@ -41,21 +41,21 @@ case $selected_option in
         echo "     💚 HTTP CUSTOM UDP AUTO INSTALLATION 💚      "
         echo "        ╰┈➤💚 Installing Binaries 💚           "
         echo -e "$NC"
-if [[ ! -e /root/openvpn ]]; then
- mkdir -p /root/openvpn
+if [[ ! -e /etc/openvpn ]]; then
+ mkdir -p /etc/openvpn
  else
- rm -rf /root/openvpn/*
+ rm -rf /etc/openvpn/*
 fi
-mkdir -p /root/openvpn/server
-mkdir -p /root/openvpn/client
+mkdir -p /etc/openvpn/server
+mkdir -p /etc/openvpn/client
 
-cat <<'EOFovpn1' > /root/openvpn/server/server_tcp.conf
+cat <<'EOFovpn1' > /etc/openvpn/server/server_tcp.conf
 port 110
 dev tun
 proto tcp
-ca /root/openvpn/ca.crt
-cert /root/openvpn/bonvscripts.crt
-key /root/openvpn/bonvscripts.key
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/bonvscripts.crt
+key /etc/openvpn/bonvscripts.key
 dh none
 persist-tun
 persist-key
@@ -75,8 +75,8 @@ topology subnet
 server 172.29.0.0 255.255.240.0
 push "redirect-gateway def1"
 keepalive 5 30
-status /root/openvpn/tcp_stats.log
-log /root/openvpn/tcp.log
+status /etc/openvpn/tcp_stats.log
+log /etc/openvpn/tcp.log
 verb 2
 script-security 2
 socket-flags TCP_NODELAY
@@ -86,13 +86,13 @@ push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
 EOFovpn1
-cat <<'EOFovpn2' > /root/openvpn/server/server_udp.conf
+cat <<'EOFovpn2' > /etc/openvpn/server/server_udp.conf
 port 25222
 dev tun
 proto udp
-ca /root/openvpn/ca.crt
-cert /root/openvpn/bonvscripts.crt
-key /root/openvpn/bonvscripts.key
+ca /etc/openvpn/ca.crt
+cert /etc/openvpn/bonvscripts.crt
+key /etc/openvpn/bonvscripts.key
 dh none
 persist-tun
 persist-key
@@ -114,8 +114,8 @@ topology subnet
 server 172.29.16.0 255.255.240.0
 push "redirect-gateway def1"
 keepalive 5 30
-status /root/openvpn/udp_stats.log
-log /root/openvpn/udp.log
+status /etc/openvpn/udp_stats.log
+log /etc/openvpn/udp.log
 verb 2
 script-security 2
 push "dhcp-option DNS 1.0.0.1"
@@ -123,13 +123,13 @@ push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
 EOFovpn2
-cat <<'EOFovpn3' > /root/openvpn/server/ec_server_tcp.conf
+cat <<'EOFovpn3' > /etc/openvpn/server/ec_server_tcp.conf
 port 25980
 proto tcp
 dev tun
-ca /root/openvpn/ec_ca.crt
-cert /root/openvpn/ec_bonvscripts.crt
-key /root/openvpn/ec_bonvscripts.key
+ca /etc/openvpn/ec_ca.crt
+cert /etc/openvpn/ec_bonvscripts.crt
+key /etc/openvpn/ec_bonvscripts.key
 dh none
 persist-tun
 persist-key
@@ -153,8 +153,8 @@ keepalive 5 30
 tls-server
 tls-version-min 1.2
 tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
-status /root/openvpn/ec_tcp_stats.log
-log /root/openvpn/ec_tcp.log
+status /etc/openvpn/ec_tcp_stats.log
+log /etc/openvpn/ec_tcp.log
 verb 2
 script-security 2
 socket-flags TCP_NODELAY
@@ -164,13 +164,13 @@ push "dhcp-option DNS 1.1.1.1"
 push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
 EOFovpn3
-cat <<'EOFovpn4' > /root/openvpn/server/ec_server_udp.conf
+cat <<'EOFovpn4' > /etc/openvpn/server/ec_server_udp.conf
 port 25985
 proto udp
 dev tun
-ca /root/openvpn/ec_ca.crt
-cert /root/openvpn/ec_bonvscripts.crt
-key /root/openvpn/ec_bonvscripts.key
+ca /etc/openvpn/ec_ca.crt
+cert /etc/openvpn/ec_bonvscripts.crt
+key /etc/openvpn/ec_bonvscripts.key
 dh none
 persist-tun
 persist-key
@@ -196,8 +196,8 @@ keepalive 5 30
 tls-server
 tls-version-min 1.2
 tls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256
-status /root/openvpn/ec_udp_stats.log
-log /root/openvpn/ec_udp.log
+status /etc/openvpn/ec_udp_stats.log
+log /etc/openvpn/ec_udp.log
 verb 2
 script-security 2
 push "dhcp-option DNS 1.0.0.1"
@@ -206,22 +206,22 @@ push "dhcp-option DNS 8.8.4.4"
 push "dhcp-option DNS 8.8.8.8"
 EOFovpn4
 
-mkdir /root/openvpn/easy-rsa
-mkdir /root/openvpn/easy-rsa-ec
+mkdir /etc/openvpn/easy-rsa
+mkdir /etc/openvpn/easy-rsa-ec
 
-curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa.zip" -o /root/openvpn/easy-rsa/rsa.zip 2> /dev/null
-curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa-ec.zip" -o /root/openvpn/easy-rsa-ec/rsa.zip 2> /dev/null
+curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa.zip" -o /etc/openvpn/easy-rsa/rsa.zip 2> /dev/null
+curl -4skL "https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/bonvscripts-easyrsa-ec.zip" -o /etc/openvpn/easy-rsa-ec/rsa.zip 2> /dev/null
 
-unzip -qq /root/openvpn/easy-rsa/rsa.zip -d /root/openvpn/easy-rsa
-unzip -qq /root/openvpn/easy-rsa-ec/rsa.zip -d /root/openvpn/easy-rsa-ec
+unzip -qq /etc/openvpn/easy-rsa/rsa.zip -d /etc/openvpn/easy-rsa
+unzip -qq /etc/openvpn/easy-rsa-ec/rsa.zip -d /etc/openvpn/easy-rsa-ec
 
-rm -f /root/openvpn/easy-rsa/rsa.zip
-rm -f /root/openvpn/easy-rsa-ec/rsa.zip
+rm -f /etc/openvpn/easy-rsa/rsa.zip
+rm -f /etc/openvpn/easy-rsa-ec/rsa.zip
 
-cd /root/openvpn/easy-rsa
+cd /etc/openvpn/easy-rsa
 chmod +x easyrsa
 ./easyrsa build-server-full server nopass &> /dev/null
-cp pki/ca.crt /root/openvpn/ca.crt
+cp pki/ca.crhttetc/openvpn/ca.crt
 cp pki/issued/server.crt /root/openvpn/bonvscripts.crt
 cp pki/private/server.key /root/openvpn/bonvscripts.key
 
