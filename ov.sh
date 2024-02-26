@@ -265,3 +265,37 @@ cat <<'NUovpn' > /etc/openvpn/server/server.conf
  # Script Updated by Bonveio
 NUovpn
 
+wget -qO /etc/openvpn/b.zip 'https://raw.githubusercontent.com/EskalarteDexter/Autoscript/main/DebianNew/openvpn_plugin64'
+unzip -qq /etc/openvpn/b.zip -d /etc/openvpn
+rm -f /etc/openvpn/b.zip
+
+ovpnPluginPam="$(find /usr -iname 'openvpn-*.so' | grep 'auth-pam' | head -n1)"
+if [[ -z "$ovpnPluginPam" ]]; then
+ sed -i "s|PLUGIN_AUTH_PAM|/etc/openvpn/openvpn-auth-pam.so|g" /etc/openvpn/server/*.conf
+else
+ sed -i "s|PLUGIN_AUTH_PAM|$ovpnPluginPam|g" /etc/openvpn/server/*.conf
+fi
+
+sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.conf
+sed -i '/#net.ipv4.ip_forward.*/d' /etc/sysctl.conf
+sed -i '/net.ipv4.ip_forward.*/d' /etc/sysctl.d/*
+sed -i '/#net.ipv4.ip_forward.*/d' /etc/sysctl.d/*
+echo 'net.ipv4.ip_forward=1' > /etc/sysctl.d/20-openvpn.conf
+sysctl --system &> /dev/null
+
+sed -i 's|ExecStart=.*|ExecStart=/usr/sbin/openvpn --status %t/openvpn-server/status-%i.log --status-version 2 --suppress-timestamps --config %i.conf|g' /lib/systemd/system/openvpn-server\@.service
+systemctl daemon-reload
+
+echo -e "[\e[33mNotice\e[0m] Restarting OpenVPN Service.."
+systemctl restart openvpn-server &> /dev/null
+systemctl start openvpn-server@server_tcp &>/dev/null
+systemctl start openvpn-server@server_udp &>/dev/null
+systemctl enable openvpn-server@server_tcp &> /dev/null
+systemctl enable openvpn-server@server_udp &> /dev/null
+
+systemctl start openvpn-server@ec_server_tcp &> /dev/null
+systemctl start openvpn-server@ec_server_udp &> /dev/null
+systemctl enable openvpn-server@ec_server_tcp &> /dev/null
+systemctl enable openvpn-server@ec_server_udp &> /dev/null
+}
+
