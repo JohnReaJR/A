@@ -52,7 +52,6 @@ clear
 systemctl stop custom-server.service
 systemctl disable custom-server.service
 rm -rf /etc/systemd/system/custom-server.service
-killall udp
 rm -rf /root/udp
 rm -rf /usr/bin/udp
 systemctl stop udpgw.service
@@ -63,13 +62,14 @@ systemctl stop hysteria-server.service
 systemctl disable hysteria-server.service
 rm -rf /etc/systemd/system/hysteria-server.service
 rm -rf /root/hy
+cd /root
 systemctl stop x-ui.service
 systemctl disable x-ui.service
 rm -rf /etc/systemd/system/x-ui.service
-killall x-ui
 rm -rf /usr/local/x-ui
 rm -rf /usr/bin/x-ui
 rm -rf /etc/x-ui
+cd /root
 rm -rf /root/dnstt
 rm -rf /root/iodine-0.7.0
 apt-get remove
