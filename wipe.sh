@@ -72,6 +72,13 @@ rm -rf /etc/x-ui
 cd /root
 rm -rf /root/dnstt
 rm -rf /root/iodine-0.7.0
+mita stop
+systemctl stop mita
+systemctl disable mita
+rm -rf /etc/mita
+rm -rf /usr/bin/mita
+rm -rf /root/mita_1.15.1_amd64.deb
+rm -rf /root/Mita_Config_Server.json
 apt-get remove
 apt-get autoremove
 apt-get clean
