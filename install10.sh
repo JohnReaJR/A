@@ -80,8 +80,8 @@ time_reboot() {
         cat <<EOF >/root/udp/config.json
 {
   "listen": ":443",
-  "stream_buffer": 167772160,
-  "receive_buffer": 209715200,
+  "stream_buffer": 16777216,
+  "receive_buffer": 16777216,
   "auth": {
     "mode": "passwords"
   }
