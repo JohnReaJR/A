@@ -57,7 +57,7 @@ time_reboot() {
   reboot
 }
         #Get Files
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module') &>/dev/null
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
         systemctl stop custom-server.service
         systemctl disable custom-server.service
         rm -rf /etc/systemd/system/custom-server.service
