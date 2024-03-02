@@ -71,6 +71,7 @@ rm -rf /usr/bin/x-ui
 rm -rf /etc/x-ui
 cd /root
 rm -rf /root/dnstt
+rm -rf go
 rm -rf /root/iodine-0.7.0
 mita stop
 systemctl stop mita
