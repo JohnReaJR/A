@@ -79,6 +79,11 @@ rm -rf /etc/mita
 rm -rf /usr/bin/mita
 rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
+cd /root
+rm -rf .config
+rm -rf snap
+rm -rf .cache
+rm -rf .ssh
 apt-get remove
 apt-get autoremove
 apt-get clean
