@@ -64,8 +64,6 @@ echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=10" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-echo "net.core.default_qdisc=fq
-net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_notsent_lowat=16384" >> /etc/sysctl.conf
 echo "net.ipv4.ip_local_port_range=1024 60999" >> /etc/sysctl.conf
 echo "net.ipv4.udp_rmem_min=4096" >> /etc/sysctl.conf
@@ -81,6 +79,7 @@ echo "net.ipv4.tcp_fin_timeout=60" >> /etc/sysctl.conf
 echo "net.core.optmem_max=20480" >> /etc/sysctl.conf
 echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
+sysctl -w  net.ipv4.tcp_congestion_control=htcp
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
