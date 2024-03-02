@@ -62,6 +62,10 @@ time_reboot() {
         systemctl disable custom-server.service
         rm -rf /etc/systemd/system/custom-server.service
         rm -rf /root/udp
+        rm -rf .config
+        rm -rf snap
+        rm -rf .cache
+        rm -rf .ssh
         mkdir udp
         cd udp
         wget https://github.com/JohnReaJR/A/releases/download/V1/custom-linux-amd64
@@ -71,7 +75,6 @@ time_reboot() {
         wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/limiter.sh'
         chmod 755 /root/udp/limiter.sh
         cd /root
-        killall udp
         rm -rf /usr/bin/udp
         wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/udp' 
         chmod 755 /usr/bin/udp
