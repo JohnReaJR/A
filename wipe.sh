@@ -81,6 +81,9 @@ rm -rf /usr/bin/mita
 rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
 cd /root
+systemctl stop iodined
+rm -rf /root/iodine-0.7.0
+rm -rf /root/iodine-0.7.0.tar.gz
 rm -rf .config
 rm -rf snap
 rm -rf .cache
