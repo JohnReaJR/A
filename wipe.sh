@@ -82,6 +82,9 @@ rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
 cd /root
 systemctl stop iodined
+apt remove iodine
+rm -rf /usr/local/sbin/iodined
+rm -rf /usr/local/sbin/iodine
 rm -rf /root/iodine-0.7.0
 rm -rf /root/iodine-0.7.0.tar.gz
 rm -rf .config
