@@ -40,6 +40,22 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "   💚 Installing UDP REQUEST SOCKSIP 💚"
         echo -e "$NC"
+        apt install -y curl
+        apt install -y dos2unix
+        apt install -y neofetch
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/dreko/main/module/module')
+time_reboot() {
+  print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
+  REBOOT_TIMEOUT="$1"
+
+  while [ $REBOOT_TIMEOUT -gt 0 ]; do
+    print_center -ne "-$REBOOT_TIMEOUT-\r"
+    sleep 1
+    : $((REBOOT_TIMEOUT--))
+  done
+  reboot
+}
+        #Get Files
         systemctl stop request-server.service
         systemctl disable request-server.service
         rm -rf /etc/systemd/system/request-server.service
