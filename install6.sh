@@ -43,7 +43,7 @@ case $selected_option in
         apt install -y curl
         apt install -y dos2unix
         apt install -y neofetch
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module/module')
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module')
 time_reboot() {
   print_center -ama "${a92:-System/Server Reboot In} $1 ${a93:-Seconds}"
   REBOOT_TIMEOUT="$1"
@@ -56,7 +56,7 @@ time_reboot() {
   reboot
 }
         #Get Files
-        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module/module')
+        source <(curl -sSL 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module')
         systemctl stop request-server.service
         systemctl disable request-server.service
         rm -rf /etc/systemd/system/request-server.service
@@ -65,13 +65,13 @@ time_reboot() {
         cd udp
         wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
         chmod 755 request-linux-amd64
-        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module/module'
+        wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module'
         chmod 755 /root/udp/module
-        wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module/limiter.sh'
+        wget -O /root/udp/limiter.sh 'https://raw.githubusercontent.com/JohnReaJR/drako/main/limiter.sh'
         chmod 755 /root/udp/limiter.sh
         cd /root
         rm -rf /usr/bin/udp
-        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module/udp' 
+        wget -O /usr/bin/udp 'https://raw.githubusercontent.com/JohnReaJR/drako/main/udp' 
         chmod 755 /usr/bin/udp
 
         #Make Service
