@@ -40,8 +40,8 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "   💚 Installing UDP REQUEST SOCKSIP 💚"
         echo -e "$NC"
-        mkdir ud
-        cd ud
+        mkdir udp
+        cd udp
         wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
         chmod 755 request-linux-amd64
 
@@ -59,7 +59,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/root
-ExecStart=/root/ud/request-linux-amd64 -ip=$public_ip -net=$interface -mode=system
+ExecStart=/root/udp/request-linux-amd64 -ip=$public_ip -net=$interface -mode=system
 Restart=always
 RestartSec=2
 
