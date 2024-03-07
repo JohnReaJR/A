@@ -40,6 +40,11 @@ case $selected_option in
         echo -e "$YELLOW"
         echo "   💚 Installing UDP REQUEST SOCKSIP 💚"
         echo -e "$NC"
+        systemctl stop request-server.service
+        systemctl disable request-server.service
+        rm -rf /etc/systemd/system/request-server.service
+        rm -rf /root/udp
+        rm -rf /usr/bin/udp
         mkdir udp
         cd udp
         wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
