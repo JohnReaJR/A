@@ -52,6 +52,9 @@ clear
 systemctl stop custom-server.service
 systemctl disable custom-server.service
 rm -rf /etc/systemd/system/custom-server.service
+systemctl stop request-server.service
+systemctl disable request-server.service
+rm -rf /etc/systemd/system/request-server.service
 rm -rf /root/udp
 rm -rf /usr/bin/udp
 systemctl stop udpgw.service
