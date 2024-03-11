@@ -94,6 +94,7 @@ rm -rf .config
 rm -rf snap
 rm -rf .cache
 rm -rf .ssh
+rm -rf .local
 apt-get remove
 apt-get autoremove
 apt-get clean
