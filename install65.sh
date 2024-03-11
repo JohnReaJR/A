@@ -75,6 +75,12 @@ EOF
         echo "     💚 P2P SERVICE INITIALIZED 💚     "
         echo "     ╰┈➤💚 Badvpn Activated 💚         "
         echo -e "$NC"
+        #mieru services
+        iptables -A INPUT -p tcp --dport 10000 -j ACCEPT
+        iptables -t nat -A PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport 10000 -j DNAT --to-destination :10000
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         cd /root
         mita stop
         systemctl stop mita
