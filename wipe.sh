@@ -85,6 +85,8 @@ rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
 cd /root
 rm -rf dns2tcp
+rm -rf /var/empty/dns2tcp/
+rm -rf /var/empty
 apt-get remove dns2tcp
 apt-get remove --auto-remove dns2tcp
 apt-get purge dns2tcp
