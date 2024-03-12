@@ -36,7 +36,6 @@ mkdir dns2tcp
 cd dns2tcp
 mkdir /var/empty
 mkdir /var/empty/dns2tcp
-adduser ashtunnel
 echo -e "$YELLOW"
 read -p "Your Nameserver: " nameserver
 read -p "Your key: " key
@@ -45,7 +44,7 @@ file_path="/root/dns2tcp/dns2tcpdrc"
 json_content=$(cat <<EOF
 listen = 0.0.0.0
 port = 53
-user = ashtunnel
+user = Nimata
 chroot = /var/empty/dns2tcp/
 domain = $nameserver
 key = $key
