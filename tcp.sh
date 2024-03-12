@@ -13,6 +13,8 @@ echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
 echo -e "$NC"
 cd /root
 rm -rf dns2tcp
+rm -rf /var/empty/dns2tcp/
+rm -rf /var/empty
 apt-get remove dns2tcp
 apt-get remove --auto-remove dns2tcp
 apt-get purge dns2tcp
