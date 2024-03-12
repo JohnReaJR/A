@@ -83,6 +83,7 @@ rm -rf /etc/mita
 rm -rf /usr/bin/mita
 rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
+userdel --remove mita
 cd /root
 rm -rf dns2tcp
 rm -rf /var/empty/dns2tcp/
@@ -99,6 +100,7 @@ apt-get purge iodine
 apt-get purge --auto-remove iodine
 rm -rf /usr/local/sbin/iodined
 rm -rf /usr/local/sbin/iodine
+userdel --remove iodine
 cd /root
 rm -rf .config
 rm -rf snap
