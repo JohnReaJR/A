@@ -11,15 +11,12 @@ echo -e "$YELLOW"
 echo "          💚 DNS2TCP INSTALLATION SCRIPT 💚    "
 echo "        ╰┈➤💚 Installing DNSTT Binaries 💚          "
 echo -e "$NC"
-iptables -I INPUT -p udp --dport 5300 -j ACCEPT
-iptables -t nat -I PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 53 -j REDIRECT --to-ports 5300
-ip6tables -I INPUT -p udp --dport 5300 -j ACCEPT
-ip6tables -t nat -I PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p udp --dport 53 -j REDIRECT --to-ports 5300
-netfilter-persistent save
-netfilter-persistent reload
-netfilter-persistent start
 cd /root
+rm -rf dns2tcp
 apt-get remove dns2tcp
+apt-get remove --auto-remove dns2tcp
+apt-get purge dns2tcp
+apt-get purge --auto-remove dns2tcp
 apt-get install dns2tcp
 echo -e "$YELLOW"
 read -p "In this step, you will uncomment DNS and write DNS=1.1.1.1 and uncomment DNSStubListener and write DNSStubListener=no"
