@@ -43,7 +43,7 @@ user = Nimata
 chroot = /var/empty/dns2tcp/
 domain = $nameserver
 key = $key
-resources = ssh:127.0.0.1:22
+resources = ssh:127.0.0.1:22,socks:127.0.0.1:1082,http:127.0.0.1:3128
 EOF
 )
 echo "$json_content" > "$file_path"
