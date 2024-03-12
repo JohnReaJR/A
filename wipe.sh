@@ -84,6 +84,12 @@ rm -rf /usr/bin/mita
 rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
 cd /root
+rm -rf dns2tcp
+apt-get remove dns2tcp
+apt-get remove --auto-remove dns2tcp
+apt-get purge dns2tcp
+apt-get purge --auto-remove dns2tcp
+cd /root
 systemctl stop iodined
 apt-get remove iodine
 apt-get remove --auto-remove iodine
