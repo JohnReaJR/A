@@ -111,6 +111,8 @@ apt-get remove
 apt-get autoremove
 apt-get clean
 apt-get autoclean
+cd /root
+systemctl daemon-reload
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
