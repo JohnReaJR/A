@@ -23,8 +23,8 @@ echo "net.ipv4.ip_forward=1
 net.ipv4.conf.all.rp_filter=0
 net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0" >> /etc/sysctl.conf
 sysctl -p
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
+sysctl -w net.core.rmem_max=83886080
+sysctl -w net.core.wmem_max=83886080
 sysctl -w net.ipv4.tcp_rmem=8192
 sysctl -w net.ipv4.tcp_wmem=8192
 sysctl -w net.core.rmem_default=83886080
@@ -50,8 +50,8 @@ sysctl -w net.ipv4.udp_rmem_min=4096
 sysctl -w net.ipv4.udp_wmem_min=4096
 sysctl -w net.core.optmem_max=20480
 sysctl -w net.ipv4.tcp_slow_start_after_idle=1
-echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
-echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
+echo "net.core.rmem_max=83886080" >> /etc/sysctl.conf
+echo "net.core.wmem_max=83886080" >> /etc/sysctl.conf
 echo "net.core.rmem_default=83886080" >> /etc/sysctl.conf
 echo "net.core.wmem_default=83886080" >> /etc/sysctl.conf
 echo "net.core.default_qdisc=fq
