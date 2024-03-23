@@ -39,7 +39,7 @@ sysctl -w net.ipv4.neigh.default.gc_thresh1=5100
 sysctl -w net.ipv4.neigh.default.gc_interval=1000000000
 sysctl -w net.ipv4.neigh.default.gc_stale_time=7200000
 sysctl -w net.ipv4.neigh.default.base_reachable_time_ms=2147483647
-
+sysctl -w net.ipv4.tcp_syn_retries=3
 
 
 /////
@@ -88,7 +88,7 @@ echo "net.ipv4.neigh.default.gc_interval=1000000000" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_stale_time=7200000" >> /etc/sysctl.conf
 
 echo "net.ipv4.neigh.default.base_reachable_time_ms=2147483647" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_syn_retries=3" >> /etc/sysctl.conf
 
 
 echo "vm.swappiness=10" >> /etc/sysctl.conf
