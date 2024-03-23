@@ -41,7 +41,9 @@ sysctl -w net.ipv4.neigh.default.gc_stale_time=7200000
 sysctl -w net.ipv4.neigh.default.base_reachable_time_ms=2147483647
 sysctl -w net.ipv4.tcp_syn_retries=3
 sysctl -w net.ipv4.tcp_reordering=5
-
+sysctl -w net.ipv4.tcp_fack=1
+sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1
+sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1
 
 
 /////
@@ -82,21 +84,22 @@ echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
 /////
 echo "net.ipv4.conf.all.arp_ignore=1" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_thresh3=5300" >> /etc/sysctl.conf
-
 echo "net.ipv4.neigh.default.gc_thresh2=5200" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_thresh1=5100" >> /etc/sysctl.conf
-
 echo "net.ipv4.neigh.default.gc_interval=1000000000" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_stale_time=7200000" >> /etc/sysctl.conf
-
 echo "net.ipv4.neigh.default.base_reachable_time_ms=2147483647" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_syn_retries=3" >> /etc/sysctl.conf
-
-
 echo "net.ipv4.tcp_reordering=5" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_fack=1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_echo_ignore_broadcasts=1" >> /etc/sysctl.conf
+echo "net.ipv4.icmp_ignore_bogus_error_responses=1" >> /etc/sysctl.conf
+
+echo "vm.swappiness=10" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
 
-
+echo "vm.swappiness=10" >> /etc/sysctl.conf
+echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
 
 /////
 echo "net.ipv4.tcp_notsent_lowat=16384" >> /etc/sysctl.conf
