@@ -31,7 +31,6 @@ sysctl -w net.core.rmem_default=83886080
 sysctl -w net.core.wmem_default=83886080
 sysctl -w vm.swappiness=10
 sysctl -w vm.dirty_ratio=60
-/////
 sysctl -w net.ipv4.conf.all.arp_ignore=1
 sysctl -w net.ipv4.neigh.default.gc_thresh3=5300
 sysctl -w net.ipv4.neigh.default.gc_thresh2=5200
@@ -44,9 +43,6 @@ sysctl -w net.ipv4.tcp_reordering=5
 sysctl -w net.ipv4.tcp_fack=1
 sysctl -w net.ipv4.icmp_echo_ignore_broadcasts=1
 sysctl -w net.ipv4.icmp_ignore_bogus_error_responses=1
-
-
-/////
 sysctl -w vm.dirty_background_ratio=2
 sysctl -w net.ipv4.tcp_notsent_lowat=16384
 sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
@@ -55,9 +51,9 @@ sysctl -w net.netfilter.nf_conntrack_max=1048576
 sysctl -w net.ipv4.tcp_max_syn_backlog=4096
 sysctl -w net.ipv4.tcp_synack_retries=2
 sysctl -w net.ipv4.tcp_syncookies=1
-sysctl -w net.ipv4.tcp_keepalive_time=300
-sysctl -w net.ipv4.tcp_keepalive_probes=9
-sysctl -w net.ipv4.tcp_keepalive_intvl=15
+sysctl -w net.ipv4.tcp_keepalive_time=6
+sysctl -w net.ipv4.tcp_keepalive_probes=10
+sysctl -w net.ipv4.tcp_keepalive_intvl=1
 sysctl -w net.ipv4.tcp_rfc1337=1
 sysctl -w net.ipv4.tcp_adv_win_scale=3
 sysctl -w net.core.netdev_budget=500
@@ -81,7 +77,6 @@ echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=10" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-/////
 echo "net.ipv4.conf.all.arp_ignore=1" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_thresh3=5300" >> /etc/sysctl.conf
 echo "net.ipv4.neigh.default.gc_thresh2=5200" >> /etc/sysctl.conf
@@ -94,23 +89,15 @@ echo "net.ipv4.tcp_reordering=5" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_fack=1" >> /etc/sysctl.conf
 echo "net.ipv4.icmp_echo_ignore_broadcasts=1" >> /etc/sysctl.conf
 echo "net.ipv4.icmp_ignore_bogus_error_responses=1" >> /etc/sysctl.conf
-
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-
-/////
 echo "net.ipv4.tcp_notsent_lowat=16384" >> /etc/sysctl.conf
 echo "net.ipv4.ip_local_port_range=1024 65000" >> /etc/sysctl.conf
 echo "net.ipv4.udp_rmem_min=4096" >> /etc/sysctl.conf
 echo "net.ipv4.udp_wmem_min=4096" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_synack_retries=2" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_syncookies=1" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_keepalive_time=300" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_keepalive_probes=9" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_keepalive_intvl=15" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_time=6" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_probes=10" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_keepalive_intvl=1" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_slow_start_after_idle=0" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_rfc1337=1" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_fin_timeout=25" >> /etc/sysctl.conf
