@@ -77,6 +77,26 @@ echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
 echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
 echo "vm.swappiness=10" >> /etc/sysctl.conf
 echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
+/////
+echo "net.ipv4.conf.all.arp_ignore=1" >> /etc/sysctl.conf
+echo "net.ipv4.neigh.default.gc_thresh3=5300" >> /etc/sysctl.conf
+
+echo "net.ipv4.neigh.default.gc_thresh2=5200" >> /etc/sysctl.conf
+echo "net.ipv4.neigh.default.gc_thresh1=5100" >> /etc/sysctl.conf
+
+echo "net.ipv4.neigh.default.gc_interval=1000000000" >> /etc/sysctl.conf
+echo "net.ipv4.neigh.default.gc_stale_time=7200000" >> /etc/sysctl.conf
+
+echo "net.ipv4.neigh.default.base_reachable_time_ms=2147483647" >> /etc/sysctl.conf
+echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
+
+
+echo "vm.swappiness=10" >> /etc/sysctl.conf
+echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
+
+
+
+/////
 echo "net.ipv4.tcp_notsent_lowat=16384" >> /etc/sysctl.conf
 echo "net.ipv4.ip_local_port_range=1024 65000" >> /etc/sysctl.conf
 echo "net.ipv4.udp_rmem_min=4096" >> /etc/sysctl.conf
