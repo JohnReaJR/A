@@ -31,6 +31,18 @@ sysctl -w net.core.rmem_default=83886080
 sysctl -w net.core.wmem_default=83886080
 sysctl -w vm.swappiness=10
 sysctl -w vm.dirty_ratio=60
+/////
+sysctl -w net.ipv4.conf.all.arp_ignore=1
+sysctl -w net.ipv4.neigh.default.gc_thresh3=5300
+sysctl -w net.ipv4.neigh.default.gc_thresh2=5200
+sysctl -w net.ipv4.neigh.default.gc_thresh1=5100
+sysctl -w net.ipv4.neigh.default.gc_interval=1000000000
+sysctl -w net.ipv4.neigh.default.gc_stale_time=7200000
+sysctl -w net.ipv4.neigh.default.base_reachable_time_ms=2147483647
+
+
+
+/////
 sysctl -w vm.dirty_background_ratio=2
 sysctl -w net.ipv4.tcp_notsent_lowat=16384
 sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
