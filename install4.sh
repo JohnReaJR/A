@@ -65,7 +65,8 @@
         netfilter-persistent reload
         netfilter-persistent start
         echo -e "$YELLOW"
-        echo "💚   TCP SUCCESSFULLY INSTALLED   💚 "
+        echo "    💚 TCP INSTALLATION DONE💚   "
+        echo "    ╰┈➤💚 TCP Running 💚       "
         echo -e "$NC"
         exit 1
         ;;
