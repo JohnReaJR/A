@@ -124,13 +124,13 @@ verb 3' > /etc/openvpn/server2.conf
 
 sed -i "s|PORT_TCP|$PORT_TCP|g" /etc/openvpn/server2.conf
 
-cis_freez >/etc/openvpn/login/config.sh
+cat <<EOF >/etc/openvpn/login/config.sh
 #!/bin/bash
 HOST='DBHOST'
 USER='DBUSER'
 PASS='DBPASS'
 DB='DBNAME'
--uF
+EOF
 
 sed -i "s|DBHOST|$HOST|g" /etc/openvpn/login/config.sh
 sed -i "s|DBUSER|$USER|g" /etc/openvpn/login/config.sh
