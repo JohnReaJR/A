@@ -1,4 +1,10 @@
 #!/bin/bash
+HOST='195.35.10.163'
+USER='Nimata'
+PASS='Nimata'
+DBNAME='Nimata'
+PORT_TCP='1194'
+PORT_UDP='53'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 if [ "$(whoami)" != "root" ]; then
@@ -16,14 +22,6 @@ apt-get remove
 apt-get autoremove
 apt-get clean
 apt-get autoclean
-#!/bin/bash
-#Script Variables
-HOST='195.35.10.163';
-USER='Nimata';
-PASS='Nimata';
-DBNAME='Nimata';
-PORT_TCP='1194';
-PORT_UDP='53';
 #INSTALL OVPN
 apt install openvpn
 mkdir -p /etc/openvpn/easy-rsa/keys
