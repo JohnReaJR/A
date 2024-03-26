@@ -12,7 +12,7 @@
         clear
         echo -e "$YELLOW"
         echo "          💚 TCP INSTALLATION SCRIPT 💚    "
-        echo "        ╰┈➤💚 Installing TCP Binaries 💚          "
+        echo "          ╰┈➤💚 Installing TCP 💚        "
         echo -e "$NC"
         while true; do
             echo -e "$YELLOW"
