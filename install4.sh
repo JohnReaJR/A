@@ -14,37 +14,6 @@
         echo "          💚 TCP INSTALLATION SCRIPT 💚    "
         echo "        ╰┈➤💚 Installing TCP Binaries 💚          "
         echo -e "$NC"
-        apt-get update && apt-get upgrade
-        apt update && apt upgrade
-        iptables -P INPUT ACCEPT
-        iptables -P FORWARD ACCEPT
-        iptables -P OUTPUT ACCEPT
-        iptables -F
-        iptables -X 
-        iptables -Z
-        iptables -t nat -F
-        iptables -t nat -X
-        iptables -t mangle -F
-        iptables -t mangle -X
-        iptables -t raw -F
-        iptables -t raw -X
-        apt-get install iptables
-        apt-get install iptables-persistent
-        ip6tables -P INPUT ACCEPT
-        ip6tables -P FORWARD ACCEPT
-        ip6tables -P OUTPUT ACCEPT
-        ip6tables -F
-        ip6tables -X 
-        ip6tables -Z
-        ip6tables -t nat -F
-        ip6tables -t nat -X
-        ip6tables -t mangle -F
-        ip6tables -t mangle -X
-        ip6tables -t raw -F
-        ip6tables -t raw -X
-        echo -e "$YELLOW"
-        echo "TCP...INSTALLING"
-        echo -e "$NC"
         while true; do
             echo -e "$YELLOW"
             read -p "Remote HTTP Port : " http_port
@@ -96,7 +65,7 @@
         netfilter-persistent reload
         netfilter-persistent start
         echo -e "$YELLOW"
-        echo "TCP SUCCESSFULLY INSTALLED"
+        echo "💚   TCP SUCCESSFULLY INSTALLED   💚 "
         echo -e "$NC"
         exit 1
         ;;
