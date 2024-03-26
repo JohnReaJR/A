@@ -393,9 +393,6 @@ sed -i "s|TCP_PORT|$PORT_TCP|g" /root/.ports
 sed -i "s|UDP_PORT|$PORT_UDP|g" /root/.ports
 sed -i "s|PORT_SSL|$PORT_SSL|g" /root/.ports
 
-  }&>/dev/null
-}
-
 start_service () {
 clear
 echo 'Starting..'
@@ -406,7 +403,7 @@ sudo crontab -l | { echo "* * * * * pgrep -x stunnel4 >/dev/null && echo 'GOOD' 
 * * * * * /bin/bash /etc/.hysteria >/dev/null 2>&1
 * * * * * /bin/bash /etc/.monitor openvpn >/dev/null 2>&1"; } | crontab -
 sudo systemctl restart cron
-} &>/dev/null
+}
 clear
 server_ip=$(curl -s https://api.ipify.org)
 server_interface=$(ip route get 8.8.8.8 | awk '/dev/ {f=NR} f&&NR-1==f' RS=" ")
