@@ -410,7 +410,4 @@ sudo systemctl restart cron
 clear
 server_ip=$(curl -s https://api.ipify.org)
 server_interface=$(ip route get 8.8.8.8 | awk '/dev/ {f=NR} f&&NR-1==f' RS=" ")
-
-install_require  
-install_openvpn
-start_service
+exit 1
