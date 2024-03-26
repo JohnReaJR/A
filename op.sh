@@ -373,16 +373,9 @@ chmod 755 /etc/openvpn/login/config.sh
 chmod 755 /etc/openvpn/login/auth_vpn
 }&>/dev/null
 }
-
-mkdir -m 777 /root/.web
-echo "Made with love by: MediatekVpn Developer... " >> /root/.web/index.php
-
 echo "tcp_port=TCP_PORT
 udp_port=UDP_PORT
 socket_port=80
-squid_port=8080
-hysteria_port=5666
-tcp_ssl_port=PORT_SSL
 udp_ssl_port=444" >> /root/.ports
 
 sed -i "s|TCP_PORT|$PORT_TCP|g" /root/.ports
@@ -395,8 +388,6 @@ echo 'Starting..'
 {
 
 sudo crontab -l | { echo "* * * * * pgrep -x stunnel4 >/dev/null && echo 'GOOD' || /etc/init.d/stunnel4 restart
-* * * * * /bin/bash /etc/.ws >/dev/null 2>&1
-* * * * * /bin/bash /etc/.hysteria >/dev/null 2>&1
 * * * * * /bin/bash /etc/.monitor openvpn >/dev/null 2>&1"; } | crontab -
 sudo systemctl restart cron
 }
