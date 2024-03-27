@@ -1,0 +1,49 @@
+#!/bin/bash
+YELLOW='\033[1;33m'
+NC='\033[0m'
+if [ "$(whoami)" != "root" ]; then
+    echo "Error: This script must be run as root."
+    exit 1
+fi
+cd /root
+clear
+echo -e "$YELLOW"
+echo "          💚 IPTABLES....SETTING UP YOUR FIREWALL 💚    "
+echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
+echo -e "$NC"
+cd /root
+apt-get remove
+apt-get autoremove
+apt-get clean
+apt-get autoclean
+rm -f /etc/sysctl.conf
+sysctl net.ipv4.conf.all.rp_filter=0
+sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
+echo "net.ipv4.ip_forward=1
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0" >> /etc/sysctl.conf
+sysctl -p
+sysctl -w net.core.rmem_max=16777216
+sysctl -w net.core.wmem_max=16777216
+sysctl -w net.core.rmem_default=83886080
+sysctl -w net.core.wmem_default=83886080
+sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
+sysctl -w net.core.netdev_max_backlog=65536
+sysctl -w net.netfilter.nf_conntrack_max=1048576
+sysctl -w net.ipv4.tcp_max_syn_backlog=4096
+sysctl -w net.core.somaxconn=65535
+echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
+echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
+echo "net.core.rmem_default=83886080" >> /etc/sysctl.conf
+echo "net.core.wmem_default=83886080" >> /etc/sysctl.conf
+echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
+echo "net.netfilter.nf_conntrack_max=1048576" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_max_tw_buckets=1440000" >> /etc/sysctl.conf
+echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
+sysctl -p /etc/sysctl.conf
+echo -e "$YELLOW"
+echo "           💚 FIREWALL CONFIGURED 💚      "
+echo "              ╰┈➤💚 Active 💚             "
+echo -e "$NC"
+exit 1
