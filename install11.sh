@@ -43,6 +43,7 @@ case $selected_option in
         echo -e "$NC"
         systemctl stop hysteria-server.service
         rm -f /etc/systemd/system/hysteria-server.service
+        systemctl disable hysteria-server.service
         rm -rf /root/hy
         mkdir hy
         cd hy
