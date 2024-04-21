@@ -25,8 +25,8 @@ net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).r
 sysctl -p
 sysctl -w net.core.rmem_max=8388608
 sysctl -w net.core.wmem_max=8388608
-sysctl -w net.ipv4.tcp_rmem=8192
-sysctl -w net.ipv4.tcp_wmem=8192
+sysctl -w net.ipv4.tcp_rmem=4096
+sysctl -w net.ipv4.tcp_wmem=4096
 sysctl -w net.core.rmem_default=8388608
 sysctl -w net.core.wmem_default=8388608
 sysctl -w vm.swappiness=10
