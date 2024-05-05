@@ -11,21 +11,12 @@ echo -e "$YELLOW"
 echo "          💚 IPTABLES....SETTING UP YOUR FIREWALL 💚    "
 echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
-apt-get update && apt-get upgrade
-apt update && apt upgrade
-apt install wget
-apt install net-tools
-ufw disable
-apt-get remove ufw
-apt-get remove --auto-remove ufw
-apt-get purge ufw
-apt-get purge --auto-remove ufw
+cd /root
 apt-get remove
 apt-get autoremove
 apt-get clean
 apt-get autoclean
-cd /root
-rm -rf /etc/sysctl.conf
+rm -f /etc/sysctl.conf
 sysctl net.ipv4.conf.all.rp_filter=0
 sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
 echo "net.ipv4.ip_forward=1
@@ -36,8 +27,9 @@ sysctl -w net.core.rmem_max=16777216
 sysctl -w net.core.wmem_max=16777216
 sysctl -w net.ipv4.tcp_rmem=8192
 sysctl -w net.ipv4.tcp_wmem=8192
-sysctl -w net.core.rmem_default=83886080
-sysctl -w net.core.wmem_default=83886080
+sysctl -w net.core.rmem_default=8388608
+sysctl -w net.core.wmem_default=8388608
+sysctl -w net.ipv4.tcp_congestion_control=htcp
 sysctl -w vm.swappiness=10
 sysctl -w vm.dirty_ratio=60
 sysctl -w vm.dirty_background_ratio=2
@@ -62,8 +54,8 @@ sysctl -w net.core.optmem_max=20480
 sysctl -w net.ipv4.tcp_slow_start_after_idle=1
 echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
 echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
-echo "net.core.rmem_default=83886080" >> /etc/sysctl.conf
-echo "net.core.wmem_default=83886080" >> /etc/sysctl.conf
+echo "net.core.rmem_default=8388608" >> /etc/sysctl.conf
+echo "net.core.wmem_default=8388608" >> /etc/sysctl.conf
 echo "net.ipv4.tcp_congestion_control=htcp" >> /etc/sysctl.conf
 echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
 echo "net.netfilter.nf_conntrack_max=1048576" >> /etc/sysctl.conf
@@ -89,8 +81,6 @@ echo "net.ipv4.tcp_fin_timeout=60" >> /etc/sysctl.conf
 echo "net.core.optmem_max=20480" >> /etc/sysctl.conf
 echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
 sysctl -p /etc/sysctl.conf
-sysctl -w net.ipv4.tcp_congestion_control=htcp
-systemctl daemon-reload
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
