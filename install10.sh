@@ -84,7 +84,7 @@ time_reboot() {
 {
   "listen": ":443",
   "stream_buffer": 16777216,
-  "receive_buffer": 33554432,
+  "receive_buffer": 83886080,
   "auth": {
     "mode": "passwords"
   }
