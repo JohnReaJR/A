@@ -102,6 +102,7 @@ rm -rf /usr/local/sbin/iodined
 rm -rf /usr/local/sbin/iodine
 userdel --remove iodine
 cd /root
+rm -rf /root/tcp
 rm -rf .config
 rm -rf snap
 rm -rf .cache
