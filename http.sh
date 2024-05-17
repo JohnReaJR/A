@@ -60,8 +60,8 @@
         netfilter-persistent start
         fi
         cd /root
-        mkdir tcp
         rm -rf /root/tcp
+        mkdir tcp
         cd tcp
         http_script="/root/tcp/sshProxy_linux_amd64"
         if [ ! -e "$http_script" ]; then
