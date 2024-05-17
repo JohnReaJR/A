@@ -26,7 +26,11 @@
                 echo -e "$NC"
             fi
         done
-        while true; do
+        echo -e "$YELLOW"
+        read -p "Bind multiple TCP Ports? (y/n): " bind
+        echo -e "$NC"
+        if [ "$bind" = "y" ]; then
+            while true; do
             echo -e "$YELLOW"
             read -p "Binding TCP Ports : from port : " first_number
             echo -e "$NC"
@@ -50,8 +54,8 @@
                 echo -e "$NC"
             fi
         done
-        cd /root
-        rm -rf /root/tcp
+        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
+        fi
         mkdir tcp
         cd tcp
         http_script="/root/tcp/sshProxy_linux_amd64"
@@ -60,10 +64,11 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
-        netfilter-persistent save
-        netfilter-persistent reload
-        netfilter-persistent start
+        lsof -i :"$http_port"
+        echo -e "$YELLOW"
+        echo "HTTP Proxy installed successfully"
+        echo -e "$NC"
+        exit 1
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
