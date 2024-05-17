@@ -55,8 +55,13 @@
             fi
         done
         iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         fi
+        cd /root
         mkdir tcp
+        rm -rf /root/tcp
         cd tcp
         http_script="/root/tcp/sshProxy_linux_amd64"
         if [ ! -e "$http_script" ]; then
@@ -64,11 +69,6 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        lsof -i :"$http_port"
-        echo -e "$YELLOW"
-        echo "HTTP Proxy installed successfully"
-        echo -e "$NC"
-        exit 1
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
