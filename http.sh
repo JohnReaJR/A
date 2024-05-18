@@ -16,7 +16,7 @@
         echo -e "$NC"
         while true; do
             echo -e "$YELLOW"
-            read -p "Remote HTTP Port : " $http_port
+            read -p "Remote HTTP Port : " http_port
             echo -e "$NC"
             if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
                 break
