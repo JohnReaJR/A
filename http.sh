@@ -26,41 +26,6 @@
                 echo -e "$NC"
             fi
         done
-        echo -e "$YELLOW"
-        read -p "Bind multiple TCP Ports? (y/n): " bind
-        echo -e "$NC"
-        if [ "$bind" = "y" ]; then
-            while true; do
-            echo -e "$YELLOW"
-            read -p "Binding TCP Ports : from port : " first_number
-            echo -e "$NC"
-            if is_number "$first_number" && [ "$first_number" -ge 1 ] && [ "$first_number" -le 65534 ]; then
-                break
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number between 1 and 65534."
-                echo -e "$NC"
-            fi
-        done
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Binding TCP Ports : from port : $first_number to port : " second_number
-            echo -e "$NC"
-            if is_number "$second_number" && [ "$second_number" -gt "$first_number" ] && [ "$second_number" -lt 65536 ]; then
-                break
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number greater than $first_number and less than 65536."
-                echo -e "$NC"
-            fi
-        done
-        if [ "$bind" = "n" ]; then
-            while true; do
-            echo -e "$YELLOW"
-            read -p "Port Hopping Disabled"
-            echo -e "$NC"
-            iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
-        done
         cd /root
         rm -rf /root/tcp
         mkdir tcp
@@ -71,7 +36,7 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
+        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
         iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
         netfilter-persistent save
         netfilter-persistent reload
@@ -81,3 +46,5 @@
         echo "    ╰┈➤💚 TCP Running 💚       "
         echo -e "$NC"
         exit 1
+        ;;
+esac
