@@ -57,7 +57,7 @@
         if [ "$bind" = "n" ]; then
             while true; do
         cd /root
-        iptables -t nat -A PREROUTING -p tcp --dport $http_port -j REDIRECT --to-port $http_port
+        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
         fi
         cd /root
         rm -rf /root/tcp
@@ -69,9 +69,8 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port $http_port
-        iptables -A INPUT -p tcp --dport $http_port -j ACCEPT
-
+        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
+        iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
