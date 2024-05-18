@@ -57,7 +57,6 @@
         while false; do
             cd /root
             iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
-            fi
         done
         cd /root
         rm -rf /root/tcp
