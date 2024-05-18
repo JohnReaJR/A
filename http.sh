@@ -16,7 +16,7 @@
         echo -e "$NC"
         while true; do
             echo -e "$YELLOW"
-            read -p "Remote HTTP Port : " http_port
+            read -p "Remote HTTP Port : " $http_port
             echo -e "$NC"
             if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
                 break
@@ -54,13 +54,6 @@
                 echo -e "$NC"
             fi
         done
-        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port $http_port
-        iptables -A INPUT -p tcp --dport $http_port -j ACCEPT
-        iptables -t nat -A PREROUTING -p tcp --dport $http_port -j REDIRECT --to-port $http_port
-        netfilter-persistent save
-        netfilter-persistent reload
-        netfilter-persistent start
-        fi
         cd /root
         rm -rf /root/tcp
         mkdir tcp
@@ -71,6 +64,12 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+        iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port $http_port
+        iptables -A INPUT -p tcp --dport $http_port -j ACCEPT
+        iptables -t nat -A PREROUTING -p tcp --dport $http_port -j REDIRECT --to-port $http_port
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
