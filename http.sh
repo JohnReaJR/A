@@ -56,7 +56,6 @@
         done
         iptables -t nat -A PREROUTING -p tcp --dport "$first_number":"$second_number" -j REDIRECT --to-port "$http_port"
         iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
-        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
@@ -71,6 +70,10 @@
         fi
         chmod 755 sshProxy_linux_amd64
         screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
