@@ -81,5 +81,4 @@
         echo "    ╰┈➤💚 TCP Running 💚       "
         echo -e "$NC"
         exit 1
-        ;;
 esac
