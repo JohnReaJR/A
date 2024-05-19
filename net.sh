@@ -78,10 +78,20 @@ ipset=/tik-tokapi.com/netflix
 ipset=/tiktokcdn.com/netflix
 ipset=/tiktokv.com/netflix
 EOF
+
+
 # NETFLIX TABLES
 apt-get install ipset
 ipset create netflix   hash:ip hashsize 4096
+apt install selinux-utils
 setenforce  0
+systemctl enable dnsmasq
+systemctl start dnsmasq
+
+
+# Netflix Iptables
+iptables -t nat -N  NETFLIX
+
 
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
