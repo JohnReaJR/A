@@ -52,7 +52,7 @@ ipset=/nflxext.com/netflix
 ipset=/nflximg.com/netflix
 ipset=/nflximg.net/netflix
 ipset=/nflxso.net/netflix
-ipset=/nflxvideo.net/nettlix
+ipset=/nflxvideo.net/netflix
 ipset=/239.255.255.250/netflix
 
 # > TVBAnywhere+
