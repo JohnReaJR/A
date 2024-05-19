@@ -8,67 +8,79 @@ fi
 cd /root
 clear
 echo -e "$YELLOW"
-echo "          💚 IPTABLES....SETTING UP YOUR FIREWALL 💚    "
+echo "          💚 WARP....SETTING UP YOUR FIREWALL 💚    "
 echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
-rm -f /etc/sysctl.conf
+rm -rf /etc/dnsmasq.conf
 sysctl net.ipv4.conf.all.rp_filter=0
-sysctl net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0
-echo "net.ipv4.ip_forward=1
-net.ipv4.conf.all.rp_filter=0
-net.ipv4.conf.$(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1).rp_filter=0" > /etc/sysctl.conf
-sysctl -p
-sysctl -w net.core.rmem_max=16777216
-sysctl -w net.core.wmem_max=16777216
-sysctl -w vm.swappiness=10
-sysctl -w vm.dirty_ratio=60
-sysctl -w vm.dirty_background_ratio=2
-sysctl -w net.ipv4.tcp_max_tw_buckets=1440000
-sysctl -w net.core.netdev_max_backlog=65536
-sysctl -w net.netfilter.nf_conntrack_max=1048576
-sysctl -w net.ipv4.tcp_max_syn_backlog=4096
-sysctl -w net.ipv4.tcp_synack_retries=2
-sysctl -w net.ipv4.tcp_syncookies=0
-sysctl -w net.ipv4.ip_local_port_range= 1024 65535
-sysctl -w net.ipv4.tcp_keepalive_time=300
-sysctl -w net.ipv4.tcp_keepalive_probes=5
-sysctl -w net.ipv4.tcp_keepalive_intvl=15
-sysctl -w net.ipv4.tcp_rfc1337=1
-sysctl -w net.ipv4.tcp_fin_timeout=1
-sysctl -w net.ipv4.neigh.default.unres_qlen=101
-sysctl -w net.core.somaxconn=65535
-sysctl -w net.core.optmem_max=25165824
-sysctl -w net.core.default_qdisc=fq_codel
-sysctl -w net.core.dev_weight=64
-sysctl -w net.ipv4.udp_wmem_min=16384
-sysctl -w net.ipv4.tcp_max_orphans=16384
-sysctl -w net.ipv4.tcp_orphan_retries=0
-sysctl -w net.ipv4.tcp_slow_start_after_idle=0
-sysctl -w net.ipv4.tcp_no_metrics_save=0
-sysctl -w net.ipv4.ipfrag_low_thresh=196608
-sysctl -w net.ipv4.ipfrag_time=30
-sysctl -w net.ipv4.tcp_sack=1
-sysctl -w net.ipv4.inet_peer_maxttl=600
-sysctl -w net.ipv4.inet_peer_minttl=120
-sysctl -w net.ipv4.inet_peer_threshold=65664
-sysctl -w net.ipv4.conf.all.accept_source_route=0
-sysctl -w net.ipv4.tcp_congestion_control=htcp
-sysctl -w net.ipv4.neigh.default.proxy_qlen=64
-echo "net.core.rmem_max=16777216" >> /etc/sysctl.conf
-echo "net.core.wmem_max=16777216" >> /etc/sysctl.conf
-echo "net.core.somaxconn=65535" >> /etc/sysctl.conf
-echo "net.netfilter.nf_conntrack_max=1048576" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_max_syn_backlog=4096" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_adv_win_scale=3" >> /etc/sysctl.conf
-echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_max_tw_buckets=1440000" >> /etc/sysctl.conf
-echo "net.core.netdev_budget=500" >> /etc/sysctl.conf
-echo "net.core.netdev_max_backlog=65536" >> /etc/sysctl.conf
-echo "vm.swappiness=10" >> /etc/sysctl.conf
-echo "vm.dirty_ratio=60" >> /etc/sysctl.conf
-echo "vm.dirty_background_ratio=2" >> /etc/sysctl.conf
-sysctl -p /etc/sysctl.conf
+sysctcat >/etc/dnsmasq.conf << EOF
+#!/usr/bin/env bash
+server=8.8.8.8
+server=1.1.1.1
+# ----- WARP ----- #
+# > Youtube Premium
+server=/googlevideo.com/8.8.8.8
+server=/youtube.com/8.8.8.8
+server=/youtubei.googleapis.com/8.8.8.8
+server=/fonts.googleapis.com/8.8.8.8
+server=/yt3.ggpht.com/8.8.8.8
+server=/gstatic.com/8.8.8.8
+
+# > Custom ChatGPT
+ipset=/openai.com/warp
+ipset=/ai.com/warp
+
+# > IP api
+ipset=/ip.sb/warp
+ipset=/ip.gs/warp
+ipset=/ifconfig.co/warp
+ipset=/ip-api.com/warp
+
+# > Custom Website
+ipset=/www.cloudflare.com/warp
+ipset=/googlevideo.com/warp
+ipset=/youtube.com/warp
+ipset=/youtubei.googleapis.com/warp
+ipset=/fonts.googleapis.com/warp
+ipset=/yt3.ggpht.com/warp
+
+# > Netflix
+ipset=/fast.com/warp
+ipset=/netflix.com/warp
+ipset=/netflix.net/warp
+ipset=/nflxext.com/warp
+ipset=/nflximg.com/warp
+ipset=/nflximg.net/warp
+ipset=/nflxso.net/warp
+ipset=/nflxvideo.net/warp
+ipset=/239.255.255.250/warp
+
+# > TVBAnywhere+
+ipset=/uapisfm.tvbanywhere.com.sg/warp
+
+# > Disney+
+ipset=/bamgrid.com/warp
+ipset=/disney-plus.net/warp
+ipset=/disneyplus.com/warp
+ipset=/dssott.com/warp
+ipset=/disneynow.com/warp
+ipset=/disneystreaming.com/warp
+ipset=/cdn.registerdisney.go.com/warp
+
+# > TikTok
+ipset=/byteoversea.com/warp
+ipset=/ibytedtos.com/warp
+ipset=/ipstatp.com/warp
+ipset=/muscdn.com/warp
+ipset=/musical.ly/warp
+ipset=/tiktok.com/warp
+ipset=/tik-tokapi.com/warp
+ipset=/tiktokcdn.com/warp
+ipset=/tiktokv.com/warp
+EOF
+
+
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
