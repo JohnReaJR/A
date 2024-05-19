@@ -12,7 +12,6 @@ echo "          💚 WARP....SETTING UP YOUR FIREWALL 💚    "
 echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
-systemctl stop systemd-resolved
 apt-get install dnsmasq
 apt-get install dnsutils
 apt-get install ipset
@@ -87,6 +86,7 @@ EOF
 
 
 # NETFLIX TABLES
+systemctl stop systemd-resolved
 systemctl disable systemd-resolved
 systemctl enable dnsmasq
 systemctl start dnsmasq
