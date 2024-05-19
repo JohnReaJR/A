@@ -12,11 +12,17 @@ echo "          💚 WARP....SETTING UP YOUR FIREWALL 💚    "
 echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
+apt-get install dnsmasq
+apt-get install dnsutils
+apt-get install ipset
+apt install selinux-utils
 rm -rf /etc/dnsmasq.conf
   cat >/etc/dnsmasq.conf << EOF
 #!/usr/bin/env bash
 server=8.8.8.8
-server=1.1.1.1
+server=8.8.4.4
 # ----- WARP ----- #
 # > Youtube Premium
 server=/googlevideo.com/8.8.8.8
@@ -82,14 +88,12 @@ EOF
 
 
 # NETFLIX TABLES
-apt-get install ipset
-apt install selinux-utils
-setenforce  0
 systemctl enable dnsmasq
 systemctl start dnsmasq
 
 
 # Netflix Iptables
+setenforce  0
 iptables -t nat -N  NETFLIX
 ipset create netflix   hash:ip hashsize 4096
 iptables -t nat -A NETFLIX -p tcp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
