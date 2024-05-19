@@ -93,7 +93,9 @@ systemctl start dnsmasq
 iptables -t nat -N  NETFLIX
 ipset create netflix   hash:ip hashsize 4096
 iptables -t nat -A NETFLIX -p tcp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
-iptables -t nat -I OUTPUT -p tcp -m multiport --dports 80,443 -j  NETFLIX
+iptables -t nat -A OUTPUT -p tcp -m multiport --dports 80,443 -j  NETFLIX
+iptables -t nat -A NETFLIX -p udp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
+iptables -t nat -A OUTPUT -p udp -m multiport --dports 1:65535 -j  NETFLIX
 netfilter-persistent save
 netfilter-persistent reload
 netfilter-persistent start
