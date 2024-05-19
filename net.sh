@@ -13,7 +13,6 @@ echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
 systemctl stop systemd-resolved
-systemctl disable systemd-resolved
 apt-get install dnsmasq
 apt-get install dnsutils
 apt-get install ipset
@@ -88,6 +87,7 @@ EOF
 
 
 # NETFLIX TABLES
+systemctl disable systemd-resolved
 systemctl enable dnsmasq
 systemctl start dnsmasq
 
@@ -97,8 +97,10 @@ setenforce  0
 iptables -t nat -N  NETFLIX
 ipset create netflix   hash:ip hashsize 4096
 iptables -t nat -A NETFLIX -p tcp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
+iptables -t nat -N  NETFLIX
 iptables -t nat -A OUTPUT -p tcp -m multiport --dports 80,443 -j  NETFLIX
 iptables -t nat -A NETFLIX -p udp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
+iptables -t nat -N  NETFLIX
 iptables -t nat -A OUTPUT -p udp -m multiport --dports 1:65535 -j  NETFLIX
 netfilter-persistent save
 netfilter-persistent reload
