@@ -13,8 +13,7 @@ echo "             ╰┈➤💚 Resleeved Net Firewall 💚          "
 echo -e "$NC"
 cd /root
 rm -rf /etc/dnsmasq.conf
-sysctl net.ipv4.conf.all.rp_filter=0
-sysctcat >/etc/dnsmasq.conf << EOF
+  cat >/etc/dnsmasq.conf << EOF
 #!/usr/bin/env bash
 server=8.8.8.8
 server=1.1.1.1
