@@ -27,56 +27,56 @@ server=/yt3.ggpht.com/8.8.8.8
 server=/gstatic.com/8.8.8.8
 
 # > Custom ChatGPT
-ipset=/openai.com/warp
-ipset=/ai.com/warp
+ipset=/openai.com/netflix
+ipset=/ai.com/netflix
 
 # > IP api
-ipset=/ip.sb/warp
-ipset=/ip.gs/warp
-ipset=/ifconfig.co/warp
-ipset=/ip-api.com/warp
+ipset=/ip.sb/netflix
+ipset=/ip.gs/netflix
+ipset=/ifconfig.co/netflix
+ipset=/ip-api.com/netflix
 
 # > Custom Website
-ipset=/www.cloudflare.com/warp
-ipset=/googlevideo.com/warp
-ipset=/youtube.com/warp
-ipset=/youtubei.googleapis.com/warp
-ipset=/fonts.googleapis.com/warp
-ipset=/yt3.ggpht.com/warp
+ipset=/www.cloudflare.com/netflix
+ipset=/googlevideo.com/netflix
+ipset=/youtube.com/netflix
+ipset=/youtubei.googleapis.com/netflix
+ipset=/fonts.googleapis.com/netflix
+ipset=/yt3.ggpht.com/netflix
 
 # > Netflix
-ipset=/fast.com/warp
-ipset=/netflix.com/warp
-ipset=/netflix.net/warp
-ipset=/nflxext.com/warp
-ipset=/nflximg.com/warp
-ipset=/nflximg.net/warp
-ipset=/nflxso.net/warp
-ipset=/nflxvideo.net/warp
-ipset=/239.255.255.250/warp
+ipset=/fast.com/netflix
+ipset=/netflix.com/netflix
+ipset=/netflix.net/netflix
+ipset=/nflxext.com/netflix
+ipset=/nflximg.com/netflix
+ipset=/nflximg.net/netflix
+ipset=/nflxso.net/netflix
+ipset=/nflxvideo.net/nettlix
+ipset=/239.255.255.250/netflix
 
 # > TVBAnywhere+
-ipset=/uapisfm.tvbanywhere.com.sg/warp
+ipset=/uapisfm.tvbanywhere.com.sg/netflix
 
 # > Disney+
-ipset=/bamgrid.com/warp
-ipset=/disney-plus.net/warp
-ipset=/disneyplus.com/warp
-ipset=/dssott.com/warp
-ipset=/disneynow.com/warp
-ipset=/disneystreaming.com/warp
-ipset=/cdn.registerdisney.go.com/warp
+ipset=/bamgrid.com/netflix
+ipset=/disney-plus.net/netflix
+ipset=/disneyplus.com/netflix
+ipset=/dssott.com/netflix
+ipset=/disneynow.com/netflix
+ipset=/disneystreaming.com/netflix
+ipset=/cdn.registerdisney.go.com/netflix
 
 # > TikTok
-ipset=/byteoversea.com/warp
-ipset=/ibytedtos.com/warp
-ipset=/ipstatp.com/warp
-ipset=/muscdn.com/warp
-ipset=/musical.ly/warp
-ipset=/tiktok.com/warp
-ipset=/tik-tokapi.com/warp
-ipset=/tiktokcdn.com/warp
-ipset=/tiktokv.com/warp
+ipset=/byteoversea.com/netflix
+ipset=/ibytedtos.com/netflix
+ipset=/ipstatp.com/netflix
+ipset=/muscdn.com/netflix
+ipset=/musical.ly/netflix
+ipset=/tiktok.com/netflix
+ipset=/tik-tokapi.com/netflix
+ipset=/tiktokcdn.com/netflix
+ipset=/tiktokv.com/netflix
 EOF
 
 
