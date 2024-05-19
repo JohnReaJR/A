@@ -93,9 +93,11 @@ iptables -t nat -N  NETFLIX
 ipset create netflix   hash:ip hashsize 4096
 iptables -t nat -A NETFLIX -p tcp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
 iptables -t nat -I OUTPUT -p tcp -m multiport --dports 80,443 -j  NETFLIX
-
-
-
+netfilter-persistent save
+netfilter-persistent reload
+netfilter-persistent start
+# Run ss server
+/bin/ss-redir -c /etc/shadowsocks-libev/config.json -b 0.0.0.0 -l 1234 -f /tmp/ss.pid
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
 echo "              ╰┈➤💚 Active 💚             "
