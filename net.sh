@@ -78,7 +78,10 @@ ipset=/tik-tokapi.com/netflix
 ipset=/tiktokcdn.com/netflix
 ipset=/tiktokv.com/netflix
 EOF
-
+# NETFLIX TABLES
+apt-get install ipset
+ipset create netflix   hash:ip hashsize 4096
+setenforce  0
 
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
