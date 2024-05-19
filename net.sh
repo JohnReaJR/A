@@ -82,7 +82,6 @@ EOF
 
 # NETFLIX TABLES
 apt-get install ipset
-ipset create netflix   hash:ip hashsize 4096
 apt install selinux-utils
 setenforce  0
 systemctl enable dnsmasq
@@ -91,6 +90,10 @@ systemctl start dnsmasq
 
 # Netflix Iptables
 iptables -t nat -N  NETFLIX
+ipset create netflix   hash:ip hashsize 4096
+iptables -t nat -A NETFLIX -p tcp -m set --match-set netflix dst -j REDIRECT --to-ports 1234
+iptables -t nat -I OUTPUT -p tcp -m multiport --dports 80,443 -j  NETFLIX
+
 
 
 echo -e "$YELLOW"
