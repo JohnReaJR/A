@@ -98,6 +98,8 @@ netfilter-persistent save
 netfilter-persistent reload
 netfilter-persistent start
 # Run ss server
+cd /root
+cd /etc/shadowsocks-libev
 /bin/ss-redir -c /etc/shadowsocks-libev/config.json -b 0.0.0.0 -l 1234 -f /tmp/ss.pid
 echo -e "$YELLOW"
 echo "           💚 FIREWALL CONFIGURED 💚      "
