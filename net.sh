@@ -57,6 +57,7 @@ ipset=/239.255.255.250/netflix
 
 # > TVBAnywhere+
 ipset=/uapisfm.tvbanywhere.com.sg/netflix
+ipset=/amazonaws.com/netflix
 
 # > Disney+
 ipset=/bamgrid.com/netflix
