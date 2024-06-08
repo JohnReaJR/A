@@ -14,33 +14,28 @@
         echo "          💚 TCP INSTALLATION SCRIPT 💚    "
         echo "          ╰┈➤💚 Installing TCP 💚        "
         echo -e "$NC"
-        while true; do
-            echo -e "$YELLOW"
-            read -p "Remote HTTP Port : " http_port
-            echo -e "$NC"
-            if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
-                break
-            else
-                echo -e "$YELLOW"
-                echo "Invalid input. Please enter a valid number between 1 and 65535."
-                echo -e "$NC"
-            fi
-        done
         cd /root
-        rm -rf /root/tcp
-        mkdir tcp
-        cd tcp
-        http_script="/root/tcp/sshProxy_linux_amd64"
-        if [ ! -e "$http_script" ]; then
-            wget https://github.com/CassianoDev/sshProxy/releases/download/v1.1/sshProxy_linux_amd64
-        fi
-        chmod 755 sshProxy_linux_amd64
-        screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
-        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
-        iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
-        netfilter-persistent save
-        netfilter-persistent reload
-        netfilter-persistent start
+        service stunnel4 stop
+        rm -rf /etc/stunnel
+        rm -rf /etc/default/stunnel4
+        apt-get remove stunnel4
+        apt-get remove --auto-remove stunnel4
+        cd /root
+        clear
+        apt install stunnel4 -y
+        openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com"
+        cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
+        cat << EOF > /etc/stunnel/stunnel.conf
+cert = /etc/stunnel/stunnel.pem
+client = no
+socket = a:SO_REUSEADDR=1
+socket = l:TCP_NODELAY=1
+socket = r:TCP_NODELAY=1
+
+[dropbear]
+connect = 127.0.0.1:22
+accept = 443
+EOF
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
