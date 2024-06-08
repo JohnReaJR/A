@@ -36,8 +36,14 @@ socket = r:TCP_NODELAY=1
 connect = 127.0.0.1:22
 accept = 443
 EOF
+        rm -rf /etc/default/stunnel4
         cat << EOF >/etc/default/stunnel4
-
+FILES="/etc/stunnel/*.conf"                                               
+OPTIONS=""
+PPP_RESTART=1                                                                                                                                                                                 
+RLIMITS=""
+EOF
+        service stunnel4 restart
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
