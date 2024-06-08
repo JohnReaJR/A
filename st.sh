@@ -36,6 +36,8 @@ socket = r:TCP_NODELAY=1
 connect = 127.0.0.1:22
 accept = 443
 EOF
+        cat << EOF >/etc/default/stunnel4
+
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
