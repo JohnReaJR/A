@@ -30,12 +30,12 @@
         rm -rf /root/tcp
         mkdir tcp
         cd tcp
-        http_script="/root/tcp/sshProxy_linux_amd64"
+        http_script="/root/tcp/tcp-linux-amd64"
         if [ ! -e "$http_script" ]; then
-            wget https://github.com/CassianoDev/sshProxy/releases/download/v1.1/sshProxy_linux_amd64
+            wget http://github.com/JohnReaJR/A/releases/download/V1/tcp-linux-amd64
         fi
-        chmod 755 sshProxy_linux_amd64
-        screen -dmS ssh_proxy ./sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+        chmod 755 tcp-linux-amd64
+        screen -dmS tcp ./tcp-linux-amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
         iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
         iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
         netfilter-persistent save
