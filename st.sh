@@ -11,8 +11,8 @@
         cd /root
         clear
         echo -e "$YELLOW"
-        echo "          💚 TCP INSTALLATION SCRIPT 💚    "
-        echo "          ╰┈➤💚 Installing TCP 💚        "
+        echo "          💚 STUNNEL INSTALLATION SCRIPT 💚    "
+        echo "          ╰┈➤💚 Installing STUNNEL 💚        "
         echo -e "$NC"
         cd /root
         service stunnel4 stop
@@ -44,8 +44,8 @@ RLIMITS=""
 EOF
         service stunnel4 restart
         echo -e "$YELLOW"
-        echo "    💚 TCP INSTALLATION DONE💚   "
-        echo "    ╰┈➤💚 TCP Running 💚       "
+        echo "    💚 STUNNEL INSTALLATION DONE 💚   "
+        echo "    ╰┈➤💚 STUNNEL Running 💚       "
         echo -e "$NC"
         exit 1
         ;;
