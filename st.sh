@@ -25,7 +25,6 @@
         apt install stunnel4 -y
         openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
         cat << EOF >/etc/stunnel/stunnel.conf
-pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
 client = no
 socket = a:SO_REUSEADDR=1
@@ -36,7 +35,7 @@ socket = r:TCP_NODELAY=1
 connect = 127.0.0.1:22
 accept = 51
 
-[socks_server]
+[socks]
 connect = 127.0.0.1:443
 accept = 50
 EOF
