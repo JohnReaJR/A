@@ -32,7 +32,7 @@ socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 
 [dropbear]
-connect = 127.0.0.1:80
+connect = 127.0.0.1:443
 accept = 443
 EOF
         rm -rf /etc/default/stunnel4
