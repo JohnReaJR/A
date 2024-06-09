@@ -47,6 +47,12 @@ ENABLED=1
 PPP_RESTART=1                                                                                                                                                                                 
 RLIMITS=""
 EOF
+        
+        iptables -A INPUT -p tcp --dport 51 -j ACCEPT
+        iptables -A INPUT -p tcp --dport 50 -j ACCEPT
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
         service stunnel4 restart
         echo -e "$YELLOW"
         echo "    💚 STUNNEL INSTALLATION DONE 💚   "
