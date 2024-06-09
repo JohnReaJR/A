@@ -44,6 +44,7 @@ EOF
         cat << EOF >/etc/default/stunnel4
 FILES="/etc/stunnel/*.conf"                                               
 OPTIONS=""
+ENABLED=1
 PPP_RESTART=1                                                                                                                                                                                 
 RLIMITS=""
 EOF
