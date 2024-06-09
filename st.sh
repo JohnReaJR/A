@@ -36,7 +36,7 @@ socket = r:TCP_NODELAY=1
 connect = 127.0.0.1:22
 accept = 51
 
-[dropbear]
+[socks_server]
 connect = 127.0.0.1:443
 accept = 50
 EOF
