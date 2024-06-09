@@ -23,6 +23,7 @@
         cd /root
         clear
         apt install stunnel4 -y
+        openssl ecparam -genkey -name prime256v1 -out key.pem
         openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
