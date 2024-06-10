@@ -52,17 +52,15 @@ RLIMITS=""
 EOF
         cat << EOF >/etc/systemd/system/stunnel.service
 [Unit]
-Description=SSL tunnel for network daemons
+[Unit]
+Description=STUNNEL Gateway
 After=network.target
-After=syslog.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/stunnel /etc/stunnel/stunnel.conf
-ExecStop=/usr/bin/killall -9 stunnel
-RestartSec=2
+ExecStart=/usr/bin/stunnel /etc/stunnel/stunnel.conf /etc/default/stunnel4
 Restart=always
-PrivateTmp=false
+User=root
 
 [Install]
 WantedBy=multi-user.target
