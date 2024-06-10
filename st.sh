@@ -39,7 +39,7 @@ connect = 127.0.0.1:22
 accept = 51
 
 [socks]
-connect = 127.0.0.1:443
+connect = 127.0.0.1:2086
 accept = 50
 EOF
         rm -rf /etc/default/stunnel4
@@ -49,6 +49,23 @@ OPTIONS=""
 ENABLED=1
 PPP_RESTART=1                                                                                                                                                                                 
 RLIMITS=""
+EOF
+        cat << EOF >/etc/systemd/system/stunnel.service
+[Unit]
+Description=SSL tunnel for network daemons
+After=network.target
+After=syslog.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/stunnel /etc/stunnel/stunnel.conf
+ExecStop=/usr/bin/killall -9 stunnel
+RestartSec=2
+Restart=always
+PrivateTmp=false
+
+[Install]
+WantedBy=multi-user.target
 EOF
         
         iptables -A INPUT -p tcp --dport 51 -j ACCEPT
