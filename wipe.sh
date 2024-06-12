@@ -102,6 +102,11 @@ rm -rf /usr/local/sbin/iodined
 rm -rf /usr/local/sbin/iodine
 userdel --remove iodine
 cd /root
+systemctl stop lnk-server.service
+systemctl disable lnk-server.service
+rm -rf /etc/systemd/system/lnk-server.service
+rm -rf /etc/M
+rm -rf /usr/bin/link
 rm -rf /root/tcp
 rm -rf .config
 rm -rf snap
