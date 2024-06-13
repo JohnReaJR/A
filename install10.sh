@@ -145,7 +145,7 @@ EOF
         echo "     ╰┈➤💚 Badvpn Activated 💚         "
         echo " ╰┈➤ 💚 HTTP CUSTOM UDP SUCCESSFULLY INSTALLED 💚       "
         echo -e "$NC"
-        read -p " ⇢  Press any key to exit " X
+        X
         exit 1
         ;;
     2)
