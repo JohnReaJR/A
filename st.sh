@@ -76,6 +76,7 @@ EOF
         echo "    💚 STUNNEL INSTALLATION DONE 💚   "
         echo "    ╰┈➤💚 STUNNEL Running 💚       "
         echo -e "$NC"
+        X
         exit 1
         ;;
 esac
