@@ -102,6 +102,7 @@ EOF
         echo -e "$YELLOW"
         echo " ╰┈➤ 💚 MIERU UDP SUCCESSFULLY INSTALLED 💚       "
         echo -e "$NC"
+        X
         exit 1
         ;;
     2)
