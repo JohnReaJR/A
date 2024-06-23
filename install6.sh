@@ -132,6 +132,7 @@ EOF
         echo "     ╰┈➤💚 Badvpn Activated 💚         "
         echo " ╰┈➤ 💚 UDP REQUEST SUCCESSFULLY INSTALLED 💚       "
         echo -e "$NC"
+        X
         exit 1
         ;;
     2)
