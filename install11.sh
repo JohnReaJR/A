@@ -184,6 +184,7 @@ EOF
         echo "    💚 UDP HYSTERIA V2 INSTALLED SUCCESSFULLY 💚        "
         echo "      ╰┈➤💚 Telegram >>> t.me/Am_The_Last_Envoy    "
         echo -e "$NC"
+        X
         exit 1
         ;;
     2)
