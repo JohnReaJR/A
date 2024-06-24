@@ -27,20 +27,42 @@
             fi
         done
         cd /root
-        rm -rf /root/tcp
-        mkdir tcp
-        cd tcp
-        http_script="/root/tcp/tcp-linux-amd64"
-        if [ ! -e "$http_script" ]; then
-            wget http://github.com/JohnReaJR/A/releases/download/V1/tcp-linux-amd64
-        fi
-        chmod 755 tcp-linux-amd64
-        screen -dmS tcp ./tcp-linux-amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
         iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
         iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
+        cd /root
+        sudo systemctl stop tcp-server.service
+        sudo systemctl disable tcp-server.service
+        rm -rf /etc/systemd/system/tcp-server.service
+        rm -rf /usr/bin/tcp-linux-amd64
+        cd /usr/bin
+        http_script="/usr/bin/tcp-linux-amd64"
+        if [ ! -e "$http_script" ]; then
+            wget http://github.com/JohnReaJR/A/releases/download/V1/tcp-linux-amd64
+        fi
+        chmod 755 tcp-linux-amd64
+        cd /root
+        ##Tcp Auto Service
+        cat <<EOF >/etc/systemd/system/tcp-server.service
+[Unit]
+Description=TCP PROXY
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/screen -dmS tcp /bin/tcp-linux-amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        ##Start Tcp service
+        systemctl daemon-reload
+        sudo systemctl enable tcp-server.service
+        sudo systemctl start tcp-server.service 
         echo -e "$YELLOW"
         echo "    💚 TCP INSTALLATION DONE💚   "
         echo "    ╰┈➤💚 TCP Running 💚       "
