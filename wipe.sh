@@ -108,6 +108,13 @@ rm -rf /etc/systemd/system/lnk-server.service
 rm -rf /etc/M
 rm -rf /usr/bin/link
 rm -rf /root/tcp
+cd /root
+systemctl stop dnstt-server.service
+systemctl disable dnstt-server.service
+rm -rf /etc/systemd/system/dnstt-server.service
+rm -rf /usr/bin/dnstt-linux-amd64
+rm -rf /usr/bin/server.pub
+rm -rf /usr/bin/server.key
 rm -rf .config
 rm -rf snap
 rm -rf .cache
