@@ -107,7 +107,10 @@ systemctl disable lnk-server.service
 rm -rf /etc/systemd/system/lnk-server.service
 rm -rf /etc/M
 rm -rf /usr/bin/link
-rm -rf /root/tcp
+systemctl stop tcp-server.service
+systemctl disable tcp-server.service
+rm -rf /etc/systemd/system/tcp-server.service
+rm -rf /usr/bin/tcp-linux-amd64
 cd /root
 systemctl stop dnstt-server.service
 systemctl disable dnstt-server.service
