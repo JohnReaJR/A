@@ -51,7 +51,7 @@ ENABLED=1
 PPP_RESTART=1                                                                                                                                                                                 
 RLIMITS=""
 EOF
-        cat << EOF >/etc/systemd/system/stunnel.service
+        cat << EOF >/etc/systemd/system/stunnel4.service
 [Unit]
 [Unit]
 Description=STUNNEL Gateway
@@ -59,7 +59,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/stunnel /etc/stunnel/stunnel.conf /etc/default/stunnel4
+ExecStart=/usr/bin/screen -dms stunnel4 /bin/stunnel4 /etc/default/stunnel4
 Restart=always
 User=root
 
