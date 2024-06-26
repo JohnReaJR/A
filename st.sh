@@ -60,7 +60,7 @@ After=network.target
 
 [Service]
 Type=forking
-ExecStart=/usr/bin/screen -dms stunnel4 /bin/stunnel4 /etc/stunnel/stunnel.conf /etc/default/stunnel4
+ExecStart=/usr/bin/screen -dms stunnel4 /bin/stunnel4
 Restart=always
 User=root
 
