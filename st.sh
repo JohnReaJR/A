@@ -18,7 +18,7 @@
         service stunnel4 stop
         rm -rf /etc/stunnel
         rm -rf /etc/default/stunnel4
-        rm -rf /etc/systemd/system/stunnel.service
+        rm -rf /etc/systemd/system/stunnel4.service
         apt-get remove stunnel4
         apt-get remove --auto-remove stunnel4
         cd /root
