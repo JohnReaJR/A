@@ -15,7 +15,8 @@
         echo "          ╰┈➤💚 Installing STUNNEL 💚        "
         echo -e "$NC"
         cd /root
-        service stunnel4 stop
+        systemctl stop stunnel4.service
+        systemctl disable stunnel4.service
         rm -rf /etc/stunnel
         rm -rf /etc/default/stunnel4
         rm -rf /etc/systemd/system/stunnel4.service
@@ -72,7 +73,9 @@ EOF
         netfilter-persistent save
         netfilter-persistent reload
         netfilter-persistent start
-        service stunnel4 restart
+        systemctl daemon-reload
+        sudo systemctl enable stunnel4.service
+        sudo systemctl start stunnel4.service
         echo -e "$YELLOW"
         echo "    💚 STUNNEL INSTALLATION DONE 💚   "
         echo "    ╰┈➤💚 STUNNEL Running 💚       "
