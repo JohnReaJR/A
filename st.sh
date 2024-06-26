@@ -27,10 +27,10 @@
         apt install stunnel4 -y
         cd /etc/stunnel
         openssl ecparam -genkey -name prime256v1 -out key.pem
-        openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /root/etc/stunnel/stunnel.pem
+        openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
-cert = /root/etc/stunnel/stunnel.pem
+cert = /etc/stunnel/stunnel.pem
 client = no
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
