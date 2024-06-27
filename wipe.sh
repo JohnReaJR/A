@@ -120,6 +120,7 @@ apt-get remove stunnel4
 apt-get remove --auto-remove stunnel4
 apt-get purge stunnel4
 apt-get purge --auto-remove stunnel4
+userdel --remove stunnel4
 cd /root
 systemctl stop dnstt-server.service
 systemctl disable dnstt-server.service
