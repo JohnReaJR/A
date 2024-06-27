@@ -111,6 +111,13 @@ systemctl stop tcp-server.service
 systemctl disable tcp-server.service
 rm -rf /etc/systemd/system/tcp-server.service
 rm -rf /usr/bin/tcp-linux-amd64
+systemctl stop stunnel4.service
+systemctl disable stunnel4.service
+rm -rf /etc/stunnel
+rm -rf /etc/default/stunnel4
+rm -rf /etc/systemd/system/stunnel4.service
+apt-get remove stunnel4
+apt-get remove --auto-remove stunnel4
 cd /root
 systemctl stop dnstt-server.service
 systemctl disable dnstt-server.service
