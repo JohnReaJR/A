@@ -39,10 +39,6 @@ socket = r:TCP_NODELAY=1
 [openssl]
 connect = 127.0.0.1:22
 accept = 443
-
-[socks]
-connect = 127.0.0.1:80
-accept = 50
 EOF
         rm -rf /etc/default/stunnel4
         cat << EOF >/etc/default/stunnel4
