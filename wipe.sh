@@ -128,6 +128,7 @@ rm -rf /etc/systemd/system/dnstt-server.service
 rm -rf /usr/bin/dnstt-linux-amd64
 rm -rf /usr/bin/server.pub
 rm -rf /usr/bin/server.key
+cd /root
 rm -rf .config
 rm -rf snap
 rm -rf .cache
