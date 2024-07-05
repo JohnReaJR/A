@@ -49,7 +49,7 @@ mkdir -p /etc/M/layers/authy/passwds
 echo "$username:$password:$connection_limit" >> /etc/M/layers/authy/accounts.txt
 echo "\033[0m"
 echo "$password" >/etc/M/layers/authy/passwds/$username
-echo "$username $connection_limit" >>/etc/V/auth/accounts.db
+echo "$username $connection_limit" >>/etc/M/layers/authy/accounts.db
 clear
 banner1
 echo ""
