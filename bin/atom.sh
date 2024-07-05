@@ -45,10 +45,10 @@ useradd -e "$expiration_date" -s /bin/false -M "$username" >/dev/null 2>&1
 hashed_password=$(openssl passwd -1 "$password")
 usermod --password "$hashed_password" "$username"
 chage -E "$expiration_date" "$username"
-mkdir -p /etc/V/auth/passwds
-echo "$username:$password:$connection_limit" >> /etc/V/auth/accounts.txt
+mkdir -p /etc/M/layers/authy/passwds
+echo "$username:$password:$connection_limit" >> /etc/M/layers/authy/accounts.txt
 echo "\033[0m"
-echo "$password" >/etc/V/auth/passwds/$username
+echo "$password" >/etc/M/layers/authy/passwds/$username
 echo "$username $connection_limit" >>/etc/V/auth/accounts.db
 clear
 banner1
