@@ -44,8 +44,8 @@ echo ""
 pkill -f "$username" > /dev/null 2>&1
 userdel --remove $username > /dev/null 2>&1
 echo -e "\E[41;1;37m・ User $username successfully removed! \E[0m"
-grep -v ^$username[[:space:]] /etc/V/auth/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/V/auth/accounts.db
-rm /etc/V/auth/passwds/$username 1>/dev/null 2>/dev/null
+grep -v ^$username[[:space:]] /etc/M/layers/authy/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/M/layers/authy/accounts.db
+rm /etc/M/layers/authy/passwds/$username 1>/dev/null 2>/dev/null
 exit 1
 elif [[ "$(cat "$database"| grep -w $username| wc -l)" -ne "0" ]]; then
 ps x | grep $username | grep -v grep | grep -v pt > /tmp/rem
@@ -53,8 +53,8 @@ if [[ `grep -c $username /tmp/rem` -eq 0 ]]; then
 userdel --remove $username > /dev/null 2>&1
 echo ""
 echo -e "\E[41;1;37m・ Account $username successfully removed! \E[0m"
-grep -v ^$username[[:space:]] /etc/V/auth/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/V/auth/accounts.db
-rm /etc/V/auth/passwds/$username 1>/dev/null 2>/dev/null
+grep -v ^$username[[:space:]] /etc/M/layers/authy/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/M/layers/authy/accounts.db
+rm /etc/M/layers/authy/passwds/$username 1>/dev/null 2>/dev/null
 remove_user
 else
 echo ""
@@ -62,8 +62,8 @@ echo "・ Account logged out. Disconnecting..."
 pkill -f "$username" > /dev/null 2>&1
 userdel --remove $username > /dev/null 2>&1
 echo -e "\E[41;1;37m・ Account $username successfully removed! \E[0m"
-grep -v ^$username[[:space:]] /etc/V/auth/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/V/auth/accounts.db
-rm /etc/V/auth/passwds/$username 1>/dev/null 2>/dev/null
+grep -v ^$username[[:space:]] /etc/M/layers/authy/accounts.db > /tmp/ph ; cat /tmp/ph > /etc/M/layers/authy/accounts.db
+rm /etc/M/layers/authy/passwds/$username 1>/dev/null 2>/dev/null
 sudo userdel -r "$username" 1>/dev/null 2>/dev/null
 if [[ -e /etc/openvpn/server.conf ]]; then
 remove_ovp $username
