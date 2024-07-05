@@ -13,7 +13,7 @@ echo -e "\033[1;33m Change Account Expiration Date\033[1;33m"
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
 echo -e "\033[1;33m Accounts   &   Expiration Date\033[0m "
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
-database="/etc/V/auth/accounts.db"
+database="/etc/M/layers/authy/accounts.db"
 list_user=$(awk -F: '$3>=1000 {print $1}' /etc/passwd | grep -v nobody)
 i=0
 unset _userPass
