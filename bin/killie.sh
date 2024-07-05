@@ -4,7 +4,7 @@ exit 1
 fi
 banner1() {
 clear
-figlet -k Resleeved | lolcat
+figlet -k LinkLayer | lolcat
 echo -e "\033[1;34m   ResleevedNet v.5 \033[0m  | \033[1;33m v.5 Release  | ResleevedNet \033[0m"
 echo -e "\033[1;36m╰═════════════════════════════════════════════════════╯\033[0m"
 echo ""
