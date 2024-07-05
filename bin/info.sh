@@ -16,13 +16,13 @@ echo -e "\033[1;36m────────────────────�
 [[ ! -e /bin/ver ]] && rm -rf /bin/menu
 for users in `awk -F : '$3 > 900 { print $1 }' /etc/passwd |sort |grep -v "nobody" |grep -vi polkitd |grep -vi system- |grep -v "systemd-coredump" |grep -v "snap_daemon" |grep -v "ubuntu" |grep -v "lxd" |grep -v "core"`
 do
-if [[ $(grep -cw $users /etc/V/auth/accounts.db) == "1" ]]; then
-lim=$(grep -w $users /etc/V/auth/accounts.db | cut -d' ' -f2)
+if [[ $(grep -cw $users /etc/M/layers/authy/accounts.db) == "1" ]]; then
+lim=$(grep -w $users /etc/M/layers/authy/accounts.db | cut -d' ' -f2)
 else
 lim="1"
 fi
-if [[ -e "/etc/V/auth/passwds/$users" ]]; then
-passwds=$(cat /etc/V/auth/passwds/$users)
+if [[ -e "/etc/M/layers/authy/passwds/$users" ]]; then
+passwds=$(cat /etc/M/layers/authy/passwds/$users)
 else
 passwds="Null"
 fi
