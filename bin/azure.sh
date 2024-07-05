@@ -4,7 +4,7 @@ exit 1
 fi
 banner1() {
 clear
-figlet -k Resleeved | lolcat
+figlet -k LinkLayer | lolcat
 echo -e "\033[1;34m   ResleevedNet v.5 \033[0m  | \033[1;33m v.5 Release  | ResleevedNet \033[0m"
 echo -e "\033[1;36m╰═════════════════════════════════════════════════════╯\033[0m"
 }
@@ -101,7 +101,7 @@ exit 1
 fi
 else
 echo ""
-echo "・ You have entered an invalid or non-existent date!"
+echo "You have entered an invalid or non-existent date!"
 echo "Enter a valid date in Day/Month/Year format"
 echo "For example: 01/01/2025"
 echo ""
@@ -110,7 +110,7 @@ fi
 fi
 else
 echo ""
-echo "・ You have entered an invalid or non-existent date!"
+echo "You have entered an invalid or non-existent date!"
 echo "Enter a valid date in Day/Month/Year format"
 echo "For example: 21/04/2018"
 echo ""
