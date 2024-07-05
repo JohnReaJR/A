@@ -4,7 +4,7 @@ exit 1
 fi
 banner1() {
 clear
-figlet -k Resleeved | lolcat
+figlet -k LinkLayer | lolcat
 echo -e "\033[1;34m   ResleevedNet v.5 \033[0m  | \033[1;33m v.5 Release  | ResleevedNet \033[0m"
 echo -e "\033[1;36m╰═════════════════════════════════════════════════════╯\033[0m"
 }
@@ -20,8 +20,8 @@ while read _user; do
 i=$(expr $i + 1)
 _oP=$i
 [[ $i == [1-9] ]] && i=0$i && oP+=" 0$i"
-if [[ -e "/etc/V/auth/passwds/$_user" ]]; then
-_senha="$(cat /etc/V/auth/passwds/$_user)"
+if [[ -e "/etc/M/layers/authy/passwds/$_user" ]]; then
+_senha="$(cat /etc/M/layers/authy/passwds/$_user)"
 else
 _senha='Null'
 fi
@@ -62,7 +62,7 @@ hashed_password=$(openssl passwd -1 "$password")
 usermod --password "$hashed_password" "$user"
 echo -e "\033[1;36mPassword for $user Changed.\033[0m"
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
-echo "$password" > /etc/V/auth/passwds/$user
+echo "$password" > /etc/M/layers/authy/passwds/$user
 exit 0
 else
 echo "Account logged in. Disconnecting..."
@@ -71,7 +71,7 @@ hashed_password=$(openssl passwd -1 "$password")
 usermod --password "$hashed_password" "$user"
 echo -e "\033[1;36mPassword for $user Changed.\033[0m"
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
-echo "$password" > /etc/V/auth/passwds/$user
+echo "$password" > /etc/M/layers/authy/passwds/$user
 exit 0
 fi
 fi
