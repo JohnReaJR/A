@@ -4,7 +4,7 @@ exit 1
 fi
 banner1() {
 clear
-figlet -k Resleeved| lolcat
+figlet -k LinkLayer | lolcat
 echo -e "\033[1;34m   ResleevedNet v.5 \033[0m  | \033[1;33m v.5 Release  | ResleevedNet \033[0m"
 echo -e "\033[1;36m╰═════════════════════════════════════════════════════╯\033[0m"
 server_ip=$(curl -s https://api.ipify.org)
@@ -54,9 +54,9 @@ echo "$username $connection_limit" >>/etc/M/layers/authy/accounts.db
 clear
 banner1
 echo ""
-echo -e "\033[1;34m・ Account Details"
+echo -e "\033[1;34mAccount Details"
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
-echo -e "\033[1;34m・ Note: All Protocols use same account details!"
+echo -e "\033[1;34mNote: All Protocols use same account details!"
 echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
 echo -e "\e[36m・ Domain           ➤  \033[1;31m$(cat /etc/M/cfg/domain)"
 echo -e "\e[36m・ Server IP        ➤  \033[1;31m$server_ip"
