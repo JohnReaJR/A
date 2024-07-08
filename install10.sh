@@ -82,7 +82,7 @@ time_reboot() {
         rm -rf /root/udp/config.json
         cat <<EOF >/root/udp/config.json
 {
-  "listen": ":443",
+  "listen": ":36718",
   "stream_buffer": 16777216,
   "receive_buffer": 83886080,
   "auth": {
