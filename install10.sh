@@ -104,6 +104,8 @@ ExecStart=/root/udp/custom-linux-amd64 server
 WorkingDirectory=/root/udp/
 Restart=always
 RestartSec=2
+StandardOutput=file:/root/udp/custom.log
+StandardError=file:/root/udp/error.log
 
 [Install]
 WantedBy=default.target
