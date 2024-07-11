@@ -55,7 +55,6 @@ Type=forking
 ExecStart=/usr/bin/screen -dmS tcp /bin/tcp-linux-amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
 Restart=always
 User=root
-StandardOutput=file:/usr/bin/tcp.log
 
 [Install]
 WantedBy=multi-user.target
