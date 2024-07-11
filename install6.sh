@@ -92,7 +92,6 @@ ExecStart=/root/udp/request-linux-amd64 -ip=$public_ip -net=$interface -mode=sys
 Restart=always
 RestartSec=2
 StandardOutput=file:/root/udp/request.log
-StandardError=file:/root/udp/error.log
 
 [Install]
 WantedBy=multi-user.target
@@ -121,6 +120,7 @@ Type=forking
 ExecStart=/usr/bin/screen -dmS udpgw /bin/udpgw --listen-addr 127.0.0.1:7300 --max-clients 1000 --max-connections-for-client 1000
 Restart=always
 User=root
+StandardOutput=file:/usr/bin/udpgw.log
 
 [Install]
 WantedBy=multi-user.target
