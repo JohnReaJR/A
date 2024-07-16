@@ -3208,9 +3208,6 @@ NAME=$3
 
 # 主程序运行 1/3
 check_cdn
-statistics_of_run-times
-select_language
-check_operating_system
 
 # 设置部分后缀 1/3
 case "$OPTION" in
@@ -3256,8 +3253,6 @@ esac
 
 # 主程序运行 3/3
 check_dependencies
-check_virt $SYSTEM
-check_system_info
 menu_setting
 
 # 设置部分后缀 3/3
