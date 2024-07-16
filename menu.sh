@@ -147,7 +147,7 @@ E[66]="Add WARP IPv4 interface to \${NATIVE[n]} VPS \(bash menu.sh 4\)"
 C[66]="为 \${NATIVE[n]} 添加 WARP IPv4 网络接口 \(bash menu.sh 4\)"
 E[67]="Add WARP IPv6 interface to \${NATIVE[n]} VPS \(bash menu.sh 6\)"
 C[67]="为 \${NATIVE[n]} 添加 WARP IPv6 网络接口 \(bash menu.sh 6\)"
-E[68]="Add WARP dualstack interface to \${NATIVE[n]} VPS \(bash menu.sh d\)"
+E[68]="Add WARP dualstack interface to \${NATIVE[n]} VPS"
 C[68]="为 \${NATIVE[n]} 添加 WARP 双栈网络接口 \(bash menu.sh d\)"
 E[69]="Native dualstack"
 C[69]="原生双栈"
@@ -3098,16 +3098,15 @@ menu_setting() {
   fi
 
   [ -e /etc/dnsmasq.d/warp.conf ] && IPTABLE_INSTALLED="$(text 92)"
-  [ -n "$(wg 2>/dev/null)" ] && MENU_OPTION[2]="2.  $(text 77)" || MENU_OPTION[2]="2.  $(text 71)"
+  [ -n "$(wg 2>/dev/null)" ]
   if [ -e /etc/wireguard/warp.conf ]; then
     grep -q '#Table' /etc/wireguard/warp.conf && GLOBAL_OR_NOT="$(text 184)" || GLOBAL_OR_NOT="$(text 185)"
   fi
 
-  MENU_OPTION[3]="3.  $(text 72)"
+  MENU_OPTION[2]="2.  $(text 72)"
   MENU_OPTION[0]="0.  $(text 76)"
 
-  ACTION[2]() { OPTION=o; onoff; }
-  ACTION[3]() { uninstall; }
+  ACTION[2]() { uninstall; }
   ACTION[0]() { exit; }
 
   [ -e /etc/wireguard/info.log ] && TYPE=' Teams' && grep -sq 'Device name' /etc/wireguard/info.log 2>/dev/null && check_quota warp && TYPE='+' && PLUSINFO="$(text 25): $(awk '/Device name/{print $NF}' /etc/wireguard/info.log)\t $(text 63): $QUOTA"
@@ -3116,45 +3115,8 @@ menu_setting() {
 # 显示菜单
 menu() {
   hint " $(text 16) "
-  echo -e "======================================================================================================================\n"
-  info " $(text 17):$VERSION\n $(text 18):$(text 1)\n $(text 19):\n\t $(text 20):$SYS\n\t $(text 21):$(uname -r)\n\t $(text 22):$ARCHITECTURE\n\t $(text 23):$VIRT "
-  info "\t IPv4: $WAN4 $COUNTRY4  $ASNORG4 "
-  info "\t IPv6: $WAN6 $COUNTRY6  $ASNORG6 "
-  case "$TRACE4$TRACE6" in
-    *plus* )
-      info "\t $(text 114)\t $PLUSINFO\n\t $(text 186) "
-      ;;
-    *on* )
-      info "\t $(text 115)\n\t $(text 186) "
-  esac
-  [ "$PLAN" != 3 ] && info "\t $(text 116) "
-  case "$CLIENT" in
-    0 )
-      info "\t $(text 112) "
-      ;;
-    1|2 )
-      info "\t $(text 113) "
-      ;;
-    3 )
-      info "\t WARP$CLIENT_AC $(text 24)\t $(text 27): $CLIENT_SOCKS5\n\t WARP$CLIENT_AC IPv4: $CLIENT_WAN4 $CLIENT_COUNTRY4 $CLIENT_ASNORG4\n\t WARP$CLIENT_AC IPv6: $CLIENT_WAN6 $CLIENT_COUNTRY6 $CLIENT_ASNORG6 "
-      [ -n "$QUOTA" ] && info "\t $(text 63): $QUOTA "
-      ;;
-    5 )
-      info "\t WARP$CLIENT_AC $(text 24)\t $(text 58)\n\t WARP$CLIENT_AC IPv4: $CFWARP_WAN4 $CFWARP_COUNTRY4  $CFWARP_ASNORG4\n\t WARP$CLIENT_AC IPv6: $CFWARP_WAN6 $CFWARP_COUNTRY6  $CFWARP_ASNORG6 "
-      [ -n "$QUOTA" ] && info "\t $(text 63): $QUOTA "
-  esac
-  case "$WIREPROXY" in
-    0 )
-      info "\t $(text 160) "
-      ;;
-    1 )
-      info "\t $(text 161) "
-      ;;
-    2 )
-      info "\t WARP$WIREPROXY_ACCOUNT $(text 159)\t $(text 27): $WIREPROXY_SOCKS5\n\t IPv4: $WIREPROXY_WAN4 $WIREPROXY_COUNTRY4 $WIREPROXY_ASNORG4\n\t IPv6: $WIREPROXY_WAN6 $WIREPROXY_COUNTRY6 $WIREPROXY_ASNORG6 "
-  esac
-  grep -q '+' <<< $AC$WIREPROXY_ACCOUNT && info "\t $(text 63): $QUOTA "
-   echo -e "\n======================================================================================================================\n"
+  
+   echo -e "\n ResleevedNet Warp Menu\n"
   for ((h=1; h<${#MENU_OPTION[*]}; h++)); do hint " ${MENU_OPTION[h]} "; done
   hint " ${MENU_OPTION[0]} "
   reading "\n $(text 50) " MENU_CHOOSE
