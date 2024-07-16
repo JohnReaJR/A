@@ -1145,7 +1145,7 @@ uninstall() {
     [ -x "$(type -p rpm)" ] && rpm -e wireguard-tools 2>/dev/null
     systemctl restart systemd-resolved >/dev/null 2>&1; sleep 3
     warp_api "cancel" "/etc/wireguard/warp-account.conf" >/dev/null 2>&1
-    rm -rf /usr/bin/wireguard-go /usr/bin/warp /etc/dnsmasq.d/warp.conf /usr/bin/wireproxy /etc/local.d/warp.start
+    rm -rf /usr/bin/wireguard-go /etc/dnsmasq.d/warp.conf /usr/bin/wireproxy /etc/local.d/warp.start
     [ -e /etc/gai.conf ] && sed -i '/^precedence \:\:ffff\:0\:0/d;/^label 2002\:\:\/16/d' /etc/gai.conf
     [ -e /usr/bin/tun.sh ] && rm -f /usr/bin/tun.sh
     [ -e /etc/crontab ] && sed -i '/tun.sh/d' /etc/crontab
@@ -1160,7 +1160,7 @@ uninstall() {
     rule_del >/dev/null 2>&1
     ${PACKAGE_UNINSTALL[int]} cloudflare-warp 2>/dev/null
     systemctl disable --now warp-svc >/dev/null 2>&1
-    rm -rf /usr/bin/wireguard-go /usr/bin/warp $HOME/.local/share/warp /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg /etc/apt/sources.list.d/cloudflare-client.list /etc/yum.repos.d/cloudflare-warp.repo
+    rm -rf /usr/bin/wireguard-go $HOME/.local/share/warp /usr/share/keyrings/cloudflare-warp-archive-keyring.gpg /etc/apt/sources.list.d/cloudflare-client.list /etc/yum.repos.d/cloudflare-warp.repo
   }
 
   # 卸载 Wireproxy
@@ -1174,7 +1174,7 @@ uninstall() {
     fi
 
     warp_api "cancel" "/etc/wireguard/warp-account.conf" >/dev/null 2>&1
-    rm -rf /usr/bin/wireguard-go /usr/bin/warp /etc/dnsmasq.d/warp.conf /usr/bin/wireproxy /lib/systemd/system/wireproxy.service
+    rm -rf /usr/bin/wireguard-go /etc/dnsmasq.d/warp.conf /usr/bin/wireproxy /lib/systemd/system/wireproxy.service
     [ -e /etc/gai.conf ] && sed -i '/^precedence \:\:ffff\:0\:0/d;/^label 2002\:\:\/16/d' /etc/gai.conf
     [ -e /usr/bin/tun.sh ] && rm -f /usr/bin/tun.sh && sed -i '/tun.sh/d' /etc/crontab
   }
@@ -1226,7 +1226,6 @@ ver() {
   if [ -s /tmp/menu.sh ]; then
     mv /tmp/menu.sh /etc/wireguard/
     chmod +x /etc/wireguard/menu.sh
-    ln -sf /etc/wireguard/menu.sh /usr/bin/warp
     info " $(text 64):$(grep ^VERSION /etc/wireguard/menu.sh | sed "s/.*=//g")  $(text 18):$(grep "${L}\[1\]" /etc/wireguard/menu.sh | cut -d \" -f2) "
   else
     error " $(text 65) "
@@ -2332,7 +2331,6 @@ EOF
 
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
     chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
-    ln -sf /etc/wireguard/menu.sh /usr/bin/warp && info " $(text 38) "
     echo "$L" >/etc/wireguard/language
 
     # 如成功升级 Teams ，根据新账户信息修改配置文件并注销旧账户; 如失败则还原为原账户
@@ -2517,7 +2515,6 @@ client_install() {
   # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
   mv -f $0 /etc/wireguard/menu.sh >/dev/null 2>&1
   chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
-  ln -sf /etc/wireguard/menu.sh /usr/bin/warp && info " $(text 38) "
   echo "$L" >/etc/wireguard/language
 
   # 结果提示，脚本运行时间，次数统计
