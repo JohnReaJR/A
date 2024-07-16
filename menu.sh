@@ -3112,9 +3112,7 @@ menu_setting() {
 
 # 显示菜单
 menu() {
-  hint " $(text 16) "
-  
-  echo -e "\033[1;33m   ResleevedNet Warp Menu  \033[0m"
+  echo -e "\033[1;36m   ResleevedNet Warp Menu  \033[0m"
   for ((h=1; h<${#MENU_OPTION[*]}; h++)); do hint " ${MENU_OPTION[h]} "; done
   hint " ${MENU_OPTION[0]} "
   reading "\n $(text 50) " MENU_CHOOSE
