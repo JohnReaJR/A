@@ -2404,7 +2404,6 @@ EOF
     info " $(text 41) " && [ -n "$QUOTA" ] && info " $(text 133) "
     info " $PRIORITY_NOW , $(text 186) "
     echo -e "\n==============================================================\n"
-    hint " $(text 43) \n" && help
     [[ "$TRACE4$TRACE6" = offoff ]] && warning " $(text 44) "
   fi
   }
@@ -3087,7 +3086,7 @@ menu_setting() {
         ACTION[1]() { CONF=${CONF1[n]}; install; }
         ;;
       * )
-        MENU_OPTION[1]="1 $(text 78)"
+        MENU_OPTION[1]="1 $(text 68)"
         ACTION[1]() { CONF=${CONF1[n]}; install; }
     esac
   fi
