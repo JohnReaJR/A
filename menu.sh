@@ -155,7 +155,7 @@ E[70]="WARP dualstack"
 C[70]="WARP 双栈"
 E[71]="Turn on WARP (warp o)"
 C[71]="打开 WARP (warp o)"
-E[72]="Turn off, uninstall WARP interface, Linux Client and WireProxy (warp u)"
+E[72]="Turn off, uninstall WARP interface, Linux Client and WireProxy"
 C[72]="永久关闭 WARP 网络接口，并删除 WARP、 Linux Client 和 WireProxy (warp u)"
 E[73]="Upgrade kernel, turn on BBR, change Linux system (warp b)"
 C[73]="升级内核、安装BBR、DD脚本 (warp b)"
@@ -1511,8 +1511,6 @@ working_mode_switch() {
 
 # 检测系统信息
 check_system_info() {
-  info " $(text 37) "
-
   # 判断是否有加载 wireguard 内核，如没有先尝试是否可以加载，再重新判断一次
   if [ ! -e /sys/module/wireguard ]; then
     [ -s /lib/modules/$(uname -r)/kernel/drivers/net/wireguard/wireguard.ko* ] && [ -x "$(type -p lsmod)" ] && ! lsmod | grep -q wireguard && [ -x "$(type -p modprobe)" ] && modprobe wireguard
@@ -3116,7 +3114,7 @@ menu_setting() {
 menu() {
   hint " $(text 16) "
   
-   echo -e "\n ResleevedNet Warp Menu\n"
+  echo -e "\033[1;33m   ResleevedNet Warp Menu  \033[0m"
   for ((h=1; h<${#MENU_OPTION[*]}; h++)); do hint " ${MENU_OPTION[h]} "; done
   hint " ${MENU_OPTION[0]} "
   reading "\n $(text 50) " MENU_CHOOSE
