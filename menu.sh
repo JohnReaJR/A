@@ -3089,7 +3089,7 @@ menu_setting() {
     case "$m" in
       [0-2] )
         MENU_OPTION[1]="1.  $(text 68)"
-        ACTION[3]() { CONF=${CONF3[n]}; install; }
+        ACTION[1]() { CONF=${CONF1[n]}; install; }
         ;;
       * )
         MENU_OPTION[1]="1.  $(text 78)"
@@ -3107,6 +3107,7 @@ menu_setting() {
   MENU_OPTION[0]="0.  $(text 76)"
 
   ACTION[2]() { OPTION=o; onoff; }
+  ACTION[3]() { uninstall; }
   ACTION[0]() { exit; }
 
   [ -e /etc/wireguard/info.log ] && TYPE=' Teams' && grep -sq 'Device name' /etc/wireguard/info.log 2>/dev/null && check_quota warp && TYPE='+' && PLUSINFO="$(text 25): $(awk '/Device name/{print $NF}' /etc/wireguard/info.log)\t $(text 63): $QUOTA"
