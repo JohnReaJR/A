@@ -417,15 +417,15 @@ statistics_of_run-times() {
 
 # To select the language, first determine the language selection in /etc/wireguard/language. If not, let the user choose. The default is English. Solve the problem of Chinese display
 select_language() {
-  UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iEm1 "UTF-8|utf8")
-  [ -n "$UTF8_LOCALE" ] && export LC_ALL="$UTF8_LOCALE" LANG="$UTF8_LOCALE" LANGUAGE="$UTF8_LOCALE"
+  UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iEm1 "UTF-8|utf8")
+  [ -n "$UTF8_LOCALE" ] && export LC_ALL="$UTF8_LOCALE" LANG="$UTF8_LOCALE" LANGUAGE="$UTF8_LOCALE"
 
-  if [ -s /etc/wireguard/language ]; then
-    L=$(cat /etc/wireguard/language)
-  else
-    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
-    [ "$LANGUAGE" = 2 ] && L=C
-  fi
+  if [ -s /etc/wireguard/language ]; then
+    L=$(cat /etc/wireguard/language)
+  else
+    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
+    [ "$LANGUAGE" = 2 ] && L=C
+  fi
 }
 
 # The script must be run as root
