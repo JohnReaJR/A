@@ -394,13 +394,14 @@ E[190]="The configuration file warp.conf cannot be found. The script is aborted.
 C[190]="The configuration file warp.conf cannot be found, the script is aborted, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[191]="Current operating system is: \$SYSTEM, Linux Client only supports Ubuntu, Debian and CentOS. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
 C[191]="The current operating system is: \$SYSTEM. Linux Client only supports Ubuntu, Debian and CentOS. The script is aborted. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
-# Custom font color, read function
-warning() { echo -e "\033[31m\033[01m$*\033[0m"; } # red
-error() { echo -e "\033[31m\033[01m$*\033[0m" && exit 1; } # red
-info() { echo -e "\033[32m\033[01m$*\033[0m"; } # Green
-hint() { echo -e "\033[33m\033[01m$*\033[0m"; } # yellow
+
+# 自定义字体彩色，read 函数
+warning() { echo -e "\033[31m\033[01m$*\033[0m"; }  # 红色
+error() { echo -e "\033[31m\033[01m$*\033[0m" && exit 1; }  # 红色
+info() { echo -e "\033[32m\033[01m$*\033[0m"; }   # 绿色
+hint() { echo -e "\033[33m\033[01m$*\033[0m"; }   # 黄色
 reading() { read -rp "$(info "$1")" "$2"; }
-text() { grep -q '\$' <<< "${E[$*]}" && eval echo "\$(eval echo "\${${L}[$*]}")" | | eval echo "\${${L}[$*]}"; }
+text() { grep -q '\$' <<< "${E[$*]}" && eval echo "\$(eval echo "\${${L}[$*]}")" || eval echo "\${${L}[$*]}"; }
 
 # Check whether Github CDN needs to be enabled. If it can be connected directly, do not use it.
 check_cdn() {
