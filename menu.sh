@@ -11,7 +11,7 @@ GH_PROXY='https://ghproxy.lvedong.eu.org/'
 
 trap "rm -f /tmp/{wireguard-go-*,best_mtu,best_endpoint,endpoint,ip}; exit" INT
 
-E[0]="\n Language:\n 1. English (default) \n 2. 简体中文"
+E[0]="\n Language:\n 1. English (default)"
 C[0]="${E[0]}"
 E[1]="Publish warp api, you can register account, join Zero Trust, check account information and all other operations. Detailed instructions: https://warp.cloudflare.now.cc/; 2. Scripts to update the warp api."
 C[1]="发布 warp api，可以注册账户，加入 Zero Trust，查账户信息等所有的操作。详细使用说明: https://warp.cloudflare.now.cc/; 2. 脚本更新 warp api"
@@ -424,7 +424,7 @@ select_language() {
   if [ -s /etc/wireguard/language ]; then
     L=$(cat /etc/wireguard/language)
   else
-    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
+    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n"
     [ "$LANGUAGE" = 2 ] && L=C
   fi
 }
@@ -3208,6 +3208,7 @@ NAME=$3
 
 # 主程序运行 1/3
 check_cdn
+select_language
 
 # 设置部分后缀 1/3
 case "$OPTION" in
