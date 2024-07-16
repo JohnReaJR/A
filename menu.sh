@@ -516,7 +516,7 @@ check_dependencies() {
     ${PACKAGE_UPDATE[int]} >/dev/null 2>&1
     ${PACKAGE_INSTALL[int]} ${DEPS[@]} >/dev/null 2>&1
   else
-    info "\n $(text 8) \n"
+    info
   fi
 
   PING6='ping -6' && [ -x "$(type -p ping6)" ] && PING6='ping6'
@@ -3086,12 +3086,12 @@ menu_setting() {
     check_stack
     case "$m" in
       [0-2] )
-        MENU_OPTION[1]="1.  $(text 68)"
+        MENU_OPTION[1]="1 $(text 68)"
         ACTION[1]() { CONF=${CONF1[n]}; install; }
         ;;
       * )
-        MENU_OPTION[1]="1.  $(text 78)"
-        ACTION[1]() { update; }
+        MENU_OPTION[1]="1 $(text 78)"
+        ACTION[1]() { CONF=${CONF1[n]}; install; }
     esac
   fi
 
@@ -3101,8 +3101,8 @@ menu_setting() {
     grep -q '#Table' /etc/wireguard/warp.conf && GLOBAL_OR_NOT="$(text 184)" || GLOBAL_OR_NOT="$(text 185)"
   fi
 
-  MENU_OPTION[2]="2.  $(text 72)"
-  MENU_OPTION[0]="0.  $(text 76)"
+  MENU_OPTION[2]="2 $(text 72)"
+  MENU_OPTION[0]="0 $(text 76)"
 
   ACTION[2]() { uninstall; }
   ACTION[0]() { exit; }
@@ -3112,7 +3112,9 @@ menu_setting() {
 
 # 显示菜单
 menu() {
-  echo -e "\033[1;36m   ResleevedNet Warp Menu  \033[0m"
+  echo -e "\033[1;36mResleevedNet Warp Menu  \033[0m"
+  echo -e "\033[1;36m────────────────────────────────────────────────────•\033[0m"
+  echo ""
   for ((h=1; h<${#MENU_OPTION[*]}; h++)); do hint " ${MENU_OPTION[h]} "; done
   hint " ${MENU_OPTION[0]} "
   reading "\n $(text 50) " MENU_CHOOSE
