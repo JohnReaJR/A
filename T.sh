@@ -406,3 +406,112 @@ text() { grep -q '\$' <<< "${E[$*]}" && eval echo "\$(eval echo "\${${L}[$*]}")"
 check_cdn() {
   [ -n "$GH_PROXY" ] && wget --server-response --quiet --output-document=/dev/null --no-check-certificate --tries=2 --timeout=3 https://raw .githubusercontent.com/fscarmen/warp-sh/main/README.md >/dev/null 2>&1 && unset GH_PROXY
 }
+
+# Statistics on the script’s current day and cumulative number of runs
+statistics_of_run-times() {
+  local COUNT=$(curl --retry 2 -ksm2 "https://hit.forvps.gq/https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh" 2>&1 | grep -m1 -oE "[0-9]+[ ]+/[ ]+[0-9]+") &&
+  TODAY=$(awk -F ' ' '{print $1}' <<< "$COUNT") &&
+  TOTAL=$(awk -F ' ' '{print $3}' <<< "$COUNT")
+}
+
+# To select the language, first determine the language selection in /etc/wireguard/language. If not, let the user choose. The default is English. Solve the problem of Chinese display
+select_language() {
+  UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iEm1 "UTF-8|utf8")
+  [ -n "$UTF8_LOCALE" ] && export LC_ALL="$UTF8_LOCALE" LANG="$UTF8_LOCALE" LANGUAGE="$UTF8_LOCALE"
+
+  if [ -s /etc/wireguard/language ]; then
+    L=$(cat /etc/wireguard/language)
+  else
+    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
+    [ "$LANGUAGE" = 2 ] && L=C
+  fi
+}
+
+# The script must be run as root
+check_root() {
+  [ "$(id -u)" != 0 ] && error " $(text 2) "
+}
+# Determine virtualization
+check_virt() {
+  if [ "$1" = 'Alpine' ]; then
+    VIRT=$(virt-what | tr '\n' ' ')
+  else
+    [ "$(type -p systemd-detect-virt)" ] && VIRT=$(systemd-detect-virt)
+    [[ -z "$VIRT" && -x "$(type -p hostnamectl)" ]] && VIRT=$(hostnamectl | awk '/Virtualization:/{print $NF}')
+  fi
+}
+
+# Judge the operating system in multiple ways and try until there is value. Only supports Debian 10/11, Ubuntu 18.04/20.04 or CentOS 7/8. If it is not the above operating system, exit the script
+# Thanks to Maoda for his technical guidance in optimizing repeated commands. https://github.com/Oreomeow
+check_operating_system() {
+  if [ -s /etc/os-release ]; then
+    SYS="$(grep -i pretty_name /etc/os-release | cut -d \" -f2)"
+  elif [ -x "$(type -p hostnamectl)" ]; then
+    SYS="$(hostnamectl | grep -i system | cut -d : -f2)"
+  elif [ -x "$(type -p lsb_release)" ]; then
+    SYS="$(lsb_release -sd)"
+  elif [ -s /etc/lsb-release ]; then
+    SYS="$(grep -i description /etc/lsb-release | cut -d \" -f2)"
+  elif [ -s /etc/redhat-release ]; then
+    SYS="$(grep . /etc/redhat-release)"
+  elif [ -s /etc/issue ]; then
+    SYS="$(grep . /etc/issue | cut -d '\' -f1 | sed '/^[ ]*$/d')"
+  fi
+# Customize several functions of the Alpine system
+  alpine_warp_restart() { wg-quick down warp >/dev/null 2>&1; wg-quick up warp >/dev/null 2>&1; }
+  alpine_warp_enable() { echo -e "/usr/bin/tun.sh\nwg-quick up warp" > /etc/local.d/warp.start; chmod +x /etc/local.d/warp.start; rc -update add local; wg-quick up warp >/dev/null 2>&1; }
+REGEX=("debian" "ubuntu" "centos|red hat|kernel|alma|rocky" "alpine" "arch linux" "fedora")
+  RELEASE=("Debian" "Ubuntu" "CentOS" "Alpine" "Arch" "Fedora")
+  EXCLUDE=("---")
+  MAJOR=("9" "16" "7" "" "" "37")
+  PACKAGE_UPDATE=("apt -y update" "apt -y update" "yum -y update --skip-broken" "apk update -f" "pacman -Sy" "dnf -y update")
+  PACKAGE_INSTALL=("apt -y install" "apt -y install" "yum -y install" "apk add -f" "pacman -S --noconfirm" "dnf -y install")
+  PACKAGE_UNINSTALL=("apt -y autoremove" "apt -y autoremove" "yum -y autoremove" "apk del -f" "pacman -Rcnsu --noconfirm" "dnf -y autoremove")
+  SYSTEMCTL_START=("systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "wg-quick up warp" "systemctl start wg-quick@warp" "systemctl start wg -quick@warp")
+  SYSTEMCTL_RESTART=("systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "alpine_warp_restart" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp ")
+SYSTEMCTL_ENABLE=("systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "alpine_warp_enable" "systemctl enable --now wg- quick@warp" "systemctl enable --now wg-quick@warp")
+
+  for int in "${!REGEX[@]}"; do
+    [[ "${SYS,,}" =~ ${REGEX[int]} ]] && SYSTEM="${RELEASE[int]}" && break
+  done
+
+  # Customized system for each factory transportation
+  if [ -z "$SYSTEM" ]; then
+    [ -x "$(type -p yum)" ] && int=2 && SYSTEM='CentOS' || error " $(text 5) "
+  fi
+
+  # Determine the main Linux version
+  MAJOR_VERSION=$(sed "s/[^0-9.]//g" <<< "$SYS" | cut -d. -f1)
+
+  # First exclude specific systems included in EXCLUDE. Other systems need to be compared with major releases.
+  for ex in "${EXCLUDE[@]}"; do [[ ! "${SYS,,}" =~ $ex ]]; done &&
+  [[ "$MAJOR_VERSION" -lt "${MAJOR[int]}" ]] && error " $(text 26) "
+}
+# Install system dependencies and define ping command
+check_dependencies() {
+  # For alpine systems, upgrade libraries and reinstall dependencies
+  if [ "$SYSTEM" = 'Alpine' ]; then
+    CHECK_WGET=$(wget 2>&1 | head -n 1)
+    grep -qi 'busybox' <<< "$CHECK_WGET" && ${PACKAGE_INSTALL[int]} wget >/dev/null 2>&1
+    DEPS_CHECK=("ping" "curl" "grep" "bash" "ip" "python3" "virt-what")
+    DEPS_INSTALL=("iputils-ping" "curl" "grep" "bash" "iproute2" "python3" "virt-what")
+  else
+    # Dependencies required by the three major systems
+    DEPS_CHECK=("ping" "wget" "curl" "systemctl" "ip" "python3")
+    DEPS_INSTALL=("iputils-ping" "wget" "curl" "systemctl" "iproute2" "python3")
+  fi
+
+  for g in "${!DEPS_CHECK[@]}"; do
+    [ ! -x "$(type -p ${DEPS_CHECK[g]})" ] && [[ ! "${DEPS[@]}" =~ "${DEPS_INSTALL[g]}" ]] && DEPS+=( ${DEPS_INSTALL[g]})
+  done
+
+  if [ "${#DEPS[@]}" -ge 1 ]; then
+    info "\n $(text 7) ${DEPS[@]} \n"
+    ${PACKAGE_UPDATE[int]} >/dev/null 2>&1
+    ${PACKAGE_INSTALL[int]} ${DEPS[@]} >/dev/null 2>&1
+  else
+    info "\n $(text 8) \n"
+  fi
+
+  PING6='ping -6' && [ -x "$(type -p ping6)" ] && PING6='ping6'
+}
