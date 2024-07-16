@@ -1,526 +1,521 @@
 #!/usr/bin/env bash
 
-# 当前脚本版本号
+# Current script version number
 VERSION='3.0.10'
 
-# 环境变量用于在Debian或Ubuntu操作系统中设置非交互式（noninteractive）安装模式
+# Environment variables are used to set noninteractive installation mode in Debian or Ubuntu operating systems
 export DEBIAN_FRONTEND=noninteractive
 
-# Github 反代加速代理
+# Github anti-generation acceleration agent
 GH_PROXY='https://ghproxy.lvedong.eu.org/'
 
 trap "rm -f /tmp/{wireguard-go-*,best_mtu,best_endpoint,endpoint,ip}; exit" INT
-
-E[0]="\n Language:\n 1. English (default) \n 2. 简体中文"
+E[0]="\n Language:\n 1. English (default) \n 2. Simplified Chinese"
 C[0]="${E[0]}"
 E[1]="Publish warp api, you can register account, join Zero Trust, check account information and all other operations. Detailed instructions: https://warp.cloudflare.now.cc/; 2. Scripts to update the warp api."
-C[1]="发布 warp api，可以注册账户，加入 Zero Trust，查账户信息等所有的操作。详细使用说明: https://warp.cloudflare.now.cc/; 2. 脚本更新 warp api"
+C[1]="Publish warp api, you can register an account, join Zero Trust, check account information and other operations. Detailed instructions: https://warp.cloudflare.now.cc/; 2. Script update warp api"
 E[2]="The script must be run as root, you can enter sudo -i and then download and run again. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[2]="必须以root方式运行脚本，可以输入 sudo -i 后重新下载运行，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[2]="The script must be run as root. You can enter sudo -i and re-download and run. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[3]="The TUN module is not loaded. You should turn it on in the control panel. Ask the supplier for more help. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[3]="没有加载 TUN 模块，请在管理后台开启或联系供应商了解如何开启，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[3]="The TUN module is not loaded. Please enable it in the management background or contact the supplier to learn how to enable it. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[4]="The WARP server cannot be connected. It may be a China Mainland VPS. You can manually ping 162.159.193.10 or ping -6 2606:4700:d0::a29f:c001.You can run the script again if the connect is successful. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[4]="与 WARP 的服务器不能连接,可能是大陆 VPS，可手动 ping 162.159.193.10 或 ping -6 2606:4700:d0::a29f:c001，如能连通可再次运行脚本，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[4]="Cannot connect to the WARP server. It may be a mainland VPS. You can manually ping 162.159.193.10 or ping -6 2606:4700:d0::a29f:c001. If you can connect, you can run the script again. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[5]="The script supports Debian, Ubuntu, CentOS, Fedora, Arch or Alpine systems only. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[5]="本脚本只支持 Debian、Ubuntu、CentOS、Fedora、Arch 或 Alpine 系统,问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
-E[6]="warp h (help)\n warp n (Get the WARP IP)\n warp o (Turn off WARP temporarily)\n warp u (Turn off and uninstall WARP interface and Socks5 Linux Client)\n warp b (Upgrade kernel, turn on BBR, change Linux system)\n warp a (Change account to Free, WARP+ or Teams)\n warp p (Getting WARP+ quota by scripts)\n warp v (Sync the latest version)\n warp r (Connect/Disconnect WARP Linux Client)\n warp 4/6 (Add WARP IPv4/IPv6 interface)\n warp d (Add WARP dualstack interface IPv4 + IPv6)\n warp c (Install WARP Linux Client and set to proxy mode)\n warp l (Install WARP Linux Client and set to WARP mode)\n warp i (Change the WARP IP to support Netflix)\n warp e (Install Iptables + dnsmasq + ipset solution)\n warp w (Install WireProxy solution)\n warp y (Connect/Disconnect WireProxy socks5)\n warp k (Switch between kernel and wireguard-go-reserved)\n warp g (Switch between warp global and non-global)\n warp s 4/6/d (Set stack proiority: IPv4 / IPv6 / VPS default)\n"
-C[6]="warp h (帮助菜单）\n warp n (获取 WARP IP)\n warp o (临时warp开关)\n warp u (卸载 WARP 网络接口和 Socks5 Client)\n warp b (升级内核、开启BBR及DD)\n warp a (更换账户为 Free，WARP+ 或 Teams)\n warp p (刷WARP+流量)\n warp v (同步脚本至最新版本)\n warp r (WARP Linux Client 开关)\n warp 4/6 (WARP IPv4/IPv6 单栈)\n warp d (WARP 双栈)\n warp c (安装 WARP Linux Client，开启 Socks5 代理模式)\n warp l (安装 WARP Linux Client，开启 WARP 模式)\n warp i (更换支持 Netflix 的IP)\n warp e (安装 Iptables + dnsmasq + ipset 解决方案)\n warp w (安装 WireProxy 解决方案)\n warp y (WireProxy socks5 开关)\n warp k (切换 wireguard 内核 / wireguard-go-reserved)\n warp g (切换 warp 全局 / 非全局)\n warp s 4/6/d (优先级: IPv4 / IPv6 / VPS default)\n"
+C[5]="This script only supports Debian, Ubuntu, CentOS, Fedora, Arch or Alpine systems. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
+E[6]="warp h (help)\n warp n (Get the WARP IP)\n warp o (Turn off WARP temporarily)\n warp u (Turn off and uninstall WARP interface and Socks5 Linux Client)\n warp b (Upgrade kernel, turn on BBR, change Linux system)\n warp a (Change account to Free, WARP+ or Teams)\n warp p (Getting WARP+ quota by scripts)\n warp v (Sync the latest version)\n warp r (Connect/Disconnect WARP Linux Client)\n warp 4/6 (Add WARP IPv4/IPv6 interface)\n warp d (Add WARP dualstack interface IPv4 + IPv6)\n warp c (Install WARP Linux Client and set to proxy mode)\n warp l (Install WARP Linux Client and set to WARP mode)\n warp i (Change the WARP IP to support Netflix)\n warp e (Install Iptables + dnsmasq + ipset solution)\n warp w (Install WireProxy solution)\n warp y (Connect/Disconnect WireProxy socks5)\n warp k (Switch between kernel and wireguard-go-reserved)\n warp g (Switch between warp global and non-global)\n warp s 4/6/ d (Set stack priority: IPv4 / IPv6 / VPS default)\n"
+C[6]="warp h (help menu)\n warp n (obtain WARP IP)\n warp o (temporary warp switch)\n warp u (uninstall WARP network interface and Socks5 Client)\n warp b (upgrade kernel , turn on BBR and DD)\n warp a (change the account to Free, WARP+ or Teams)\n warp p (refresh WARP+ traffic)\n warp v (synchronize the script to the latest version)\n warp r (WARP Linux Client switch) \n warp 4/6 (WARP IPv4/IPv6 single stack)\n warp d (WARP dual stack)\n warp c (install WARP Linux Client, enable Socks5 proxy mode)\n warp l (install WARP Linux Client, enable WARP mode)\n warp i (change IP that supports Netflix)\n warp e (install Iptables + dnsmasq + ipset solution)\n warp w (install WireProxy solution)\n warp y (WireProxy socks5 switch)\n warp k (Switch wireguard kernel/wireguard-go-reserved)\n warp g (Switch warp global/non-global)\n warp s 4/6/d (Priority: IPv4 / IPv6 / VPS default)\n"
 E[7]="Install dependence-list:"
-C[7]="安装依赖列表:"
+C[7]="Installation dependency list:"
 E[8]="All dependencies already exist and do not need to be installed additionally."
-C[8]="所有依赖已存在，不需要额外安装"
+C[8]="All dependencies already exist, no additional installation is required"
 E[9]="Client cannot be upgraded to a Teams account."
-C[9]="Client 不能升级为 Teams 账户"
+C[9]="Client cannot be upgraded to a Teams account"
 E[10]="wireguard-tools installation failed, The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[10]="wireguard-tools 安装失败，脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[10]="wireguard-tools installation failed, script aborted, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[11]="Maximum \${j} attempts to get WARP IP..."
-C[11]="后台获取 WARP IP 中,最大尝试\${j}次……"
+C[11]="Maximum attempts\${j} times in obtaining WARP IP in the background..."
 E[12]="Try \${i}"
-C[12]="第\${i}次尝试"
+C[12]="\${i}th attempt"
 E[13]="There have been more than \${j} failures. The script is aborted. Attach the above error message. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[13]="失败已超过\${j}次，脚本中止，附上以上错误提示，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[13]="Failures have exceeded \${j} times. The script is terminated. Attached is the above error message. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[14]="Got the WARP\$TYPE IP successfully"
-C[14]="已成功获取 WARP\$TYPE 网络"
+C[14]="WARP\$TYPE network successfully obtained"
 E[15]="WARP is turned off. It could be turned on again by [warp o]"
-C[15]="已暂停 WARP，再次开启可以用 warp o"
-E[16]="The script specifically adds WARP network interface for VPS, detailed:[https://github.com/fscarmen/warp-sh]\n Features:\n\t • Support WARP+ account. Third-party scripts are use to increase WARP+ quota or upgrade kernel.\n\t • Not only menus, but commands with option.\n\t • Support system: Ubuntu 16.04、18.04、20.04、22.04,Debian 9、10、11,CentOS 7、8、9, Alpine, Arch Linux 3.\n\t • Support architecture: AMD,ARM and s390x\n\t • Automatically select four WireGuard solutions. Performance: Kernel with WireGuard integration > Install kernel module > wireguard-go\n\t • Suppert WARP Linux client.\n\t • Output WARP status, IP region and asn\n"
-C[16]="本项目专为 VPS 添加 warp 网络接口，详细说明: [https://github.com/fscarmen/warp-sh]\n 脚本特点:\n\t • 支持 WARP+ 账户，附带第三方刷 WARP+ 流量和升级内核 BBR 脚本\n\t • 普通用户友好的菜单，进阶者通过后缀选项快速搭建\n\t • 智能判断操作系统: Ubuntu 、Debian 、CentOS、 Alpine 和 Arch Linux，请务必选择 LTS 系统\n\t • 支持硬件结构类型: AMD、 ARM 和 s390x\n\t • 结合 Linux 版本和虚拟化方式，自动优选4个 WireGuard 方案。网络性能方面: 内核集成 WireGuard > 安装内核模块 > wireguard-go\n\t • 支持 WARP Linux Socks5 Client\n\t • 输出执行结果，提示是否使用 WARP IP ，IP 归属地和线路提供商\n"
+C[15]="WARP has been paused, you can use warp o if it is enabled again"
+E[16]="The script specifically adds WARP network interface for VPS, detailed:[https://github.com/fscarmen/warp-sh]\n Features:\n\t • Support WARP+ account. Third-party scripts are use to increase WARP+ quota or upgrade kernel.\n\t • Not only menus, but commands with option.\n\t • Support system: Ubuntu 16.04, 18.04, 20.04, 22.04, Debian 9, 10, 11, CentOS 7 , 8, 9, Alpine, Arch Linux 3.\n\t • Support architecture: AMD, ARM and s390x\n\t • Automatically select four WireGuard solutions. Performance: Kernel with WireGuard integration > Install kernel module > wireguard-go\ n\t • Suppert WARP Linux client.\n\t • Output WARP status, IP region and asn\n"
+C[16]="This project is designed to add a warp network interface for VPS. Detailed description: [https://github.com/fscarmen/warp-sh]\n Script features:\n\t • Supports WARP+ account, comes with Chapter 1 Third party brushing WARP+ traffic and upgrading kernel BBR script\n\t • User-friendly menu for ordinary users, advanced users can quickly set up through suffix options\n\t • Intelligent judgment of operating systems: Ubuntu, Debian, CentOS, Alpine and Arch Linux, please Be sure to choose LTS system\n\t • Supported hardware structure types: AMD, ARM and s390x\n\t • Automatically select 4 WireGuard solutions based on Linux version and virtualization method. Network performance: Kernel integrated WireGuard > Install kernel module. > wireguard-go\n\t • Supports WARP Linux Socks5 Client\n\t • Outputs execution results and prompts whether to use WARP IP, IP location and line provider\n"
 E[17]="Version"
-C[17]="脚本版本"
+C[17]="Script version"
 E[18]="New features"
-C[18]="功能新增"
+C[18]="New function"
 E[19]="System infomation"
-C[19]="系统信息"
+C[19]="System information"
 E[20]="Operating System"
-C[20]="当前操作系统"
+C[20]="Current operating system"
 E[21]="Kernel"
-C[21]="内核"
+C[21]="kernel"
 E[22]="Architecture"
-C[22]="处理器架构"
+C[22]="Processor architecture"
 E[23]="Virtualization"
-C[23]="虚拟化"
+C[23]="Virtualization"
 E[24]="Client is on"
-C[24]="Client 已开启"
+C[24]="Client is open"
 E[25]="Device name"
-C[25]="设备名"
-E[26]="Curren operating system is \$SYS.\\\n The system lower than \$SYSTEM \${MAJOR[int]} is not supported. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[26]="当前操作是 \$SYS\\\n 不支持 \$SYSTEM \${MAJOR[int]} 以下系统,问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[25]="Device name"
+E[26]="Curren operating system is \$SYS.\\\n The system lower than \$SYSTEM \${MAJOR[int]} is not supported. Feedback: [https://github.com/fscarmen/ warp-sh/issues]"
+C[26]="The current operation is \$SYS\\\n and does not support \$SYSTEM \${MAJOR[int]} The following systems, problem feedback: [https://github.com/fscarmen/warp-sh/ issues]"
 E[27]="Local Socks5"
-C[27]="本地 Socks5"
+C[27]="Local Socks5"
 E[28]="If there is a WARP+ License, please enter it, otherwise press Enter to continue:"
-C[28]="如有 WARP+ License 请输入，没有可回车继续:"
+C[28]="If you have a WARP+ License, please enter it. If not, press Enter to continue:"
 E[29]="Input errors up to 5 times.The script is aborted."
-C[29]="输入错误达5次，脚本退出"
+C[29]="If the input error reaches 5 times, the script will exit"
 E[30]="License should be 26 characters, please re-enter WARP+ License. Otherwise press Enter to continue. \(\${i} times remaining\):"
-C[30]="License 应为26位字符，请重新输入 WARP+ License，没有可回车继续\(剩余\${i}次\):"
+C[30]="License should be 26 characters, please re-enter WARP+ License, press Enter to continue\(remaining\${i} times\):"
 E[31]="The new \$KEY_LICENSE is the same as the one currently in use. Does not need to be replaced."
-C[31]="新输入的 \$KEY_LICENSE 与现使用中的一样，不需要更换。"
+C[31]="The newly entered \$KEY_LICENSE is the same as the one currently in use and does not need to be replaced."
 E[32]="Step 1/3: Install dependencies..."
-C[32]="进度 1/3: 安装系统依赖……"
+C[32]="Progress 1/3: Installing system dependencies..."
 E[33]="Step 2/3: WARP is ready"
-C[33]="进度 2/3: 已安装 WARP"
+C[33]="Progress 2/3: WARP installed"
 E[34]="Failed to change port. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[34]="更换端口不成功，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[34]="Changing the port failed, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[35]="Update WARP+ account..."
-C[35]="升级 WARP+ 账户中……"
+C[35]="Upgrading WARP+ account..."
 E[36]="The upgrade failed, License: \$LICENSE has been activated on more than 5 devices. It script will remain the same account or be switched to a free account."
-C[36]="升级失败，License: \$LICENSE 已激活超过5台设备，将保持原账户或者转为免费账户"
+C[36]="Upgrade failed, License: \$LICENSE has activated more than 5 devices, the original account will be maintained or converted to a free account"
 E[37]="Checking VPS infomation..."
-C[37]="检查环境中……"
+C[37]="Checking environment..."
 E[38]="Create shortcut [warp] successfully"
-C[38]="创建快捷 warp 指令成功"
+C[38]="Create shortcut warp command successfully"
 E[39]="Running WARP"
-C[39]="运行 WARP"
+C[39]="Run WARP"
 E[40]="Menu choose"
-C[40]="菜单选项"
+C[40]="Menu options"
 E[41]="Congratulations! WARP\$TYPE is turned on. Spend time:\$(( end - start )) seconds.\\\n The script runs today: \$TODAY. Total:\$TOTAL"
-C[41]="恭喜！WARP\$TYPE 已开启，总耗时:\$(( end - start ))秒， 脚本当天运行次数:\$TODAY，累计运行次数:\$TOTAL"
+C[41]="Congratulations! WARP\$TYPE has been turned on, the total time taken:\$(( end - start )) seconds, the number of times the script has been run today:\$TODAY, the cumulative number of runs:\$TOTAL"
 E[42]="The upgrade failed, License: \$LICENSE could not update to WARP+. The script will remain the same account or be switched to a free account."
-C[42]="升级失败，License: \$LICENSE 不能升级为 WARP+，将保持原账户或者转为免费账户。"
+C[42]="Upgrade failed, License: \$LICENSE cannot be upgraded to WARP+, the original account will be maintained or converted to a free account."
 E[43]="Run again with warp [option] [lisence], such as"
-C[43]="再次运行用 warp [option] [lisence]，如"
+C[43]="Use warp [option] [lisence] to run again, such as"
 E[44]="WARP installation failed. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[44]="WARP 安装失败，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[44]="WARP installation failed, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[45]="WARP interface, Linux Client and Wireproxy have been completely deleted!"
-C[45]="WARP 网络接口、 Linux Client 和 Wireproxy 已彻底删除!"
+C[45]="WARP network interface, Linux Client and Wireproxy have been completely removed!"
 E[46]="Not cleaned up, please reboot and try again."
-C[46]="没有清除干净，请重启(reboot)后尝试再次删除"
+C[46]="Not cleared, please reboot and try to delete again"
 E[47]="Upgrade kernel, turn on BBR, change Linux system by other authors [ylx2016],[https://github.com/ylx2016/Linux-NetSpeed]"
-C[47]="BBR、DD脚本用的[ylx2016]的成熟作品，地址[https://github.com/ylx2016/Linux-NetSpeed]，请熟知"
+C[47]="Mature works of [ylx2016] used for BBR and DD scripts, address [https://github.com/ylx2016/Linux-NetSpeed], please be familiar with it"
 E[48]="Run script"
-C[48]="安装脚本"
+C[48]="Installation script"
 E[49]="Return to main menu"
-C[49]="回退主目录"
+C[49]="Return to home directory"
 E[50]="Choose:"
-C[50]="请选择:"
+C[50]="Please select:"
 E[51]="Please enter the correct number"
-C[51]="请输入正确数字"
+C[51]="Please enter the correct number"
 E[52]="Please input WARP+ ID:"
-C[52]="请输入 WARP+ ID:"
+C[52]="Please enter WARP+ ID:"
 E[53]="WARP+ ID should be 36 characters, please re-enter \(\${i} times remaining\):"
-C[53]="WARP+ ID 应为36位字符，请重新输入 \(剩余\${i}次\):"
-E[54]="Getting the WARP+ quota by the following 3 authors:\n	• [ALIILAPRO]，[https://github.com/ALIILAPRO/warp-plus-cloudflare]\n	• [mixool]，[https://github.com/mixool/across/tree/master/wireguard]\n	• [SoftCreatR]，[https://github.com/SoftCreatR/warp-up]\n • Open the 1.1.1.1 app\n • Click on the hamburger menu button on the top-right corner\n • Navigate to: Account > Key\n Important:Refresh WARP+ quota: 三 --> Advanced --> Connection options --> Reset keys\n It is best to run script with screen."
-C[54]="刷 WARP+ 流量用可选择以下三位作者的成熟作品，请熟知:\n	• [ALIILAPRO]，地址[https://github.com/ALIILAPRO/warp-plus-cloudflare]\n	• [mixool]，地址[https://github.com/mixool/across/tree/master/wireguard]\n	• [SoftCreatR]，地址[https://github.com/SoftCreatR/warp-up]\n 下载地址:https://1.1.1.1/，访问和苹果外区 ID 自理\n 获取 WARP+ ID 填到下面。方法:App右上角菜单 三 --> 高级 --> 诊断 --> ID\n 重要:刷脚本后流量没有增加处理:右上角菜单 三 --> 高级 --> 连接选项 --> 重置加密密钥\n 最好配合 screen 在后台运行任务"
+C[53]="WARP+ ID should be 36 characters, please re-enter \(\${i} times remaining\):"
+E[54]="Getting the WARP+ quota by the following 3 authors:\n • [ALIILAPRO], [https://github.com/ALIILAPRO/warp-plus-cloudflare]\n • [mixool], [https: //github.com/mixool/across/tree/master/wireguard]\n • [SoftCreatR], [https://github.com/SoftCreatR/warp-up]\n • Open the 1.1.1.1 app\n • Click on the hamburger menu button on the top-right corner\n • Navigate to: Account > Key\n Important:Refresh WARP+ quota: Three --> Advanced --> Connection options --> Reset keys\n It is best to run script with screen."
+C[54]="To brush WARP+ traffic, you can choose the mature works of the following three authors, please be familiar with them:\n • [ALIILAPRO], address [https://github.com/ALIILAPRO/warp-plus-cloudflare]\n • [mixool], at [https://github.com/mixool/across/tree/master/wireguard]\n • [SoftCreatR], at [https://github.com/SoftCreatR/warp-up]\n Download address: https://1.1.1.1/, visit and take care of Apple's external ID\n Obtain the WARP+ ID and fill it in below. Method: Menu 3 in the upper right corner of the App-->Advanced-->Diagnosis-->ID\n Important. : There is no increase in traffic after brushing the script. Processing: Menu 3 in the upper right corner --> Advanced --> Connection options --> Reset encryption key\n Best to use screen to run tasks in the background"
 E[55]="1. Run [ALIILAPRO] script\n 2. Run [mixool] script\n 3. Run [SoftCreatR] script"
-C[55]="1. 运行 [ALIILAPRO] 脚本\n 2. 运行 [mixool] 脚本\n 3. 运行 [SoftCreatR] 脚本"
-E[56]="The current Netflix region is \$REGION. Confirm press [y] . If you want another regions, please enter the two-digit region abbreviation. \(such as hk,sg. Default is \$REGION\):"
-C[56]="当前 Netflix 地区是:\$REGION，需要解锁当前地区请按 [y], 如需其他地址请输入两位地区简写 \(如 hk ,sg，默认:\$REGION\):"
+C[55]="1. Run the [ALIILAPRO] script\n 2. Run the [mixool] script\n 3. Run the [SoftCreatR] script"
+E[56]="The current Netflix region is \$REGION. Confirm press [y] . If you want another region, please enter the two-digit region abbreviation. \(such as hk,sg. Default is \$REGION\ ):"
+C[56]="The current Netflix region is:\$REGION. If you need to unlock the current region, please press [y]. If you need other addresses, please enter the two-digit region abbreviation\(such as hk, sg, default:\$REGION\): "
 E[57]="The target quota you want to get. The unit is GB, the default value is 10:"
-C[57]="你希望获取的目标流量值，单位为 GB，输入数字即可，默认值为10:"
+C[57]="The target traffic value you want to obtain, in GB, just enter a number, the default value is 10:"
 E[58]="Local network interface: CloudflareWARP"
-C[58]="本地网络接口: CloudflareWARP"
+C[58]="Local network interface: CloudflareWARP"
 E[59]="Cannot find the account file: /etc/wireguard/warp-account.conf, you can reinstall with the WARP+ License"
-C[59]="找不到账户文件:/etc/wireguard/warp-account.conf，可以卸载后重装，输入 WARP+ License"
+C[59]="Account file not found:/etc/wireguard/warp-account.conf, you can uninstall and reinstall, enter WARP+ License"
 E[60]="Cannot find the configuration file: /etc/wireguard/warp.conf, you can reinstall with the WARP+ License"
-C[60]="找不到配置文件: /etc/wireguard/warp.conf，可以卸载后重装，输入 WARP+ License"
+C[60]="Configuration file not found: /etc/wireguard/warp.conf, you can uninstall and reinstall, enter WARP+ License"
 E[61]="Please Input WARP+ license:"
-C[61]="请输入WARP+ License:"
+C[61]="Please enter WARP+ License:"
 E[62]="Successfully change to a WARP\$TYPE account"
-C[62]="已变更为 WARP\$TYPE 账户"
+C[62]="Changed to WARP\$TYPE account"
 E[63]="WARP+ quota"
-C[63]="剩余流量"
+C[63]="Remaining traffic"
 E[64]="Successfully synchronized the latest version"
-C[64]="成功！已同步最新脚本，版本号"
+C[64]="Success! The latest script has been synchronized, version number"
 E[65]="Upgrade failed. Feedback:[https://github.com/fscarmen/warp-sh/issues]"
-C[65]="升级失败，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[65]="Upgrade failed, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[66]="Add WARP IPv4 interface to \${NATIVE[n]} VPS \(bash menu.sh 4\)"
-C[66]="为 \${NATIVE[n]} 添加 WARP IPv4 网络接口 \(bash menu.sh 4\)"
+C[66]="Add WARP IPv4 network interface for \${NATIVE[n]} \(bash menu.sh 4\)"
 E[67]="Add WARP IPv6 interface to \${NATIVE[n]} VPS \(bash menu.sh 6\)"
-C[67]="为 \${NATIVE[n]} 添加 WARP IPv6 网络接口 \(bash menu.sh 6\)"
+C[67]="Add WARP IPv6 network interface for \${NATIVE[n]} \(bash menu.sh 6\)"
 E[68]="Add WARP dualstack interface to \${NATIVE[n]} VPS \(bash menu.sh d\)"
-C[68]="为 \${NATIVE[n]} 添加 WARP 双栈网络接口 \(bash menu.sh d\)"
+C[68]="Add WARP dual-stack network interface for \${NATIVE[n]} \(bash menu.sh d\)"
 E[69]="Native dualstack"
-C[69]="原生双栈"
+C[69]="Native dual stack"
 E[70]="WARP dualstack"
-C[70]="WARP 双栈"
+C[70]="WARP dual stack"
 E[71]="Turn on WARP (warp o)"
-C[71]="打开 WARP (warp o)"
+C[71]="Open WARP (warp o)"
 E[72]="Turn off, uninstall WARP interface, Linux Client and WireProxy (warp u)"
-C[72]="永久关闭 WARP 网络接口，并删除 WARP、 Linux Client 和 WireProxy (warp u)"
+C[72]="Permanently shut down the WARP network interface and remove WARP, Linux Client and WireProxy (warp u)"
 E[73]="Upgrade kernel, turn on BBR, change Linux system (warp b)"
-C[73]="升级内核、安装BBR、DD脚本 (warp b)"
+C[73]="Upgrade kernel, install BBR, DD script (warp b)"
 E[74]="Getting WARP+ quota by scripts (warp p)"
-C[74]="刷 WARP+ 流量 (warp p)"
+C[74]="Warp WARP+ traffic (warp p)"
 E[75]="Sync the latest version (warp v)"
-C[75]="同步最新版本 (warp v)"
+C[75]="Synchronize the latest version (warp v)"
 E[76]="Exit"
-C[76]="退出脚本"
+C[76]="Exit script"
 E[77]="Turn off WARP (warp o)"
-C[77]="暂时关闭 WARP (warp o)"
+C[77]="Temporarily close WARP (warp o)"
 E[78]="Change the WARP account type (warp a)"
-C[78]="变更 WARP 账户 (warp a)"
+C[78]="Change WARP account (warp a)"
 E[79]="Do you uninstall the following dependencies \(if any\)? Please note that this will potentially prevent other programs that are using the dependency from working properly.\\\n\\\n \$UNINSTALL_DEPENDENCIES_LIST"
-C[79]="是否卸载以下依赖\(如有\)？请注意，这将有可能使其他正在使用该依赖的程序不能正常工作\\\n\\\n \$UNINSTALL_DEPENDENCIES_LIST"
+C[79]="Do you want to uninstall the following dependencies\(if any\)? Please note that this may prevent other programs that are using the dependencies from working properly\\\n\\\n \$UNINSTALL_DEPENDENCIES_LIST"
 E[80]="Professional one-click script for WARP to unblock streaming media (Supports multi-platform, multi-mode and TG push)"
-C[80]="WARP 解锁 Netflix 等流媒体专业一键(支持多平台、多方式和 TG 通知)"
+C[80]="WARP Unlock Netflix and other streaming media professionals with one click (supports multiple platforms, multiple methods and TG notifications)"
 E[81]="Step 3/3: Searching for the best MTU value and endpoint address are ready."
-C[81]="进度 3/3: 寻找 MTU 最优值和优选 endpoint 地址已完成"
+C[81]="Progress 3/3: Finding the optimal MTU value and preferred endpoint address completed"
 E[82]="Install CloudFlare Client and set mode to Proxy (bash menu.sh c)"
-C[82]="安装 CloudFlare Client 并设置为 Proxy 模式 (bash menu.sh c)"
+C[82]="Install CloudFlare Client and set to Proxy mode (bash menu.sh c)"
 E[83]="Step 1/3: Installing WARP Client..."
-C[83]="进度 1/3: 安装 Client……"
+C[83]="Progress 1/3: Installing Client..."
 E[84]="Step 2/3: Setting Client Mode"
-C[84]="进度 2/3: 设置 Client 模式"
+C[84]="Progress 2/3: Set Client mode"
 E[85]="Client was installed.\n connect/disconnect by [warp r].\n uninstall by [warp u]"
-C[85]="Linux Client 已安装\n 连接/断开: warp r\n 卸载: warp u"
+C[85]="Linux Client is installed\n Connect/disconnect: warp r\n Uninstall: warp u"
 E[86]="Client is working. Socks5 proxy listening on: \$(ss -nltp | grep -E 'warp|wireproxy' | awk '{print \$4}')"
-C[86]="Linux Client 正常运行中。 Socks5 代理监听:\$(ss -nltp | grep -E 'warp|wireproxy' | awk '{print \$4}')"
+C[86]="Linux Client is running normally. Socks5 proxy monitoring:\$(ss -nltp | grep -E 'warp|wireproxy' | awk '{print \$4}')"
 E[87]="Fail to establish Socks5 proxy. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[87]="创建 Socks5 代理失败，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[87]="Creation of Socks5 proxy failed, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[88]="Connect the client (warp r)"
-C[88]="连接 Client (warp r)"
+C[88]="Connect Client (warp r)"
 E[89]="Disconnect the client (warp r)"
-C[89]="断开 Client (warp r)"
+C[89]="Disconnect Client (warp r)"
 E[90]="Client is connected"
-C[90]="Client 已连接"
+C[90]="Client is connected"
 E[91]="Client is disconnected. It could be connect again by [warp r]"
-C[91]="已断开 Client，再次连接可以用 warp r"
+C[91]="Client has been disconnected, you can use warp r to connect again"
 E[92]="(!!! Already installed, do not select.)"
-C[92]="(!!! 已安装，请勿选择)"
+C[92]="(!!! Already installed, please do not select)"
 E[93]="Client is not installed."
-C[93]="Client 未安装"
-E[94]="Congratulations! WARP\$CLIENT_AC Linux Client is working. Spend time:\$(( end - start )) seconds.\\\n The script runs on today: \$TODAY. Total:\$TOTAL"
-C[94]="恭喜！WARP\$CLIENT_AC Linux Client 工作中, 总耗时:\$(( end - start ))秒， 脚本当天运行次数:\$TODAY，累计运行次数:\$TOTAL"
+C[93]="Client is not installed"
+E[94]="Congratulations! WARP\$CLIENT_AC Linux Client is working. Spend time:\$(( end - start )) seconds.\\\n The script runs on today: \$TODAY. Total:\$TOTAL "
+C[94]="Congratulations! WARP\$CLIENT_AC Linux Client is working, the total time taken is:\$(( end - start )) seconds, the number of script runs on the day:\$TODAY, the cumulative number of runs:\$TOTAL"
 E[95]="The account type is Teams and does not support changing IP\n 1. Change to free (default)\n 2. Change to plus\n 3. Quit"
-C[95]="账户类型为 Teams，不支持更换 IP\n 1. 更换为 free (默认)\n 2. 更换为 plus\n 3. 退出"
+C[95]="The account type is Teams, changing IP is not supported\n 1. Change to free (default)\n 2. Change to plus\n 3. Exit"
 E[96]="Client connecting failure. It may be a CloudFlare IPv4."
-C[96]="Client 连接失败，可能是 CloudFlare IPv4."
+C[96]="Client connection failed, possibly CloudFlare IPv4."
 E[97]="IPv\$PRIO priority"
-C[97]="IPv\$PRIO 优先"
+C[97]="IPv\$PRIO priority"
 E[98]="Uninstall Wireproxy was complete."
-C[98]="Wireproxy 卸载成功"
+C[98]="Wireproxy uninstalled successfully"
 E[99]="WireProxy is connected"
-C[99]="WireProxy 已连接"
+C[99]="WireProxy connected"
 E[100]="License should be 26 characters, please re-enter WARP+ License. Otherwise press Enter to continue. \(\${i} times remaining\): "
-C[100]="License 应为26位字符,请重新输入 WARP+ License \(剩余\${i}次\): "
-E[101]="Client support amd64 and arm64 only. Curren architecture \$ARCHITECTURE. Official Support List: [https://pkg.cloudflareclient.com/packages/cloudflare-warp]. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[101]="Client 只支持 amd64 和 arm64 架构，当前架构 \$ARCHITECTURE，官方支持列表: [https://pkg.cloudflareclient.com/packages/cloudflare-warp]。脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[100]="License should be 26 characters, please re-enter WARP+ License \(\${i} times remaining\): "
+E[101]="Client support amd64 and arm64 only. Curren architecture \$ARCHITECTURE. Official Support List: [https://pkg.cloudflareclient.com/packages/cloudflare-warp]. The script is aborted. Feedback: [https ://github.com/fscarmen/warp-sh/issues]"
+C[101]="Client only supports amd64 and arm64 architecture, current architecture\$ARCHITECTURE, official support list: [https://pkg.cloudflareclient.com/packages/cloudflare-warp]. Script aborted, problem feedback: [https ://github.com/fscarmen/warp-sh/issues]"
 E[102]="Please customize the WARP+ device name \(Default is \$(hostname)\):"
-C[102]="请自定义 WARP+ 设备名 \(默认为 \$(hostname)\):"
+C[102]="Please customize the WARP+ device name \(default is \$(hostname)\):"
 E[103]="Port \$PORT is in use. Please input another Port\(\${i} times remaining\):"
-C[103]="\$PORT 端口占用中，请使用另一端口\(剩余\${i}次\):"
+C[103]="\$PORT port is occupied, please use another port\(remaining\${i} times\):"
 E[104]="Please customize the Client port (1000-65535. Default to 40000 if it is blank):"
-C[104]="请自定义 Client 端口号 (1000-65535，如果不输入，会默认40000):"
+C[104]="Please customize the Client port number (1000-65535, if not entered, it will default to 40000):"
 E[105]="Please choose the priority:\n 1. IPv4\n 2. IPv6\n 3. Use initial settings (default)"
-C[105]="请选择优先级别:\n 1. IPv4\n 2. IPv6\n 3. 使用 VPS 初始设置 (默认)"
+C[105]="Please select the priority level:\n 1. IPv4\n 2. IPv6\n 3. Use VPS initial settings (default)"
 E[106]="Shared free accounts cannot be upgraded to WARP+ accounts."
-C[106]="共享免费账户不能升级为 WARP+ 账户"
+C[106]="Shared free accounts cannot be upgraded to WARP+ accounts"
 E[107]="Failed registration, using a preset free account."
-C[107]="注册失败，使用预设的免费账户"
-E[108]="\n 1. WARP Linux Client IP\n 2. WARP WARP IP ( Only IPv6 can be brushed when WARP and Client exist at the same time )\n"
-C[108]="\n 1. WARP Linux Client IP\n 2. WARP WARP IP ( WARP 和 Client 并存时只能刷 IPv6)\n"
+C[107]="Registration failed, use the default free account"
+E[108]="\n 1. WARP Linux Client IP\n 2. WARP WARP IP (Only IPv6 can be brushed when WARP and Client exist at the same time)\n"
+C[108]="\n 1. WARP Linux Client IP\n 2. WARP WARP IP (only IPv6 can be flashed when WARP and Client coexist)\n"
 E[109]="Socks5 Proxy Client is working now. WARP IPv4 and dualstack interface could not be switch to. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[109]="Socks5 代理正在运行中，不能转为 WARP IPv4 或者双栈网络接口，脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[109]="Socks5 proxy is running and cannot be converted to WARP IPv4 or dual-stack network interface. The script is aborted. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[110]="Socks5 Proxy Client is working now. WARP IPv4 and dualstack interface could not be installed. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[110]="Socks5 代理正在运行中，WARP IPv4 或者双栈网络接口不能安装，脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[110]="Socks5 agent is running, WARP IPv4 or dual-stack network interface cannot be installed, the script is aborted, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[111]="Port must be 1000-65535. Please re-input\(\${i} times remaining\):"
-C[111]="端口必须为 1000-65535，请重新输入\(剩余\${i}次\):"
+C[111]="The port must be 1000-65535, please re-enter\(remaining\${i} times\):"
 E[112]="Client is not installed."
-C[112]="Client 未安装"
+C[112]="Client is not installed"
 E[113]="Client is installed. Disconnected."
-C[113]="Client 已安装， 断开状态"
+C[113]="Client is installed and disconnected"
 E[114]="WARP\$TYPE Interface is on"
-C[114]="WARP\$TYPE 网络接口已开启"
+C[114]="WARP\$TYPE network interface is enabled"
 E[115]="WARP Interface is on"
-C[115]="WARP 网络接口已开启"
+C[115]="WARP network interface is enabled"
 E[116]="WARP Interface is off"
-C[116]="WARP 网络接口未开启"
+C[116]="WARP network interface is not enabled"
 E[117]="Uninstall WARP Interface was complete."
-C[117]="WARP 网络接口卸载成功"
+C[117]="WARP network interface uninstalled successfully"
 E[118]="Uninstall WARP Interface was fail."
-C[118]="WARP 网络接口卸载失败"
+C[118]="WARP network interface uninstall failed"
 E[119]="Uninstall Socks5 Proxy Client was complete."
-C[119]="Socks5 Proxy Client 卸载成功"
+C[119]="Socks5 Proxy Client uninstalled successfully"
 E[120]="Uninstall Socks5 Proxy Client was fail."
-C[120]="Socks5 Proxy Client 卸载失败"
+C[120]="Socks5 Proxy Client uninstallation failed"
 E[121]="Changing Netflix IP is adapted from other authors [luoxue-bot],[https://github.com/luoxue-bot/warp_auto_change_ip]"
-C[121]="更换支持 Netflix IP 改编自 [luoxue-bot] 的成熟作品，地址[https://github.com/luoxue-bot/warp_auto_change_ip]，请熟知"
+C[121]="Change supports Netflix IP adapted from [luoxue-bot]'s mature works, address [https://github.com/luoxue-bot/warp_auto_change_ip], please familiarize yourself"
 E[122]="Port change to \$PORT succeeded."
-C[122]="端口成功更换至 \$PORT"
+C[122]="Port successfully changed to \$PORT"
 E[123]="Change the WARP IP to support Netflix (warp i)"
-C[123]="更换支持 Netflix 的 IP (warp i)"
+C[123]="Change the IP that supports Netflix (warp i)"
 E[124]="1. Brush WARP IPv4 (default)\n 2. Brush WARP IPv6"
-C[124]="1. 刷 WARP IPv4 (默认)\n 2. 刷 WARP IPv6"
-E[125]="\$(date +'%F %T') Region: \$REGION Done. IPv\$NF: \$WAN  \$COUNTRY  \$ASNORG. Retest after 1 hour. Brush ip runing time:\$DAY days \$HOUR hours \$MIN minutes \$SEC seconds"
-C[125]="\$(date +'%F %T') 区域 \$REGION 解锁成功，IPv\$NF: \$WAN  \$COUNTRY  \$ASNORG，1 小时后重新测试，刷 IP 运行时长: \$DAY 天 \$HOUR 时 \$MIN 分 \$SEC 秒"
-E[126]="\$(date +'%F %T') Try \${i}. Failed. IPv\$NF: \$WAN  \$COUNTRY  \$ASNORG. Retry after \${j} seconds. Brush ip runing time:\$DAY days \$HOUR hours \$MIN minutes \$SEC seconds"
-C[126]="\$(date +'%F %T') 尝试第\${i}次，解锁失败，IPv\$NF: \$WAN  \$COUNTRY  \$ASNORG，\${j}秒后重新测试，刷 IP 运行时长: \$DAY 天 \$HOUR 时 \$MIN 分 \$SEC 秒"
+C[124]="1. Flash WARP IPv4 (default)\n 2. Flash WARP IPv6"
+E[125]="\$(date +'%F %T') Region: \$REGION Done. IPv\$NF: \$WAN \$COUNTRY \$ASNORG. Retest after 1 hour. Brush ip running time: \$DAY days \$HOUR hours \$MIN minutes \$SEC seconds"
+C[125]="\$(date +'%F %T') Region\$REGION is unlocked successfully, IPv\$NF: \$WAN \$COUNTRY \$ASNORG, retest after 1 hour, IP brushing running time : \$DAY days\$HOUR hours\$MIN minutes\$SEC seconds"
+E[126]="\$(date +'%F %T') Try \${i}. Failed. IPv\$NF: \$WAN \$COUNTRY \$ASNORG. Retry after \${j} seconds . Brush ip running time:\$DAY days \$HOUR hours \$MIN minutes \$SEC seconds"
+C[126]="\$(date +'%F %T') Tried the \${i}th time, failed to unlock, IPv\$NF: \$WAN \$COUNTRY \$ASNORG,\${j} Retest after seconds, run time for brushing IP: \$DAY days\$HOUR hours\$MIN minutes\$SEC seconds"
 E[127]="1. with URL file\n 2. with token (Easily available at https://web--public--warp-team-api--coia-mfs4.code.run)\n 3. manual input private key, IPv6 and Client id\n 4. share teams account (default)"
-C[127]="1. 通过在线文件\n 2. 使用 token (可通过 https://web--public--warp-team-api--coia-mfs4.code.run 轻松获取)\n 3. 手动输入 private key， IPv6 和 Client id\n 4. 共享 teams 账户 (默认)"
+C[127]="1. Through online files\n 2. Using token (can be easily obtained through https://web--public--warp-team-api--coia-mfs4.code.run)\n 3 . Manually enter private key, IPv6 and Client id\n 4. Shared teams account (default)"
 E[128]="Token has expired, please re-enter:"
-C[128]="Token 已超时失效，请重新输入:"
+C[128]="Token has timed out, please re-enter:"
 E[129]="The current Teams account is unavailable, automatically switch back to the free account"
-C[129]="当前 Teams 账户不可用，自动切换回免费账户"
-E[130]="Please confirm\\\n Private key\\\t: \$PRIVATEKEY \${MATCH[0]}\\\n Address IPv6\\\t: \$ADDRESS6/128 \${MATCH[1]}\\\n Client id\\\t: \$CLIENT_ID \${MATCH[2]}"
-C[130]="请确认Teams 信息\\\n Private key\\\t: \$PRIVATEKEY \${MATCH[0]}\\\n Address IPv6\\\t: \$ADDRESS6/128 \${MATCH[1]}\\\n Client id\\\t: \$CLIENT_ID \${MATCH[2]}"
+C[129]="The current Teams account is unavailable and will automatically switch back to a free account"
+E[130]="Please confirm\\\n Private key\\\t: \$PRIVATEKEY \${MATCH[0]}\\\n Address IPv6\\\t: \$ADDRESS6/128 \${MATCH [1]}\\\n Client id\\\t: \$CLIENT_ID \${MATCH[2]}"
+C[130]="Please confirm Teams information\\\n Private key\\\t: \$PRIVATEKEY \${MATCH[0]}\\\n Address IPv6\\\t: \$ADDRESS6/128 \$ {MATCH[1]}\\\n Client id\\\t: \$CLIENT_ID \${MATCH[2]}"
 E[131]="comfirm please enter [y] , and other keys to use free account:"
-C[131]="确认请按 [y]，其他按键则使用免费账户:"
+C[131]="Please press [y] to confirm, and use the free account for other keys:"
 E[132]="Is there a WARP+ or Teams account?\n 1. Use free account (default)\n 2. WARP+\n 3. Teams"
-C[132]="如有 WARP+ 或 Teams 账户请选择\n 1. 使用免费账户 (默认)\n 2. WARP+\n 3. Teams"
+C[132]="Select if you have a WARP+ or Teams account\n 1. Use a free account (default)\n 2. WARP+\n 3. Teams"
 E[133]="Device name: \$(grep -s 'Device name' /etc/wireguard/info.log | awk '{ print \$NF }')\\\n Quota: \$QUOTA"
-C[133]="设备名: \$(grep -s 'Device name' /etc/wireguard/info.log | awk '{ print \$NF }')\\\n 剩余流量: \$QUOTA"
+C[133]="Device name: \$(grep -s 'Device name' /etc/wireguard/info.log | awk '{ print \$NF }')\\\n Remaining traffic: \$QUOTA"
 E[134]="Curren architecture \$(uname -m) is not supported. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[134]="当前架构 \$(uname -m) 暂不支持,问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[134]="The current architecture \$(uname -m) is not supported yet, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[135]="( match √ )"
-C[135]="( 符合 √ )"
+C[135]="(match √)"
 E[136]="( mismatch X )"
-C[136]="( 不符合 X )"
+C[136]="(does not match X)"
 E[137]="Cannot find the configuration file: /etc/wireguard/warp.conf. You should install WARP first"
-C[137]="找不到配置文件 /etc/wireguard/warp.conf，请先安装 WARP"
+C[137]="The configuration file /etc/wireguard/warp.conf cannot be found, please install WARP first"
 E[138]="Install iptable + dnsmasq + ipset. Let WARP only take over the streaming media traffic (Not available for ipv6 only) (bash menu.sh e)"
-C[138]="安装 iptable + dnsmasq + ipset，让 WARP IPv4 only 接管流媒体流量 (不适用于 IPv6 only VPS) (bash menu.sh e)"
-E[139]="Through Iptable + dnsmasq + ipset, minimize the realization of media unblocking such as chatGPT, Netflix, WARP IPv4 only takes over the streaming media traffic,adapted from the mature works of [Anemone],[https://github.com/acacia233/Project-WARP-Unlock]"
-C[139]="通过 Iptable + dnsmasq + ipset，最小化实现 chatGPT，Netflix 等媒体解锁，WARP IPv4 只接管流媒体流量，改编自 [Anemone] 的成熟作品，地址[https://github.com/acacia233/Project-WARP-Unlock]，请熟知"
+C[138]="Install iptable + dnsmasq + ipset and let WARP IPv4 only take over streaming traffic (not applicable to IPv6 only VPS) (bash menu.sh e)"
+E[139]="Through Iptable + dnsmasq + ipset, minimize the realization of media unblocking such as chatGPT, Netflix, WARP IPv4 only takes over the streaming media traffic, adapted from the mature works of [Anemone],[https:// github.com/acacia233/Project-WARP-Unlock]"
+C[139]="Use Iptable + dnsmasq + ipset to minimize the unlocking of media such as chatGPT and Netflix. WARP IPv4 only takes over streaming media traffic. It is adapted from the mature work of [Anemone]. The address is [https://github.com/ acacia233/Project-WARP-Unlock], please be familiar with it"
 E[140]="Socks5 Proxy Client on IPv4 VPS is working now. WARP IPv6 interface could not be installed. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[140]="IPv4 only VPS，并且 Socks5 代理正在运行中，不能安装 WARP IPv6 网络接口，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[140]="IPv4 only VPS, and the Socks5 proxy is running, the WARP IPv6 network interface cannot be installed, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[141]="Switch \${WARP_BEFORE[m]} to \${WARP_AFTER1[m]} \${SHORTCUT1[m]}"
-C[141]="\${WARP_BEFORE[m]} 转为 \${WARP_AFTER1[m]} \${SHORTCUT1[m]}"
+C[141]="\${WARP_BEFORE[m]} to \${WARP_AFTER1[m]} \${SHORTCUT1[m]}"
 E[142]="Switch \${WARP_BEFORE[m]} to \${WARP_AFTER2[m]} \${SHORTCUT2[m]}"
-C[142]="\${WARP_BEFORE[m]} 转为 \${WARP_AFTER2[m]} \${SHORTCUT2[m]}"
+C[142]="\${WARP_BEFORE[m]} to \${WARP_AFTER2[m]} \${SHORTCUT2[m]}"
 E[143]="Change Client or WireProxy port"
-C[143]="更改 Client 或 WireProxy 端口"
+C[143]="Change Client or WireProxy port"
 E[144]="Install WARP IPv6 interface"
-C[144]="安装 WARP IPv6 网络接口"
-E[145]="Client is only supported on CentOS 8 and above. Official Support List: [https://pkg.cloudflareclient.com]. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[145]="Client 只支持 CentOS 8 或以上系统，官方支持列表: [https://pkg.cloudflareclient.com]。脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[144]="Install WARP IPv6 network interface"
+E[145]="Client is only supported on CentOS 8 and above. Official Support List: [https://pkg.cloudflareclient.com]. The script is aborted. Feedback: [https://github.com/fscarmen/ warp-sh/issues]"
+C[145]="Client only supports CentOS 8 or above systems, official support list: [https://pkg.cloudflareclient.com]. Script aborted, problem feedback: [https://github.com/fscarmen/warp- sh/issues]"
 E[146]="Cannot switch to the same form as the current one."
-C[146]="不能切换为当前一样的形态"
+C[146]="Cannot switch to the same current form"
 E[147]="Not available for IPv6 only VPS"
-C[147]="IPv6 only VPS 不能使用此方案"
+C[147]="IPv6 only VPS cannot use this solution"
 E[148]="Install wireproxy. Wireguard client that exposes itself as a socks5 proxy or tunnels (bash menu.sh w)"
-C[148]="安装 wireproxy，让 WARP 在本地创建一个 socks5 代理 (bash menu.sh w)"
+C[148]="Install wireproxy and let WARP create a socks5 proxy locally (bash menu.sh w)"
 E[149]="Congratulations! Wireproxy is working. Spend time:\$(( end - start )) seconds.\\\n The script runs on today: \$TODAY. Total:\$TOTAL"
-C[149]="恭喜！Wireproxy 工作中, 总耗时:\$(( end - start ))秒， 脚本当天运行次数:\$TODAY，累计运行次数:\$TOTAL"
+C[149]="Congratulations! Wireproxy is working, the total time taken is:\$(( end - start )) seconds, the number of times the script has been run today:\$TODAY, and the cumulative number of runs:\$TOTAL"
 E[150]="WARP, WARP Linux Client, WireProxy hasn't been installed yet. The script is aborted.\n"
-C[150]="WARP, WARP Linux Client, WireProxy 均未安装，脚本退出\n"
+C[150]="WARP, WARP Linux Client, WireProxy are not installed, the script exits\n"
 E[151]="1. WARP Linux Client account\n 2. WireProxy account"
-C[151]="1. WARP Linux Client 账户\n 2. WireProxy 账户"
+C[151]="1. WARP Linux Client account\n 2. WireProxy account"
 E[152]="1. WARP account\n 2. WireProxy account"
-C[152]="1. WARP 账户\n 2. WireProxy 账户"
+C[152]="1. WARP account\n 2. WireProxy account"
 E[153]="1. WARP account\n 2. WARP Linux Client account"
-C[153]="1. WARP 账户\n 2. WARP Linux Client 账户"
+C[153]="1. WARP account\n 2. WARP Linux Client account"
 E[154]="1. WARP account\n 2. WARP Linux Client account\n 3. WireProxy account"
-C[154]="1. WARP 账户\n 2. WARP Linux Client 账户\n 3. WireProxy 账户"
+C[154]="1. WARP account\n 2. WARP Linux Client account\n 3. WireProxy account"
 E[155]="WARP has not been installed yet."
-C[155]="WARP 还未安装"
+C[155]="WARP has not been installed yet"
 E[156]="(!!! Only supports amd64 and arm64, do not select.)"
-C[156]="(!!! 只支持 amd64 和 arm64，请勿选择)"
+C[156]="(!!! Only supports amd64 and arm64, please do not select)"
 E[157]="WireProxy has not been installed yet."
-C[157]="WireProxy 还未安装"
+C[157]="WireProxy has not been installed yet"
 E[158]="WireProxy is disconnected. It could be connect again by [warp y]"
-C[158]="已断开 Wireproxy，再次连接可以用 warp y"
+C[158]="Wireproxy has been disconnected, you can use warp y to connect again"
 E[159]="WireProxy is on"
-C[159]="WireProxy 已开启"
+C[159]="WireProxy is enabled"
 E[160]="WireProxy is not installed."
-C[160]="WireProxy 未安装"
+C[160]="WireProxy is not installed"
 E[161]="WireProxy is installed and disconnected"
-C[161]="WireProxy 已安装，状态为断开连接"
+C[161]="WireProxy is installed and the status is disconnected"
 E[162]="Token is invalid, please re-enter:"
-C[162]="Token 无效，请重新输入:"
+C[162]="Token is invalid, please re-enter:"
 E[163]="Connect the Wireproxy (warp y)"
-C[163]="连接 Wireproxy (warp y)"
+C[163]="Connect Wireproxy (warp y)"
 E[164]="Disconnect the Wireproxy (warp y)"
-C[164]="断开 Wireproxy (warp y)"
+C[164]="Disconnect Wireproxy (warp y)"
 E[165]="WireProxy Solution. A wireguard client that exposes itself as a socks5 proxy or tunnels. Adapted from the mature works of [pufferffish],[https://github.com/pufferffish/wireproxy]"
-C[165]="WireProxy，让 WARP 在本地建议一个 socks5 代理。改编自 [pufferffish] 的成熟作品，地址[https://github.com/pufferffish/wireproxy]，请熟知"
+C[165]="WireProxy, let WARP propose a socks5 proxy locally. Adapted from [pufferffish]'s mature work, address [https://github.com/pufferffish/wireproxy], please familiarize yourself"
 E[166]="WireProxy was installed.\n connect/disconnect by [warp y]\n uninstall by [warp u]"
-C[166]="WireProxy 已安装\n 连接/断开: warp y\n 卸载: warp u"
+C[166]="WireProxy is installed\n Connect/Disconnect: warp y\n Uninstall: warp u"
 E[167]="WARP iptable was installed.\n connect/disconnect by [warp o]\n uninstall by [warp u]"
-C[167]="WARP iptable 已安装\n 连接/断开: warp o\n 卸载: warp u"
+C[167]="WARP iptable installed\n Connect/disconnect: warp o\n Uninstall: warp u"
 E[168]="Install CloudFlare Client and set mode to WARP (bash menu.sh l)"
-C[168]="安装 CloudFlare Client 并设置为 WARP 模式 (bash menu.sh l)"
+C[168]="Install CloudFlare Client and set to WARP mode (bash menu.sh l)"
 E[169]="Invalid license. It will remain the same account or be switched to a free account."
-C[169]="License 无效，将保持原账户或者转为免费账户"
+C[169]="License is invalid, the original account will be maintained or converted to a free account"
 E[170]="Confirm all uninstallation please press [y], other keys do not uninstall by default:"
-C[170]="确认全部卸载请按 [y]，其他键默认不卸载:"
+C[170]="Please press [y] to confirm all uninstallation, other keys will not uninstall by default:"
 E[171]="Uninstall dependencies were complete."
-C[171]="依赖卸载成功"
-E[172]="No suitable solution was found for modifying the warp configuration file warp.conf and the script aborted. When you see this message, please send feedback on the bug to:[https://github.com/fscarmen/warp-sh/issues]"
-C[172]="没有找到适合的方案用于修改 warp 配置文件 warp.conf，脚本中止。当你看到此信息，请把该 bug 反馈至:[https://github.com/fscarmen/warp-sh/issues]"
+C[171]="Dependency uninstallation successful"
+E[172]="No suitable solution was found for modifying the warp configuration file warp.conf and the script aborted. When you see this message, please send feedback on the bug to:[https://github.com/fscarmen/ warp-sh/issues]"
+C[172]="No suitable solution was found for modifying the warp configuration file warp.conf, and the script was terminated. When you see this message, please report the bug to: [https://github.com/fscarmen/warp -sh/issues]"
 E[173]="Current account type is: WARP \$ACCOUNT_TYPE\\\n \$PLUS_QUOTA\\\n \$CHANGE_TYPE"
-C[173]="当前账户类型是: WARP \$ACCOUNT_TYPE\\\n \$PLUS_QUOTA\\\n \$CHANGE_TYPE"
+C[173]="The current account type is: WARP \$ACCOUNT_TYPE\\\n \$PLUS_QUOTA\\\n \$CHANGE_TYPE"
 E[174]="1. Continue using the free account without changing.\n 2. Change to WARP+ account.\n 3. Change to Teams account."
-C[174]="1. 继续使用 free 账户，不变更\n 2. 变更为 WARP+ 账户\n 3. 变更为 Teams 账户"
+C[174]="1. Continue to use the free account without changing\n 2. Change to a WARP+ account\n 3. Change to a Teams account"
 E[175]="1. Change to free account.\n 2. Change to WARP+ account.\n 3. Change to another WARP Teams account."
-C[175]="1. 变更为 free 账户\n 2. 变更为 WARP+ 账户\n 3. 更换为另一个 Teams 账户"
+C[175]="1. Change to free account\n 2. Change to WARP+ account\n 3. Change to another Teams account"
 E[176]="1. Change to free account.\n 2. Change to another WARP+ account.\n 3. Change to Teams account."
-C[176]="1. 变更为 free 账户\n 2. 变更为另一个 WARP+ 账户\n 3. 变更为 Teams 账户"
+C[176]="1. Change to a free account\n 2. Change to another WARP+ account\n 3. Change to a Teams account"
 E[177]="1. Continue using the free account without changing.\n 2. Change to WARP+ account."
-C[177]="1. 继续使用 free 账户，不变更\n 2. 变更为 WARP+ 账户"
+C[177]="1. Continue to use the free account without changing\n 2. Change to a WARP+ account"
 E[178]="1. Change to free account.\n 2. Change to another WARP+ account."
-C[178]="1. 变更为 free 账户\n 2. 变更为另一个 WARP+ 账户"
+C[178]="1. Change to free account\n 2. Change to another WARP+ account"
 E[179]="Can only be run using \$KERNEL_OR_WIREGUARD_GO."
-C[179]="只能使用 \$KERNEL_OR_WIREGUARD_GO 运行"
+C[179]="Can only be run using \$KERNEL_OR_WIREGUARD_GO"
 E[180]="Install using:\n 1. wireguard kernel (default)\n 2. wireguard-go with reserved"
-C[180]="请选择 wireguard 方式:\n 1. wireguard 内核 (默认)\n 2. wireguard-go with reserved"
+C[180]="Please select wireguard mode:\n 1. wireguard kernel (default)\n 2. wireguard-go with reserved"
 E[181]="\${WIREGUARD_BEFORE} ---\> \${WIREGUARD_AFTER}. Confirm press [y] :"
-C[181]="\${WIREGUARD_BEFORE} ---\> \${WIREGUARD_AFTER}， 确认请按 [y] :"
+C[181]="\${WIREGUARD_BEFORE} ---\> \${WIREGUARD_AFTER}, please press [y] to confirm:"
 E[182]="Working mode:\n 1. Global (default)\n 2. Non-global"
-C[182]="工作模式:\n 1. 全局 (默认)\n 2. 非全局"
+C[182]="Working mode:\n 1. Global (default)\n 2. Non-global"
 E[183]="\${MODE_BEFORE} ---\> \${MODE_AFTER}, Confirm press [y] :"
-C[183]="\${MODE_BEFORE} ---\> \${MODE_AFTER}， 确认请按 [y] :"
+C[183]="\${MODE_BEFORE} ---\> \${MODE_AFTER}, please press [y] to confirm:"
 E[184]="Global"
-C[184]="全局"
+C[184]="Global"
 E[185]="Non-global"
-C[185]="非全局"
+C[185]="Non-global"
 E[186]="Working mode: \$GLOBAL_OR_NOT"
-C[186]="工作模式: \$GLOBAL_OR_NOT"
+C[186]="Working mode: \$GLOBAL_OR_NOT"
 E[187]="Failed to change to \$ACCOUNT_CHANGE_FAILED account, automatically switch back to the original account."
-C[187]="更换到 \$ACCOUNT_CHANGE_FAILED 账户失败，自动切换回原来的账户"
+C[187]="Failed to change to \$ACCOUNT_CHANGE_FAILED account, automatically switch back to the original account"
 E[188]="All endpoints of WARP cannot be connected. Ask the supplier for more help. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[188]="WARP 的所有的 endpoint 均不能连通，有可能 UDP 被限制了，可联系供应商了解如何开启，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[188]="All endpoints of WARP cannot be connected. UDP may be restricted. You can contact the supplier to learn how to enable it. Problem feedback: [https://github.com/fscarmen/warp-sh/issues] "
 E[189]="Cannot detect any IPv4 or IPv6. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[189]="检测不到任何 IPv4 或 IPv6。脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[189]="No IPv4 or IPv6 detected. Script aborted, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[190]="The configuration file warp.conf cannot be found. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[190]="找不到配置文件 warp.conf，脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
+C[190]="The configuration file warp.conf cannot be found, the script is aborted, problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
 E[191]="Current operating system is: \$SYSTEM, Linux Client only supports Ubuntu, Debian and CentOS. The script is aborted. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
-C[191]="当前操作系统是: \$SYSTEM。 Linux Client 只支持 Ubuntu, Debian 和 CentOS，脚本中止，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
-
-# 自定义字体彩色，read 函数
-warning() { echo -e "\033[31m\033[01m$*\033[0m"; }  # 红色
-error() { echo -e "\033[31m\033[01m$*\033[0m" && exit 1; }  # 红色
-info() { echo -e "\033[32m\033[01m$*\033[0m"; }   # 绿色
-hint() { echo -e "\033[33m\033[01m$*\033[0m"; }   # 黄色
+C[191]="The current operating system is: \$SYSTEM. Linux Client only supports Ubuntu, Debian and CentOS. The script is aborted. Problem feedback: [https://github.com/fscarmen/warp-sh/issues]"
+# Custom font color, read function
+warning() { echo -e "\033[31m\033[01m$*\033[0m"; } # red
+error() { echo -e "\033[31m\033[01m$*\033[0m" && exit 1; } # red
+info() { echo -e "\033[32m\033[01m$*\033[0m"; } # Green
+hint() { echo -e "\033[33m\033[01m$*\033[0m"; } # yellow
 reading() { read -rp "$(info "$1")" "$2"; }
-text() { grep -q '\$' <<< "${E[$*]}" && eval echo "\$(eval echo "\${${L}[$*]}")" || eval echo "\${${L}[$*]}"; }
+text() { grep -q '\$' <<< "${E[$*]}" && eval echo "\$(eval echo "\${${L}[$*]}")" | | eval echo "\${${L}[$*]}"; }
 
-# 检测是否需要启用 Github CDN，如能直接连通，则不使用
+# Check whether Github CDN needs to be enabled. If it can be connected directly, do not use it.
 check_cdn() {
-  [ -n "$GH_PROXY" ] && wget --server-response --quiet --output-document=/dev/null --no-check-certificate --tries=2 --timeout=3 https://raw.githubusercontent.com/fscarmen/warp-sh/main/README.md >/dev/null 2>&1 && unset GH_PROXY
+  [ -n "$GH_PROXY" ] && wget --server-response --quiet --output-document=/dev/null --no-check-certificate --tries=2 --timeout=3 https://raw .githubusercontent.com/fscarmen/warp-sh/main/README.md >/dev/null 2>&1 && unset GH_PROXY
 }
 
-# 脚本当天及累计运行次数统计
+# Statistics on the script’s current day and cumulative number of runs
 statistics_of_run-times() {
-  local COUNT=$(curl --retry 2 -ksm2 "https://hit.forvps.gq/https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh" 2>&1 | grep -m1 -oE "[0-9]+[ ]+/[ ]+[0-9]+") &&
-  TODAY=$(awk -F ' ' '{print $1}' <<< "$COUNT") &&
-  TOTAL=$(awk -F ' ' '{print $3}' <<< "$COUNT")
+  local COUNT=$(curl --retry 2 -ksm2 "https://hit.forvps.gq/https://cdn.jsdelivr.net/gh/fscarmen/warp/menu.sh" 2>&1 | grep -m1 -oE "[0-9]+[ ]+/[ ]+[0-9]+") &&
+  TODAY=$(awk -F ' ' '{print $1}' <<< "$COUNT") &&
+  TOTAL=$(awk -F ' ' '{print $3}' <<< "$COUNT")
 }
 
-# 选择语言，先判断 /etc/wireguard/language 里的语言选择，没有的话再让用户选择，默认英语。处理中文显示的问题
+# To select the language, first determine the language selection in /etc/wireguard/language. If not, let the user choose. The default is English. Solve the problem of Chinese display
 select_language() {
-  UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iEm1 "UTF-8|utf8")
-  [ -n "$UTF8_LOCALE" ] && export LC_ALL="$UTF8_LOCALE" LANG="$UTF8_LOCALE" LANGUAGE="$UTF8_LOCALE"
+  UTF8_LOCALE=$(locale -a 2>/dev/null | grep -iEm1 "UTF-8|utf8")
+  [ -n "$UTF8_LOCALE" ] && export LC_ALL="$UTF8_LOCALE" LANG="$UTF8_LOCALE" LANGUAGE="$UTF8_LOCALE"
 
-  if [ -s /etc/wireguard/language ]; then
-    L=$(cat /etc/wireguard/language)
-  else
-    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
-    [ "$LANGUAGE" = 2 ] && L=C
-  fi
+  if [ -s /etc/wireguard/language ]; then
+    L=$(cat /etc/wireguard/language)
+  else
+    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
+    [ "$LANGUAGE" = 2 ] && L=C
+  fi
 }
 
-# 必须以root运行脚本
+# The script must be run as root
 check_root() {
-  [ "$(id -u)" != 0 ] && error " $(text 2) "
+  [ "$(id -u)" != 0 ] && error " $(text 2) "
 }
-
-# 判断虚拟化
+# Determine virtualization
 check_virt() {
-  if [ "$1" = 'Alpine' ]; then
-    VIRT=$(virt-what | tr '\n' ' ')
-  else
-    [ "$(type -p systemd-detect-virt)" ] && VIRT=$(systemd-detect-virt)
-    [[ -z "$VIRT" && -x "$(type -p hostnamectl)" ]] && VIRT=$(hostnamectl | awk '/Virtualization:/{print $NF}')
-  fi
+  if [ "$1" = 'Alpine' ]; then
+    VIRT=$(virt-what | tr '\n' ' ')
+  else
+    [ "$(type -p systemd-detect-virt)" ] && VIRT=$(systemd-detect-virt)
+    [[ -z "$VIRT" && -x "$(type -p hostnamectl)" ]] && VIRT=$(hostnamectl | awk '/Virtualization:/{print $NF}')
+  fi
 }
 
-# 多方式判断操作系统，试到有值为止。只支持 Debian 10/11、Ubuntu 18.04/20.04 或 CentOS 7/8 ,如非上述操作系统，退出脚本
-# 感谢猫大的技术指导优化重复的命令。https://github.com/Oreomeow
+# Judge the operating system in multiple ways and try until there is value. Only supports Debian 10/11, Ubuntu 18.04/20.04 or CentOS 7/8. If it is not the above operating system, exit the script
+# Thanks to Maoda for his technical guidance in optimizing repeated commands. https://github.com/Oreomeow
 check_operating_system() {
-  if [ -s /etc/os-release ]; then
-    SYS="$(grep -i pretty_name /etc/os-release | cut -d \" -f2)"
-  elif [ -x "$(type -p hostnamectl)" ]; then
-    SYS="$(hostnamectl | grep -i system | cut -d : -f2)"
-  elif [ -x "$(type -p lsb_release)" ]; then
-    SYS="$(lsb_release -sd)"
-  elif [ -s /etc/lsb-release ]; then
-    SYS="$(grep -i description /etc/lsb-release | cut -d \" -f2)"
-  elif [ -s /etc/redhat-release ]; then
-    SYS="$(grep . /etc/redhat-release)"
-  elif [ -s /etc/issue ]; then
-    SYS="$(grep . /etc/issue | cut -d '\' -f1 | sed '/^[ ]*$/d')"
-  fi
+  if [ -s /etc/os-release ]; then
+    SYS="$(grep -i pretty_name /etc/os-release | cut -d \" -f2)"
+  elif [ -x "$(type -p hostnamectl)" ]; then
+    SYS="$(hostnamectl | grep -i system | cut -d : -f2)"
+  elif [ -x "$(type -p lsb_release)" ]; then
+    SYS="$(lsb_release -sd)"
+  elif [ -s /etc/lsb-release ]; then
+    SYS="$(grep -i description /etc/lsb-release | cut -d \" -f2)"
+  elif [ -s /etc/redhat-release ]; then
+    SYS="$(grep . /etc/redhat-release)"
+  elif [ -s /etc/issue ]; then
+    SYS="$(grep . /etc/issue | cut -d '\' -f1 | sed '/^[ ]*$/d')"
+  fi
+# Customize several functions of the Alpine system
+  alpine_warp_restart() { wg-quick down warp >/dev/null 2>&1; wg-quick up warp >/dev/null 2>&1; }
+  alpine_warp_enable() { echo -e "/usr/bin/tun.sh\nwg-quick up warp" > /etc/local.d/warp.start; chmod +x /etc/local.d/warp.start; rc -update add local; wg-quick up warp >/dev/null 2>&1; }
+REGEX=("debian" "ubuntu" "centos|red hat|kernel|alma|rocky" "alpine" "arch linux" "fedora")
+  RELEASE=("Debian" "Ubuntu" "CentOS" "Alpine" "Arch" "Fedora")
+  EXCLUDE=("---")
+  MAJOR=("9" "16" "7" "" "" "37")
+  PACKAGE_UPDATE=("apt -y update" "apt -y update" "yum -y update --skip-broken" "apk update -f" "pacman -Sy" "dnf -y update")
+  PACKAGE_INSTALL=("apt -y install" "apt -y install" "yum -y install" "apk add -f" "pacman -S --noconfirm" "dnf -y install")
+  PACKAGE_UNINSTALL=("apt -y autoremove" "apt -y autoremove" "yum -y autoremove" "apk del -f" "pacman -Rcnsu --noconfirm" "dnf -y autoremove")
+  SYSTEMCTL_START=("systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "wg-quick up warp" "systemctl start wg-quick@warp" "systemctl start wg -quick@warp")
+  SYSTEMCTL_RESTART=("systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "alpine_warp_restart" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp ")
+SYSTEMCTL_ENABLE=("systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "alpine_warp_enable" "systemctl enable --now wg- quick@warp" "systemctl enable --now wg-quick@warp")
 
-  # 自定义 Alpine 系统若干函数
-  alpine_warp_restart() { wg-quick down warp >/dev/null 2>&1; wg-quick up warp >/dev/null 2>&1; }
-  alpine_warp_enable() { echo -e "/usr/bin/tun.sh\nwg-quick up warp" > /etc/local.d/warp.start; chmod +x /etc/local.d/warp.start; rc-update add local; wg-quick up warp >/dev/null 2>&1; }
+  for int in "${!REGEX[@]}"; do
+    [[ "${SYS,,}" =~ ${REGEX[int]} ]] && SYSTEM="${RELEASE[int]}" && break
+  done
 
-  REGEX=("debian" "ubuntu" "centos|red hat|kernel|alma|rocky" "alpine" "arch linux" "fedora")
-  RELEASE=("Debian" "Ubuntu" "CentOS" "Alpine" "Arch" "Fedora")
-  EXCLUDE=("---")
-  MAJOR=("9" "16" "7" "" "" "37")
-  PACKAGE_UPDATE=("apt -y update" "apt -y update" "yum -y update --skip-broken" "apk update -f" "pacman -Sy" "dnf -y update")
-  PACKAGE_INSTALL=("apt -y install" "apt -y install" "yum -y install" "apk add -f" "pacman -S --noconfirm" "dnf -y install")
-  PACKAGE_UNINSTALL=("apt -y autoremove" "apt -y autoremove" "yum -y autoremove" "apk del -f" "pacman -Rcnsu --noconfirm" "dnf -y autoremove")
-  SYSTEMCTL_START=("systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "systemctl start wg-quick@warp" "wg-quick up warp" "systemctl start wg-quick@warp" "systemctl start wg-quick@warp")
-  SYSTEMCTL_RESTART=("systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp" "alpine_warp_restart" "systemctl restart wg-quick@warp" "systemctl restart wg-quick@warp")
-  SYSTEMCTL_ENABLE=("systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp" "alpine_warp_enable" "systemctl enable --now wg-quick@warp" "systemctl enable --now wg-quick@warp")
+  # Customized system for each factory transportation
+  if [ -z "$SYSTEM" ]; then
+    [ -x "$(type -p yum)" ] && int=2 && SYSTEM='CentOS' || error " $(text 5) "
+  fi
 
-  for int in "${!REGEX[@]}"; do
-    [[ "${SYS,,}" =~ ${REGEX[int]} ]] && SYSTEM="${RELEASE[int]}" && break
-  done
+  # Determine the main Linux version
+  MAJOR_VERSION=$(sed "s/[^0-9.]//g" <<< "$SYS" | cut -d. -f1)
 
-  # 针对各厂运的订制系统
-  if [ -z "$SYSTEM" ]; then
-    [ -x "$(type -p yum)" ] && int=2 && SYSTEM='CentOS' || error " $(text 5) "
-  fi
-
-  # 判断主 Linux 版本
-  MAJOR_VERSION=$(sed "s/[^0-9.]//g" <<< "$SYS" | cut -d. -f1)
-
-  # 先排除 EXCLUDE 里包括的特定系统，其他系统需要作大发行版本的比较
-  for ex in "${EXCLUDE[@]}"; do [[ ! "${SYS,,}" =~ $ex ]]; done &&
-  [[ "$MAJOR_VERSION" -lt "${MAJOR[int]}" ]] && error " $(text 26) "
+  # First exclude specific systems included in EXCLUDE. Other systems need to be compared with major releases.
+  for ex in "${EXCLUDE[@]}"; do [[ ! "${SYS,,}" =~ $ex ]]; done &&
+  [[ "$MAJOR_VERSION" -lt "${MAJOR[int]}" ]] && error " $(text 26) "
 }
-
-# 安装系统依赖及定义 ping 指令
+# Install system dependencies and define ping command
 check_dependencies() {
-  # 对于 alpine 系统，升级库并重新安装依赖
-  if [ "$SYSTEM" = 'Alpine' ]; then
-    CHECK_WGET=$(wget 2>&1 | head -n 1)
-    grep -qi 'busybox' <<< "$CHECK_WGET" && ${PACKAGE_INSTALL[int]} wget >/dev/null 2>&1
-    DEPS_CHECK=("ping" "curl" "grep" "bash" "ip" "python3" "virt-what")
-    DEPS_INSTALL=("iputils-ping" "curl" "grep" "bash" "iproute2" "python3" "virt-what")
-  else
-    # 对于三大系统需要的依赖
-    DEPS_CHECK=("ping" "wget" "curl" "systemctl" "ip" "python3")
-    DEPS_INSTALL=("iputils-ping" "wget" "curl" "systemctl" "iproute2" "python3")
-  fi
+  # For alpine systems, upgrade libraries and reinstall dependencies
+  if [ "$SYSTEM" = 'Alpine' ]; then
+    CHECK_WGET=$(wget 2>&1 | head -n 1)
+    grep -qi 'busybox' <<< "$CHECK_WGET" && ${PACKAGE_INSTALL[int]} wget >/dev/null 2>&1
+    DEPS_CHECK=("ping" "curl" "grep" "bash" "ip" "python3" "virt-what")
+    DEPS_INSTALL=("iputils-ping" "curl" "grep" "bash" "iproute2" "python3" "virt-what")
+  else
+    # Dependencies required by the three major systems
+    DEPS_CHECK=("ping" "wget" "curl" "systemctl" "ip" "python3")
+    DEPS_INSTALL=("iputils-ping" "wget" "curl" "systemctl" "iproute2" "python3")
+  fi
 
-  for g in "${!DEPS_CHECK[@]}"; do
-    [ ! -x "$(type -p ${DEPS_CHECK[g]})" ] && [[ ! "${DEPS[@]}" =~ "${DEPS_INSTALL[g]}" ]] && DEPS+=(${DEPS_INSTALL[g]})
-  done
+  for g in "${!DEPS_CHECK[@]}"; do
+    [ ! -x "$(type -p ${DEPS_CHECK[g]})" ] && [[ ! "${DEPS[@]}" =~ "${DEPS_INSTALL[g]}" ]] && DEPS+=( ${DEPS_INSTALL[g]})
+  done
 
-  if [ "${#DEPS[@]}" -ge 1 ]; then
-    info "\n $(text 7) ${DEPS[@]} \n"
-    ${PACKAGE_UPDATE[int]} >/dev/null 2>&1
-    ${PACKAGE_INSTALL[int]} ${DEPS[@]} >/dev/null 2>&1
-  else
-    info "\n $(text 8) \n"
-  fi
+  if [ "${#DEPS[@]}" -ge 1 ]; then
+    info "\n $(text 7) ${DEPS[@]} \n"
+    ${PACKAGE_UPDATE[int]} >/dev/null 2>&1
+    ${PACKAGE_INSTALL[int]} ${DEPS[@]} >/dev/null 2>&1
+  else
+    info "\n $(text 8) \n"
+  fi
 
-  PING6='ping -6' && [ -x "$(type -p ping6)" ] && PING6='ping6'
+  PING6='ping -6' && [ -x "$(type -p ping6)" ] && PING6='ping6'
 }
+
 
 # 获取 warp 账户信息
 warp_api(){
@@ -2903,10 +2898,10 @@ change_to_teams() {
       input_url_token share
   esac
 
-  # 如输入的 PrivateKey 与现在使用的一样，则提示不需要更换，并提出
+  # If the entered PrivateKey is the same as the one currently used, it will prompt that there is no need to change and propose
   grep -q "$PRIVATEKEY" /etc/wireguard/warp.conf && KEY_LICENSE='Private key' && error " $(text 31) "
 
-  # 流程1:确认升级信息，停止服务
+  # Process 1: Confirm upgrade information and stop service
   if [ "${CONFIRM_TEAMS_INFO,,}" = 'y' ]; then
     case "$UPDATE_ACCOUNT" in
       warp )
@@ -2919,7 +2914,7 @@ change_to_teams() {
     exit 0
   fi
 
-  # 流程2:备份原账户信息
+  # Process 2: Back up original account information
   case "$UPDATE_ACCOUNT" in
     warp )
       backup_restore_delete backup warp
@@ -2928,14 +2923,14 @@ change_to_teams() {
       backup_restore_delete backup wireproxy
   esac
 
-  # 流程3:多种途径升级 Teams 账户
+  # Process 3: Upgrade Teams account through multiple ways
   sed -i "s#\(PrivateKey[ ]\+=[ ]\+\).*#\1$PRIVATEKEY#g; s#\(Address[ ]\+=[ ]\+\).*\(/128$\)#\1$ADDRESS6\2#g; s#\(.*Reserved[ ]\+=[ ]\+\).*#\1$CLIENT_ID#g" /etc/wireguard/warp.conf
   [ "$CHOOSE_TEAMS" = '2' ] && echo "$TEAMS" > /etc/wireguard/warp-account.conf || sed -i "s#\(\"private_key\":[ ]\+\"\).*\(\"\)#\1$PRIVATEKEY\2#; s#\(\"client_id\":[ ]\+\"\).*\(\"\)#\1$RESERVED\2#; s#\(\"v6\":[ ]\+\"\)[0-9a-f].*\(\"\)#\1$ADDRESS6\2#" /etc/wireguard/warp-account.conf
   [ "$UPDATE_ACCOUNT" = 'wireproxy' ] && sed -i "s#\(PrivateKey[ ]\+=[ ]\+\).*#\1$PRIVATEKEY#g; s#\(Address[ ]\+=[ ]\+\).*\(/128$\)#\1$ADDRESS6\2#g" /etc/wireguard/proxy.conf
-  # 先创建 info.log 用于判断账户类型
+  # First create info.log to determine the account type
   echo "$TEAMS" > /etc/wireguard/info.log
 
-  # 流程4:如成功，根据新账户信息修改配置文件并注销旧账户; 如失败则还原为原账户
+  # Process 4: If successful, modify the configuration file according to the new account information and cancel the old account; if failed, revert to the original account
   case "$UPDATE_ACCOUNT" in
     warp )
       net
@@ -2967,7 +2962,7 @@ change_to_teams() {
   esac
 }
 
-# 免费 WARP 账户升级 WARP+ 账户
+# Free WARP account upgrade WARP+ account
 update() {
   warp_wireproxy() {
     grep -qs 'cKE7LmCF61IhqqABGhvJ44jWXp8fKymcMAEVAzbDF2k=' /etc/wireguard/warp.conf && error "\n $(text 106) \n"
@@ -2979,7 +2974,7 @@ update() {
     CHANGE_DO[2]() { change_to_plus; }
     CHANGE_DO[3]() { change_to_teams; }
 
-    # 判断现 WARP 账户类型: free, plus, teams，如果是 plus，查 WARP+ 余额流量
+    # Determine the current WARP account type: free, plus, teams. If it is plus, check the WARP+ balance flow
     [ -z "$ACCOUNT_TYPE" ] && ACCOUNT_TYPE=Free && CHANGE_TYPE=$(text 174) &&
     [ -e /etc/wireguard/info.log ] && ACCOUNT_TYPE=Teams && CHANGE_TYPE=$(text 175) &&
     grep -q 'Device name' /etc/wireguard/info.log && ACCOUNT_TYPE='+' && CHANGE_TYPE=$(text 176) && check_quota warp && PLUS_QUOTA="\\n $(text 63): $QUOTA"
@@ -2990,7 +2985,7 @@ update() {
       reading " $(text 50) " CHOOSE_TYPE
     fi
 
-    # 输入必须是数字且少于等于3
+    # The input must be a number and less than or equal to 3
     if [[ "$CHOOSE_TYPE" = [0-3] ]]; then
       CHANGE_DO[$CHOOSE_TYPE]
     else
@@ -3017,7 +3012,7 @@ update() {
     CHANGE_DO[1]() { change_to_free; }
     CHANGE_DO[2]() { change_to_plus; }
 
-    # 判断现 WARP 账户类型: free, plus，如果是 plus，查 WARP+ 余额流量
+    # Determine the current WARP account type: free, plus, if it is plus, check the WARP+ balance flow
     local ACCOUNT_TYPE=Free && local CHANGE_TYPE=$(text 177)
     local CLIENT_ACCOUNT=$(warp-cli --accept-tos registration show 2>/dev/null | awk  '/type/{print $3}')
     [ "$CLIENT_ACCOUNT" = Limited ] && ACCOUNT_TYPE='+' && CHANGE_TYPE=$(text 178) && check_quota client && PLUS_QUOTA="$(text 63): $QUOTA"
@@ -3028,7 +3023,7 @@ update() {
       reading " $(text 50) " CHOOSE_TYPE
     fi
 
-    # 输入必须是数字且少于等于2
+  # Input must be a number and less than or equal to 2
     if [[ "$CHOOSE_TYPE" = [0-2] ]]; then
       CHANGE_DO[$CHOOSE_TYPE]
     else
@@ -3036,7 +3031,7 @@ update() {
     fi
   }
 
-  # 根据 WARP interface 、 Client 和 Wireproxy 的安装情况判断升级的对象
+  # Determine the upgrade object based on the installation status of WARP interface, Client and Wireproxy
   INSTALL_CHECK=("wg-quick" "warp-cli" "wireproxy")
   CASE_RESAULT=("0 0 0" "0 0 1" "0 1 0" "0 1 1" "1 0 0" "1 0 1" "1 1 0" "1 1 1")
   SHOW_CHOOSE=("$(text 150)" "" "" "$(text 151)" "" "$(text 152)" "$(text 153)" "$(text 154)")
@@ -3071,7 +3066,7 @@ update() {
   esac
 }
 
-# 判断当前 WARP 网络接口及 Client 的运行状态，并对应的给菜单和动作赋值
+# Determine the running status of the current WARP network interface and Client, and assign values ​​to menus and actions accordingly
 menu_setting() {
   if [[ "$CLIENT" -gt 1 || "$WIREPROXY" -gt 0 ]]; then
     [ "$CLIENT" -lt 3 ] && MENU_OPTION[1]="1.  $(text 88)" || MENU_OPTION[1]="1.  $(text 89)"
@@ -3134,7 +3129,7 @@ menu_setting() {
   [ -e /etc/wireguard/info.log ] && TYPE=' Teams' && grep -sq 'Device name' /etc/wireguard/info.log 2>/dev/null && check_quota warp && TYPE='+' && PLUSINFO="$(text 25): $(awk '/Device name/{print $NF}' /etc/wireguard/info.log)\t $(text 63): $QUOTA"
   }
 
-# 显示菜单
+# Show menu
 menu() {
   clear
   hint " $(text 16) "
@@ -3181,7 +3176,7 @@ menu() {
   hint " ${MENU_OPTION[0]} "
   reading "\n $(text 50) " MENU_CHOOSE
 
-  # 输入必须是数字且少于等于最大可选项
+# Input must be a number and less than or equal to the maximum optional options
   if [[ $MENU_CHOOSE =~ ^[0-9]{1,2}$ ]] && (( $MENU_CHOOSE >= 0 && $MENU_CHOOSE < ${#MENU_OPTION[*]} )); then
     ACTION[$MENU_CHOOSE]
   else
@@ -3189,10 +3184,10 @@ menu() {
   fi
 }
 
-# 传参选项 OPTION: 1=为 IPv4 或者 IPv6 补全另一栈WARP; 2=安装双栈 WARP; u=卸载 WARP; b=升级内核、开启BBR及DD; o=WARP开关；p=刷 WARP+ 流量; 其他或空值=菜单界面
+#Parameter options OPTION: 1=Complete another stack of WARP for IPv4 or IPv6; 2=Install dual-stack WARP; u=Uninstall WARP; b=Upgrade the kernel, enable BBR and DD; o=WARP switch; p=Flash WARP+ flow; other or null = menu interface
 [ "$1" != '[option]' ] && OPTION="${1,,}"
 
-# 参数选项 URL 或 License 或转换 WARP 单双栈
+# Parameter options URL or License or convert WARP single and dual stack
 if [ "$2" != '[lisence]' ]; then
   case "$OPTION" in
     s )
@@ -3203,16 +3198,16 @@ if [ "$2" != '[lisence]' ]; then
   esac
 fi
 
-# 自定义 WARP+ 设备名
+# Customize WARP+ device name
 NAME=$3
 
-# 主程序运行 1/3
+# Main program runs 1/3
 check_cdn
 statistics_of_run-times
 select_language
 check_operating_system
 
-# 设置部分后缀 1/3
+# Set partial suffix 1/3
 case "$OPTION" in
   h )
     help; exit 0
@@ -3227,10 +3222,10 @@ case "$OPTION" in
     stack_priority; result_priority; exit 0
 esac
 
-# 主程序运行 2/3
+# Main program runs 2/3
 check_root
 
-# 设置部分后缀 2/3
+# Set partial suffix 2/3
 case "$OPTION" in
   b )
     bbrInstall; exit 0
@@ -3254,13 +3249,13 @@ case "$OPTION" in
     wireproxy_onoff; exit 0
 esac
 
-# 主程序运行 3/3
+# Main program runs 3/3
 check_dependencies
 check_virt $SYSTEM
 check_system_info
 menu_setting
 
-# 设置部分后缀 3/3
+# Set some suffixes 3/3
 case "$OPTION" in
 a )
   if [[ "$2" =~ ^[A-Z0-9a-z]{8}-[A-Z0-9a-z]{8}-[A-Z0-9a-z]{8}$ ]]; then
@@ -3272,7 +3267,7 @@ a )
   fi
   update
   ;;
-# 在已运行 Linux Client 前提下，不能安装 WARP IPv4 或者双栈网络接口。如已经运行 WARP ，参数 4,6,d 从原来的安装改为切换
+# When the Linux Client is already running, WARP IPv4 or dual-stack network interface cannot be installed. If WARP has been run, parameters 4, 6, d are changed from the original installation to switch
 [46d] )
   if [ -e /etc/wireguard/warp.conf ]; then
     SWITCHCHOOSE="${OPTION^^}"
