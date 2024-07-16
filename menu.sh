@@ -424,7 +424,7 @@ select_language() {
   if [ -s /etc/wireguard/language ]; then
     L=$(cat /etc/wireguard/language)
   else
-    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]] && hint " $(text 0) \n" && reading " $(text 50) " LANGUAGE
+    L=E && [[ -z "$OPTION" || "$OPTION" = [aclehdpbviw46sg] ]]
     [ "$LANGUAGE" = 2 ] && L=C
   fi
 }
