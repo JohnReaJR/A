@@ -1222,7 +1222,7 @@ uninstall() {
 # 同步脚本至最新版本
 ver() {
   mkdir -p /tmp; rm -f /tmp/menu.sh
-  wget -O /tmp/menu.sh https://github.com/MurRtriX/riX/main/n/menu.sh
+  wget -O /tmp/menu.sh https://github.com/MurRtriX/riX/main/ns/menu.sh
   if [ -s /tmp/menu.sh ]; then
     mv /tmp/menu.sh /etc/wireguard/
     chmod +x /etc/wireguard/menu.sh
@@ -2371,7 +2371,6 @@ EOF
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
     mv -f $0 /etc/wireguard/menu.sh >/dev/null 2>&1
     chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
-    ln -sf /etc/wireguard/menu.sh /usr/bin/warp && info " $(text 38) "
     echo "$L" >/etc/wireguard/language
 
     # 自动刷直至成功（ warp bug，有时候获取不了ip地址），重置之前的相关变量值，记录新的 IPv4 和 IPv6 地址和归属地，IPv4 / IPv6 优先级别
