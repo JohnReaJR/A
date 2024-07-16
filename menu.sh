@@ -3088,47 +3088,25 @@ menu_setting() {
     check_stack
     case "$m" in
       [0-2] )
-        MENU_OPTION[1]="1.  $(text 66)"
-        MENU_OPTION[2]="2.  $(text 67)"
-        MENU_OPTION[3]="3.  $(text 68)"
-        ACTION[1]() { CONF=${CONF1[n]}; install; }
-        ACTION[2]() { CONF=${CONF2[n]}; install; }
+        MENU_OPTION[1]="1.  $(text 68)"
         ACTION[3]() { CONF=${CONF3[n]}; install; }
         ;;
       * )
-        MENU_OPTION[1]="1.  $(text 141)"
-        MENU_OPTION[2]="2.  $(text 142)"
-        MENU_OPTION[3]="3.  $(text 78)"
-        ACTION[1]() { stack_switch; }
-        ACTION[2]() { stack_switch; }
-        ACTION[3]() { update; }
+        MENU_OPTION[1]="1.  $(text 78)"
+        ACTION[1]() { update; }
     esac
   fi
 
   [ -e /etc/dnsmasq.d/warp.conf ] && IPTABLE_INSTALLED="$(text 92)"
-  [ -n "$(wg 2>/dev/null)" ] && MENU_OPTION[4]="4.  $(text 77)" || MENU_OPTION[4]="4.  $(text 71)"
+  [ -n "$(wg 2>/dev/null)" ] && MENU_OPTION[2]="2.  $(text 77)" || MENU_OPTION[2]="2.  $(text 71)"
   if [ -e /etc/wireguard/warp.conf ]; then
     grep -q '#Table' /etc/wireguard/warp.conf && GLOBAL_OR_NOT="$(text 184)" || GLOBAL_OR_NOT="$(text 185)"
   fi
 
-  MENU_OPTION[5]="5.  ${CLIENT_INSTALLED}${CLIENT_NOT_ALLOWED_ARCHITECTURE}$(text 82)"
-  MENU_OPTION[6]="6.  $(text 123)"
-  MENU_OPTION[7]="7.  $(text 72)"
-  MENU_OPTION[8]="8.  $(text 74)"
-  MENU_OPTION[9]="9.  $(text 73)"
-  MENU_OPTION[10]="10. $(text 75)"
-  MENU_OPTION[11]="11. $(text 80)"
-  MENU_OPTION[12]="12. ${IPTABLE_INSTALLED}$(text 138)"
-  MENU_OPTION[13]="13. ${WIREPROXY_INSTALLED}$(text 148)"
-  MENU_OPTION[14]="14. ${CLIENT_INSTALLED}${CLIENT_NOT_ALLOWED_ARCHITECTURE}$(text 168)"
+  MENU_OPTION[3]="3.  $(text 72)"
   MENU_OPTION[0]="0.  $(text 76)"
 
-  ACTION[4]() { OPTION=o; onoff; }
-  ACTION[5]() { client_install; }; ACTION[6]() { change_ip; }; ACTION[7]() { uninstall; }; ACTION[8]() { plus; }; ACTION[9]() { bbrInstall; }; ACTION[10]() { ver; };
-  ACTION[11]() { bash <(curl -sSL https://gitlab.com/fscarmen/warp_unlock/-/raw/main/unlock.sh) -$L; };
-  ACTION[12]() { IS_ANEMONE=is_anemone ;install; };
-  ACTION[13]() { IS_PUFFERFFISH=is_pufferffish; install; };
-  ACTION[14]() { IS_LUBAN=is_luban; client_install; };
+  ACTION[2]() { OPTION=o; onoff; }
   ACTION[0]() { exit; }
 
   [ -e /etc/wireguard/info.log ] && TYPE=' Teams' && grep -sq 'Device name' /etc/wireguard/info.log 2>/dev/null && check_quota warp && TYPE='+' && PLUSINFO="$(text 25): $(awk '/Device name/{print $NF}' /etc/wireguard/info.log)\t $(text 63): $QUOTA"
@@ -3136,7 +3114,6 @@ menu_setting() {
 
 # 显示菜单
 menu() {
-  clear
   hint " $(text 16) "
   echo -e "======================================================================================================================\n"
   info " $(text 17):$VERSION\n $(text 18):$(text 1)\n $(text 19):\n\t $(text 20):$SYS\n\t $(text 21):$(uname -r)\n\t $(text 22):$ARCHITECTURE\n\t $(text 23):$VIRT "
