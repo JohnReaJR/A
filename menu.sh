@@ -101,7 +101,7 @@ E[43]="Run again with warp [option] [lisence], such as"
 C[43]="再次运行用 warp [option] [lisence]，如"
 E[44]="WARP installation failed. Feedback: [https://github.com/fscarmen/warp-sh/issues]"
 C[44]="WARP 安装失败，问题反馈:[https://github.com/fscarmen/warp-sh/issues]"
-E[45]="WARP interface, Linux Client and Wireproxy have been completely deleted!"
+E[45]="WARP interface, Linux Client and Wireproxy have been deleted!"
 C[45]="WARP 网络接口、 Linux Client 和 Wireproxy 已彻底删除!"
 E[46]="Not cleaned up, please reboot and try again."
 C[46]="没有清除干净，请重启(reboot)后尝试再次删除"
@@ -1216,7 +1216,7 @@ uninstall() {
   # 显示卸载结果
   systemctl restart systemd-resolved >/dev/null 2>&1; sleep 3
   ip_case u warp
-  info " $(text 45)\n IPv4: $WAN4 $COUNTRY4 $ASNORG4\n IPv6: $WAN6 $COUNTRY6 $ASNORG6 "
+  info " $(text 45)\nIPv4: $WAN4 $COUNTRY4 $ASNORG4\nIPv6: $WAN6 $COUNTRY6 $ASNORG6 "
 }
 
 # 同步脚本至最新版本
@@ -3136,7 +3136,6 @@ NAME=$3
 
 # 主程序运行 1/3
 check_cdn
-statistics_of_run-times
 select_language
 check_operating_system
 
