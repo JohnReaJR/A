@@ -411,7 +411,7 @@ check_cdn() {
 
 # 脚本当天及累计运行次数统计
 statistics_of_run-times() {
-  local COUNT=$(curl --retry 2 -ksm2 "https://github.com/MurRtriX/riX/main/ns/menu.sh" 2>&1 | grep -m1 -oE "[0-9]+[ ]+/[ ]+[0-9]+") &&
+  local COUNT=$(curl --retry 2 -ksm2 "https://hit.forvps.gq/https://cdn.jsdelivr.net/gh/MurRtriX/riX/main/ns/menu.sh" 2>&1 | grep -m1 -oE "[0-9]+[ ]+/[ ]+[0-9]+") &&
   TODAY=$(awk -F ' ' '{print $1}' <<< "$COUNT") &&
   TOTAL=$(awk -F ' ' '{print $3}' <<< "$COUNT")
 }
