@@ -2317,7 +2317,7 @@ EOF
     fi
 
     # 保存好配置文件, 如有 Teams，改为 Teams 账户信息
-    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'; clear
     [ "$CHOOSE_TEAMS" = '2' ] && input_url_token token
     if [ "${CONFIRM_TEAMS_INFO,,}" = 'y' ]; then
       backup_restore_delete backup wireproxy
@@ -2367,12 +2367,12 @@ EOF
     fi
 
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'; clear
     chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
     echo "$L" >/etc/wireguard/language
 
     # 自动刷直至成功（ warp bug，有时候获取不了ip地址），重置之前的相关变量值，记录新的 IPv4 和 IPv6 地址和归属地，IPv4 / IPv6 优先级别
-    hint "$(text 39) "
+    hint " $(text 39) "
     unset IP4 IP6 WAN4 WAN6 COUNTRY4 COUNTRY6 ASNORG4 ASNORG6 TRACE4 TRACE6 PLUS4 PLUS6 WARPSTATUS4 WARPSTATUS6
     net no_output
 
@@ -2395,12 +2395,12 @@ EOF
 
     # 结果提示，脚本运行时间，次数统计
     end=$(date +%s)
-    echo -e "\033[1;32m ───────────────────────────────────────────────────•\033[0m"
+    echo -e "\033[1;36m ────────────────────────────────────────────────────────•\033[0m"
     info " IPv4: $WAN4 $COUNTRY4  $ASNORG4 "
     info " IPv6: $WAN6 $COUNTRY6  $ASNORG6 "
     info " $(text 41) " && [ -n "$QUOTA" ] && info " $(text 133) "
     info " $PRIORITY_NOW , $(text 186) "
-    echo -e "\033[1;32m ───────────────────────────────────────────────────•\033[0m"
+    echo -e "\033[1;36m ────────────────────────────────────────────────────────•\033[0m"
     [[ "$TRACE4$TRACE6" = offoff ]] && warning " $(text 44) "
   fi
   }
@@ -2509,7 +2509,7 @@ client_install() {
   fi
 
   # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-  wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
+  wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh';clear
   chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
   echo "$L" >/etc/wireguard/language
 
