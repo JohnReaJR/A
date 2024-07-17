@@ -512,7 +512,7 @@ check_dependencies() {
   done
 
   if [ "${#DEPS[@]}" -ge 1 ]; then
-    info "\n $(text 7) ${DEPS[@]} \n"
+    info "\n$(text 7) ${DEPS[@]} \n"
     ${PACKAGE_UPDATE[int]} >/dev/null 2>&1
     ${PACKAGE_INSTALL[int]} ${DEPS[@]} >/dev/null 2>&1
   else
@@ -2100,7 +2100,7 @@ ip -6 rule delete table main suppress_prefixlength 0
 EOF
 
       chmod +x /etc/wireguard/NonGlobal*.sh
-      info "\n $(text 33) \n"
+      info "\n$(text 33) \n"
     fi
   }&
 
@@ -2117,7 +2117,7 @@ EOF
   { stack_priority; }&
 
   # 根据系统选择需要安装的依赖
-  info "\n $(text 32) \n"
+  info "\n$(text 32) \n"
 
   case "$SYSTEM" in
     Debian )
@@ -2398,10 +2398,10 @@ EOF
     echo -e "\n────────────────────────────────────────────────────────•\n"
     info " IPv4: $WAN4 $COUNTRY4  $ASNORG4 "
     info " IPv6: $WAN6 $COUNTRY6  $ASNORG6 "
-    info " $(text 41) " && [ -n "$QUOTA" ] && info " $(text 133) "
+    info " $(text 41) " && [ -n "$QUOTA" ] && info "$(text 133) "
     info " $PRIORITY_NOW , $(text 186) "
     echo -e "\n────────────────────────────────────────────────────────•\n"
-    [[ "$TRACE4$TRACE6" = offoff ]] && warning " $(text 44) "
+    [[ "$TRACE4$TRACE6" = offoff ]] && warning "$(text 44) "
   fi
   }
 
@@ -2418,12 +2418,12 @@ client_install() {
       warp-cli --accept-tos disconnect >/dev/null 2>&1
       warp-cli --accept-tos connect >/dev/null 2>&1
       sleep 1
-      [[ $(warp-cli --accept-tos registration show) =~ 'Free' ]] && warning "\n $(text 107) \n"
+      [[ $(warp-cli --accept-tos registration show) =~ 'Free' ]] && warning "\n$(text 107) \n"
     elif [ -n "$LICENSE" ]; then
-      hint " $(text 35) " && warp-cli --accept-tos registration license "$LICENSE" >/dev/null 2>&1 && sleep 1 &&
+      hint "$(text 35) " && warp-cli --accept-tos registration license "$LICENSE" >/dev/null 2>&1 && sleep 1 &&
       local CLIENT_ACCOUNT=$(warp-cli --accept-tos registration show 2>/dev/null | awk  '/type/{print $3}') &&
       [ "$CLIENT_ACCOUNT" = Limited ] && TYPE='+' && echo "$LICENSE" > /etc/wireguard/license && info " $(text 62) " ||
-      warning " $(text 36) "
+      warning "$(text 36) "
     fi
 
     wait
