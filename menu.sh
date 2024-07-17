@@ -1201,7 +1201,7 @@ uninstall() {
 
   # 卸载核心程序
   for i in ${!UNINSTALL_CHECK[@]}; do
-    [[ "${UNINSTALL_DO_LIST[i]}" = 1 ]] && ( ${UNINSTALL_DO[i]}; info " ${UNINSTALL_RESULT[i]} " )
+    [[ "${UNINSTALL_DO_LIST[i]}" = 1 ]] && ( ${UNINSTALL_DO[i]}; info "${UNINSTALL_RESULT[i]} " )
   done
 
   # 删除本脚本安装在 /etc/wireguard/ 下的所有文件，如果删除后目录为空，一并把目录删除
@@ -1216,7 +1216,7 @@ uninstall() {
   # 显示卸载结果
   systemctl restart systemd-resolved >/dev/null 2>&1; sleep 3
   ip_case u warp
-  info " $(text 45)\nIPv4: $WAN4 $COUNTRY4 $ASNORG4\nIPv6: $WAN6 $COUNTRY6 $ASNORG6 "
+  info "$(text 45)\nIPv4: $WAN4 $COUNTRY4 $ASNORG4\nIPv6: $WAN6 $COUNTRY6 $ASNORG6 "
 }
 
 # 同步脚本至最新版本
