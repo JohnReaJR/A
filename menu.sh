@@ -2317,7 +2317,7 @@ EOF
     fi
 
     # 保存好配置文件, 如有 Teams，改为 Teams 账户信息
-    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
     [ "$CHOOSE_TEAMS" = '2' ] && input_url_token token
     if [ "${CONFIRM_TEAMS_INFO,,}" = 'y' ]; then
       backup_restore_delete backup wireproxy
@@ -2367,7 +2367,7 @@ EOF
     fi
 
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
     chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
     echo "$L" >/etc/wireguard/language
 
@@ -2509,7 +2509,7 @@ client_install() {
   fi
 
   # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-  wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
+  wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh'
   chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
   echo "$L" >/etc/wireguard/language
 
