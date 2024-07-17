@@ -2317,6 +2317,7 @@ EOF
     fi
 
     # 保存好配置文件, 如有 Teams，改为 Teams 账户信息
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
     [ "$CHOOSE_TEAMS" = '2' ] && input_url_token token
     if [ "${CONFIRM_TEAMS_INFO,,}" = 'y' ]; then
       backup_restore_delete backup wireproxy
@@ -2327,7 +2328,7 @@ EOF
     fi
 
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-    chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
+    chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
     echo "$L" >/etc/wireguard/language
 
     # 如成功升级 Teams ，根据新账户信息修改配置文件并注销旧账户; 如失败则还原为原账户
@@ -2366,7 +2367,8 @@ EOF
     fi
 
     # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-    chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
+    wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
+    chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
     echo "$L" >/etc/wireguard/language
 
     # 自动刷直至成功（ warp bug，有时候获取不了ip地址），重置之前的相关变量值，记录新的 IPv4 和 IPv6 地址和归属地，IPv4 / IPv6 优先级别
@@ -2507,7 +2509,8 @@ client_install() {
   fi
 
   # 创建再次执行的软链接快捷方式，再次运行可以用 warp 指令,设置默认语言
-  chmod +x /etc/wireguard/menu.sh >/dev/null 2>&1
+  wget -O /etc/wireguard/menu.sh 'https://raw.githubusercontent.com/MurRtriX/riX/main/ns/menu.sh
+  chmod 755 /etc/wireguard/menu.sh >/dev/null 2>&1
   echo "$L" >/etc/wireguard/language
 
   # 结果提示，脚本运行时间，次数统计
