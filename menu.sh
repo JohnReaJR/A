@@ -2224,7 +2224,6 @@ EOF
   [ -e /tmp/best_mtu ] && MTU=$(cat /tmp/best_mtu) && rm -f /tmp/best_mtu && sed -i "s/MTU.*/MTU = $MTU/g" /etc/wireguard/warp.conf
   [ -e /tmp/best_endpoint ] && ENDPOINT=$(cat /tmp/best_endpoint) && rm -f /tmp/best_endpoint && sed -i "s/engage.*/$ENDPOINT/g" /etc/wireguard/warp.conf
   [ "$GLOBAL_OR_NOT" = "$(text 185)" ] && sed -i "/Table/s/#//g;/NonGlobal/s/#//g" /etc/wireguard/warp.conf
-  info "\n $(text 81) \n"
 
   # 对于 CentOS 9 / AlmaLinux 9 / RockyLinux 9 及类似系统的处理
   if [ "${SYSTEM}_${MAJOR_VERSION}" = 'CentOS_9' ]; then
