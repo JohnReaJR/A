@@ -1211,7 +1211,7 @@ uninstall() {
   [[ -e /etc/wireguard && -z "$(ls -A /etc/wireguard/)" ]] && rmdir /etc/wireguard
 
   # 选择自动卸载依赖执行以下
-  [[ "$UNINSTALL_DEPENDENCIES_LIST" != '' ]] && ( ${PACKAGE_UNINSTALL[int]} $UNINSTALL_DEPENDENCIES_LIST 2>/dev/null; info " $(text 171) \n" )
+  [[ "$UNINSTALL_DEPENDENCIES_LIST" != '' ]] && ( ${PACKAGE_UNINSTALL[int]} $UNINSTALL_DEPENDENCIES_LIST 2>/dev/null )
 
   # 显示卸载结果
   systemctl restart systemd-resolved >/dev/null 2>&1; sleep 3
