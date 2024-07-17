@@ -2373,7 +2373,7 @@ EOF
     echo "$L" >/etc/wireguard/language
 
     # 自动刷直至成功（ warp bug，有时候获取不了ip地址），重置之前的相关变量值，记录新的 IPv4 和 IPv6 地址和归属地，IPv4 / IPv6 优先级别
-    info " $(text 39) "
+    hint " $(text 39) "
     unset IP4 IP6 WAN4 WAN6 COUNTRY4 COUNTRY6 ASNORG4 ASNORG6 TRACE4 TRACE6 PLUS4 PLUS6 WARPSTATUS4 WARPSTATUS6
     net no_output
 
