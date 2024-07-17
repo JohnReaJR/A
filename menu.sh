@@ -1240,7 +1240,6 @@ net() {
   [ ! -x "$(type -p wg-quick)" ] && error " $(text 10) "
   [ ! -e /etc/wireguard/warp.conf ] && error " $(text 190) "
   local i=1; local j=5
-  hint " $(text 11)\n $(text 12) "
   [ "$SYSTEM" != Alpine ] && [[ $(systemctl is-active wg-quick@warp) != 'active' ]] && wg-quick down warp >/dev/null 2>&1
   ${SYSTEMCTL_START[int]} >/dev/null 2>&1
   wg-quick up warp >/dev/null 2>&1
