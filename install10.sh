@@ -112,9 +112,6 @@ EOF
         #Start Services
         systemctl enable custom-server.service
         systemctl start custom-server.service
-        netfilter-persistent save
-        netfilter-persistent reload
-        netfilter-persistent start
         
         #Install Badvpn
         cd /root
