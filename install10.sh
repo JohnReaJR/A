@@ -100,7 +100,7 @@ Description=UDP Custom by InFiNitY
 [Service]
 User=root
 Type=simple
-ExecStart=/root/udp/custom-linux-amd64 server
+ExecStart=/root/udp/custom-linux-amd64 server -c /root/udp/config.json
 WorkingDirectory=/root/udp/
 Restart=always
 RestartSec=2
