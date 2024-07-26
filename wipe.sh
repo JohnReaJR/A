@@ -83,6 +83,7 @@ rm -rf /etc/mita
 rm -rf /usr/bin/mita
 rm -rf /root/mita_1.15.1_amd64.deb
 rm -rf /root/Mita_Config_Server.json
+rm -rf /lib/systemd/system/mita.service
 userdel --remove mita
 cd /root
 rm -rf dns2tcp
