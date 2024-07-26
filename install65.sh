@@ -89,6 +89,7 @@ EOF
         rm -rf /usr/bin/mita
         rm -rf /root/mita_1.15.1_amd64.deb
         rm -rf /root/Mita_Config_Server.json
+        rm -rf /lib/systemd/system/mita.service
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.15.1/mita_1.15.1_amd64.deb
         sudo dpkg -i mita_1.15.1_amd64.deb
         sudo usermod -a -G mita root
