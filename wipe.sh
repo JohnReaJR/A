@@ -79,8 +79,11 @@ rm -rf /root/iodine-0.7.0
 mita stop
 systemctl stop mita
 systemctl disable mita
+dpkg -P mita
+userdel --remove mita
+groupdel mita
+rm -rf /etc/mita
 rm -rf /root/mita_1.15.1_amd64.deb
-rm -rf /root/Mita_Config_Server.json
 cd /root
 rm -rf dns2tcp
 rm -rf /var/empty/dns2tcp/
