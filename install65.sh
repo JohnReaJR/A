@@ -98,7 +98,7 @@ EOF
 EOF
         #Start Services
         chmod 755 /etc/mita/config.json
-        mita apply config config.json
+        mita apply config /etc/mita/config.json
         mita start
         rm -rf /root/mita_1.15.1_amd64.deb
         echo -e "$YELLOW"
