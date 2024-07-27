@@ -85,18 +85,22 @@ EOF
         mita stop
         systemctl stop mita
         systemctl disable mita
+        dpkg -P mita
+        userdel --remove mita
+        groupdel mita
+        rm -rf /etc/mita
         rm -rf /root/mita_1.15.1_amd64.deb
-        rm -rf /root/Mita_Config_Server.json
         curl -LSO https://github.com/enfein/mieru/releases/download/v1.15.1/mita_1.15.1_amd64.deb
         sudo dpkg -i mita_1.15.1_amd64.deb
         sudo usermod -a -G mita root
-        cat <<EOF >/root/Mita_Config_Server.json
+        cat <<EOF >/etc/mita/config.json
 { "portBindings": [ { "port": 10000, "protocol": "TCP" } ], "users": [ { "name": "Resleeved", "password": "Resleeved" } ] }
 EOF
         #Start Services
-        chmod 755 /root/Mita_Config_Server.json
-        mita apply config Mita_Config_Server.json
+        chmod 755 /etc/mita/config.json
+        mita apply config config.json
         mita start
+        rm -rf /root/mita_1.15.1_amd64.deb
         echo -e "$YELLOW"
         echo " ╰┈➤ 💚 MIERU UDP SUCCESSFULLY INSTALLED 💚       "
         echo -e "$NC"
