@@ -85,6 +85,7 @@ EOF
         mita stop
         systemctl stop mita
         systemctl disable mita
+        groupdel mita
         rm -rf /etc/mita
         rm -rf /usr/bin/mita
         rm -rf /root/mita_1.15.1_amd64.deb
