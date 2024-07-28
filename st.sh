@@ -30,22 +30,15 @@
         openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
-pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
-key = /etc/stunnel/stunnel.pem
-CAfile = /etc/stunnel/stunnel.pem
 client = no
-sslVersion = all
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 
-[openssl]
-accept = 51
-connect = 127.0.0.1:22
-
 [socks]
-accept = 50
+accept = 443
+connect = 127.0.0.1:22
 connect = 127.0.0.1:80
 EOF
         rm -rf /etc/default/stunnel4
