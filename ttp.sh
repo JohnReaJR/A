@@ -1,0 +1,73 @@
+        #!/bin/bash
+        is_number() {
+            [[ $1 =~ ^[0-9]+$ ]]
+        }
+        YELLOW='\033[1;33m'
+        NC='\033[0m'
+        if [ "$(whoami)" != "root" ]; then
+            echo "Error: This script must be run as root."
+            exit 1
+        fi
+        cd /root
+        clear
+        echo -e "$YELLOW"
+        echo "          💚 TCP INSTALLATION SCRIPT 💚    "
+        echo "          ╰┈➤💚 Installing TCP 💚        "
+        echo -e "$NC"
+        while true; do
+            echo -e "$YELLOW"
+            read -p "Remote HTTP Port : " http_port
+            echo -e "$NC"
+            if is_number "$http_port" && [ "$http_port" -ge 1 ] && [ "$http_port" -le 65535 ]; then
+                break
+            else
+                echo -e "$YELLOW"
+                echo "Invalid input. Please enter a valid number between 1 and 65535."
+                echo -e "$NC"
+            fi
+        done
+        cd /root
+        iptables -t nat -I PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport "$http_port" -j DNAT --to-destination :"$http_port"
+        iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
+        netfilter-persistent save
+        netfilter-persistent reload
+        netfilter-persistent start
+        cd /root
+        sudo systemctl stop sshProxy-server.service
+        sudo systemctl disable sshProxy-server.service
+        rm -rf /etc/systemd/system/sshProxy-server.service
+        rm -rf /usr/bin/sshProxy_linux_amd64
+        cd /usr/bin
+        http_script="/usr/bin/sshProxy_linux_amd64"
+        if [ ! -e "$http_script" ]; then
+            wget https://github.com/CassianoDev/sshProxy/releases/download/v1.1/sshProxy_linux_amd64
+        fi
+        chmod 755 sshProxy_linux_amd64
+        cd /root
+        ##Tcp Auto Service
+        cat <<EOF >/etc/systemd/system/sshProxy-server.service
+[Unit]
+Description=TCP PROXY
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/usr/bin/screen -dmS tcp /bin/sshProxy_linux_amd64 -addr :"$http_port" dstAddr 127.0.0.1:22
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        ##Start Tcp service
+        systemctl daemon-reload
+        sudo systemctl enable sshProxy-server.service
+        sudo systemctl start sshProxy-server.service 
+        echo -e "$YELLOW"
+        echo "    💚 TCP INSTALLATION DONE💚   "
+        echo "    ╰┈➤💚 TCP Running 💚       "
+        echo -e "$NC"
+        X
+        exit 1
+        ;;
+esac
