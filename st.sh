@@ -31,6 +31,7 @@
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
+key = /etc/stunnel/stunnel.pem
 client = no
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
