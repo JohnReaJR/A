@@ -41,7 +41,7 @@ connect = 127.0.0.1:22
 accept = 51
 
 [socks]
-connect = 127.0.0.1:8080
+connect = 127.0.0.1:80
 accept = 50
 EOF
         rm -rf /etc/default/stunnel4
