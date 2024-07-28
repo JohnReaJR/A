@@ -31,11 +31,7 @@
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
-fips = no
 client = no
-debug = info
-foreground = yes
-sslVersion = all
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
@@ -45,7 +41,7 @@ connect = 127.0.0.1:22
 accept = 51
 
 [socks]
-connect = $(curl -s https://api.ipify.org):80
+connect = 127.0.0.1:80
 accept = 50
 EOF
         rm -rf /etc/default/stunnel4
