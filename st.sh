@@ -30,6 +30,7 @@
         openssl req -new -x509 -days 36500 -key key.pem -out cert.pem -subj "/CN=bing.com" && cat key.pem cert.pem >> /etc/stunnel/stunnel.pem
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
+pid = /var/run/stunnel.pid
 cert = /etc/stunnel/stunnel.pem
 key = /etc/stunnel/stunnel.pem
 CAfile = /etc/stunnel/stunnel.pem
