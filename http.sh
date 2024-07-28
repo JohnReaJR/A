@@ -27,7 +27,7 @@
             fi
         done
         cd /root
-        iptables -t nat -A PREROUTING -p tcp --dport "$http_port" -j REDIRECT --to-port "$http_port"
+        iptables -t nat -I PREROUTING -i $(ip -4 route ls|grep default|grep -Po '(?<=dev )(\S+)'|head -1) -p tcp --dport "$http_port" -j DNAT --to-destination :"$http_port"
         iptables -A INPUT -p tcp --dport "$http_port" -j ACCEPT
         netfilter-persistent save
         netfilter-persistent reload
