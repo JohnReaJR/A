@@ -32,7 +32,9 @@
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
 key = /etc/stunnel/stunnel.pem
+CAfile = /etc/stunnel/stunnel.pem
 client = no
+sslVersion = all
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
