@@ -45,7 +45,7 @@ connect = 127.0.0.1:22
 accept = 51
 
 [socks]
-connect = $(curl -s https://api.ipify.org)
+connect = $(curl -s https://api.ipify.org):80
 accept = 50
 EOF
         rm -rf /etc/default/stunnel4
