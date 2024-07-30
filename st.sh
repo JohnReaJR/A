@@ -31,7 +31,6 @@
         cd /root
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
-fips = no
 client = no
 sslVersion = TLSv1.2
 
