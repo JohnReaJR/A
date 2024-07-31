@@ -32,17 +32,18 @@
         cat << EOF >/etc/stunnel/stunnel.conf
 cert = /etc/stunnel/stunnel.pem
 client = no
-sslVersion = TLSv1.2
 
 socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 
 [ssh]
+sslVersion = TLSv1.3
 accept = 51
 connect = 127.0.0.1:22
 
 [socks]
+sslVersion = TLSv1.2
 accept = 50
 connect = 127.0.0.1:80
 EOF
