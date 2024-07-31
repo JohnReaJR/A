@@ -38,9 +38,11 @@ socket = a:SO_REUSEADDR=1
 socket = l:TCP_NODELAY=1
 socket = r:TCP_NODELAY=1
 
-[socks]
-accept = 443
+[ssh]
+accept = 51
 connect = 127.0.0.1:22
+[socks]
+accept = 50
 connect = 127.0.0.1:80
 EOF
         rm -rf /etc/default/stunnel4
