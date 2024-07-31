@@ -41,6 +41,7 @@ socket = r:TCP_NODELAY=1
 [ssh]
 accept = 51
 connect = 127.0.0.1:22
+
 [socks]
 accept = 50
 connect = 127.0.0.1:80
