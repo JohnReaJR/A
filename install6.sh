@@ -16,14 +16,10 @@ echo "Version : 1"
 echo -e "$NC
 Select an option"
 echo "1. Install UDP REQUEST SOCKSIP"
-echo "2. Exit"
-selected_option=0
+echo "0. Exit"
+# Select an Option
 
-while [ $selected_option -lt 1 ] || [ $selected_option -gt 2 ]; do
-    echo -e "$YELLOW"
-    echo "Select a number from 1 to 2:"
-    echo -e "$NC"
-    read input
+    read -p "$(echo -e "\033[1;33mSelect a number from 1 to 4: \033[0m")" input
 
     # Check if input is a number
     if [[ $input =~ ^[0-9]+$ ]]; then
@@ -33,7 +29,6 @@ while [ $selected_option -lt 1 ] || [ $selected_option -gt 2 ]; do
         echo "Invalid input. Please enter a valid number."
         echo -e "$NC"
     fi
-done
 clear
 case $selected_option in
     1)
@@ -135,7 +130,7 @@ EOF
         X
         exit 1
         ;;
-    2)
+    *)
         echo -e "$YELLOW"
         echo "Welcome To Resleeved Net"
         echo -e "$NC"
