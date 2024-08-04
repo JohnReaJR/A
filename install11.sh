@@ -50,6 +50,7 @@ case $selected_option in
         openssl ecparam -genkey -name prime256v1 -out ca.key
         openssl req -new -x509 -days 36500 -key ca.key -out ca.crt -subj "/CN=bing.com"
         while true; do
+            echo -e "\033[1;33mMust be 4+ digits\033[0m"
             echo -e "$YELLOW"
             read -p "Obfs : " obfs
             echo -e "$NC"
@@ -58,6 +59,7 @@ case $selected_option in
             fi
         done
         while true; do
+            echo -e "\033[1;33mMust be 4+ digits\033[0m"
             echo -e "$YELLOW"
             read -p "Auth Str : " auth_str
             echo -e "$NC"
