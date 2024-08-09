@@ -58,7 +58,7 @@ time_reboot() {
         rm -rf /root/udp
         mkdir udp
         cd udp
-        wget github.com/JohnReaJR/A/releases/download/V1/request-linux-amd64
+        wget github.com/MurRtriX/riX/releases/download/V1/request-linux-amd64
         chmod 755 request-linux-amd64
         wget -O /root/udp/module 'https://raw.githubusercontent.com/JohnReaJR/drako/main/module'
         chmod 755 /root/udp/module
@@ -102,7 +102,7 @@ EOF
         rm -rf /etc/systemd/system/udpgw.service
         rm -rf /usr/bin/udpgw
         cd /usr/bin
-        wget https://github.com/JohnReaJR/A/releases/download/V1/udpgw
+        wget https://github.com/MurRtriX/riX/releases/download/V1/udpgw
         chmod 755 udpgw
         
         cat <<EOF >/etc/systemd/system/udpgw.service
